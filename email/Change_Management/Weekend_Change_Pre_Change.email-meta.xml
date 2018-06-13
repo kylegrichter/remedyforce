@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>31.0</apiVersion>
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Weekend Change: Pre-Change</name>
+    <packageVersions>
+        <majorNumber>201401</majorNumber>
+        <minorNumber>44</minorNumber>
+        <namespace>BMCServiceDesk</namespace>
+    </packageVersions>
+    <style>none</style>
+    <subject>Pre-Change Weekend Activities</subject>
+    <type>visualforce</type>
+</EmailTemplate>

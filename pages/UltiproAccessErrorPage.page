@@ -1,0 +1,16 @@
+<apex:page showHeader="false">
+<p align="center"><apex:image url="{!$Resource.DexYP70x440px}" /></p>
+
+<center><strong><h1 style="color:#004990;font-size: 32px;">Sorry, you can’t SSO to UltiPro because you are not assigned to it.</h1></strong></center>
+<br></br>
+<br></br>
+<center><strong><h2 style="color:#58A618;font-size: 24px;">New Employees</h2></strong></center>
+<br></br>
+<p align="center"><strong><font size="4">If you are a new employee, please be patient. </font></strong></p>
+<p align="center"><font size="4">It may take 3 to 5 days after you start before your SSO is configured for UltiPro.  If it’s been more than 5 days since you started, please contact the help desk and open a ticket.</font></p>
+<br></br>
+<center><strong><h2 style="color:#58A618;font-size: 24px;">Contractors and Other Non-Employees</h2></strong></center> 
+<br></br>
+<p align="center"><strong><font size="4">Non-employees don’t have access to UltiPro by default.</font></strong></p>
+<center><p><font size="4">You must submit an ASA request.</font></p></center>
+</apex:page>

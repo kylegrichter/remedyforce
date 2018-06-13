@@ -1,0 +1,101 @@
+<apex:component controller="ChangeManagement" access="global">
+    <link href="{!$Resource.fullCalendarCSS}" rel="stylesheet" />
+    <link href="{!$Resource.fullCalendarPrintCSS}" rel="stylesheet" media="print" />
+     
+    <script src="{!$Resource.jQueryMinJS}"></script>
+    <script src="{!$Resource.momentJS}"></script>
+    <script src="{!$Resource.fullCalendarMinJS}"></script>
+     
+    <script>
+        //We need to wrap everything in a doc.ready function so that the code fires after the DOM is loaded
+        $(document).ready(function() {   
+            //Call the fullCallendar method. You can replace the '#calendar' with the ID of the dom element where you want the calendar to go. 
+            $('#calendar').fullCalendar({
+                header: {
+                    left: '',
+                    center: 'title',
+                    right: 'today prev,next'
+                },
+                defaultView: "{!IF(view != '', view, 'agendaWeek')}",
+                allDaySlot: true,
+                views: {
+                    agendaWeek: {
+                        eventLimit: 6
+                        },
+                    month: {
+                        eventLimit: 11
+                        }
+                    },
+                contentHeight: 'auto',
+                allDayText: 'Multi-Day',
+                fixedWeekCount: false,
+                editable: false,
+                slotDuration: '01:00:00',
+                defaultDate: '{!defaultDate}',
+                events:
+                [
+                    <apex:repeat value="{!changesCal}" var="e">
+                        {
+                            title: "{!SUBSTITUTE(e.title, '\"', '')}",
+                            start: '{!e.startString}',
+                            end: '{!e.endString}',
+                            url: '{!e.url}',
+                            allDay: {!e.allDay},
+                            className: "{!IF(LEFT(RIGHT(e.url, 18),15)=$CurrentPage.parameters.id,'Current',e.className)}"
+                        },
+                    </apex:repeat>
+                ],
+                eventClick: function(event) {
+                    if (event.url) {
+                        window.open(event.url);
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+     
+    <!--some styling. Modify this to fit your needs-->
+    <style>
+        #cal-options {float:left;}
+        #cal-legend { float:left;}
+        #cal-legend ul {margin:0;padding:0;list-style:none;}
+        #cal-legend ul li {margin:0;padding:5px;float:left;}
+        #cal-legend ul li span {display:block; height:16px; width:16px; margin-right:4px; float:left; border-radius:4px;}
+        #calendar {margin-top:0px;}
+        #calendar a:hover {color:#fff !important;}
+         
+        .fc-event-inner {padding:3px;}
+        .Production {background:#CC3300;border-color:#CC3300;}
+        .Test {background:#006600;border-color:#006600;}
+        .Development {background:#3a87ad;border-color:#3a87ad;}
+        .Current {background:#ff00ff;border-color:#ff00ff;}
+    </style>
+    <apex:outputPanel id="calPanel">
+        <apex:form >
+            <apex:pageBlock rendered="{!$CurrentPage.parameters.id=''}" title="Change Calendar" id="a" >
+                <apex:selectList value="{!answer}" size="1">
+                    <apex:selectOptions value="{!answersCal}"/>
+                </apex:selectList>
+                <apex:selectList value="{!view}" size="1">
+                    <apex:selectOption itemValue="agendaWeek" itemLabel="Agenda - Week"/>
+                    <apex:selectOption itemValue="month" itemLabel="Month"/>
+                </apex:selectList>
+                <apex:commandButton value="Submit">
+                    <apex:param name="grp" value="{!answer}" />
+                    <apex:param name="view" value="{!view}" />
+                </apex:commandButton>
+            </apex:pageBlock>
+            <div id="cal-legend">
+                <ul>
+                    <li><span class="Production"></span>Production</li>
+                    <li><span class="Test"></span>Test</li>
+                    <li><span class="Development"></span>Development</li>
+                    <li style="{!IF($CurrentPage.parameters.id='','display:none','')}"><span class="Current"></span>Current CR</li>
+                </ul>
+                <div style="clear:both;"><!--fix floats--></div>
+            </div>
+            <div id="calendar"></div>
+        </apex:form>
+    </apex:outputPanel>
+</apex:component>

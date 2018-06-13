@@ -1,0 +1,140 @@
+<apex:page standardController="BMCServiceDesk__BMC_BaseElement__c" showHeader="false" title="Shared Mailbox Review Page" showChat="false" sidebar="false">
+    <script>
+        var returnURL;
+        window.onload =  function(){
+            returnURL = gup('retURL');
+        };
+        function gup( name ){
+            name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]"); 
+            var regexS = "[\\?&]"+name+"=([^&#]*)"; 
+            var regex = new RegExp( regexS ); 
+            var results = regex.exec( window.location.href );
+            if( results == null ) return ""; 
+            else return results[1];
+        }
+        function redirectBack(){
+            window.location.href = '/' + returnURL;
+        }
+        function CloseWindow(){ 
+            window.top.close(); 
+            UpdateOpener(); 
+        }
+    </script>
+    <apex:sectionHeader title="Shared Mailbox Review" subtitle="{!BMCServiceDesk__BMC_BaseElement__c.name}"/>
+    <apex:form >
+        <apex:actionFunction name="saveActionFunc" action="{!Save}" oncomplete="redirectBack()" rerender="theBlock" />
+        <apex:pageBlock id="null_id" rendered="{!$CurrentPage.parameters.Id == null}">
+            This page cannot be accessed directly, but must be accessed in reference to an exsisting CI.
+        </apex:pageBlock>
+        <apex:pageBlock id="bad_cmdb_class" rendered="{!NOT(BMCServiceDesk__BMC_BaseElement__c.BMCServiceDesk__ClassID__c == 'BMC_SHARED_MAILBOX') && NOT($CurrentPage.parameters.Id == null)}">
+            The linked CI is not a Shared Mailbox CI and is not allowed to be viewed or modified with this page.
+        </apex:pageBlock>
+        <apex:pageBlock mode="edit" id="theBlock" rendered="{!NOT($CurrentPage.parameters.Id == null) && BMCServiceDesk__BMC_BaseElement__c.BMCServiceDesk__ClassID__c == 'BMC_SHARED_MAILBOX'}">
+            <apex:pageBlockButtons rendered="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Still_In_Use__c == false}">
+                <apex:commandButton value="Save" onClick="saveActionFunc();"/>
+                <apex:commandButton id="Cancel" value="Cancel/Close" action="{!cancel}" onClick="CloseWindow();"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection showHeader="True" title="Shared Mailbox Review Details" columns="1" rendered="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Still_In_Use__c == false}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Email Address"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Address__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Communication Type"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Communication__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Primary Owner"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Owner_1__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Secondary Owner"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Owner_2__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Reason/Purpose"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Reason__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Recipients are External (Clients/Customers)"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Recipients__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Review Date"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Review_Date__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Reviewed Date"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Last_Review_Date__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Review Comments"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Last_Review_Comments__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Created By"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.CreatedById}"/>&nbsp;
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.CreatedDate}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Last Modified By"/>
+                    <apex:outputpanel >
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.LastModifiedById}"/>&nbsp;
+                        <apex:outputField value="{!BMCServiceDesk__BMC_BaseElement__c.LastModifiedDate}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection showHeader="true" title="Confirm Useage" columns="1" rendered="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Still_In_Use__c == false}">
+                Check the box to confirm that <a style="color: Blue;" href="mailto:{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Address__c}">{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Address__c}</a> is still in use. If this is not done by <span style="color: Red;font-weight: bold;">{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Review_Date__c}</span> a ticket will be opened to have this mailbox removed.<br /><br />
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Mailbox still in use"/>
+                    <apex:outputpanel >
+                        <apex:inputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Still_In_Use__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Review Comments"/>
+                    <apex:outputpanel >
+                        <apex:inputTextArea cols="25" value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Last_Review_Comments__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                If you need to change the owners, you can do so here. <br /><br />
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Primary Owner"/>
+                    <apex:outputpanel >
+                        <apex:inputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Owner_1__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Secondary Owner"/>
+                    <apex:outputpanel >
+                        <apex:inputField value="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Owner_2__c}"/>
+                    </apex:outputpanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection showHeader="true" title="Mailbox Confirmed In Use" columns="1" rendered="{!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Still_In_Use__c == true}">
+                <apex:outputText value="'You have indicated that the mailbox is still in use. The review date has been advanced to '{0,date,M/d/yyyy h:mm a}' CT (210 days from today).'"><apex:param value="{!IF(DATEVALUE(NOW()+210) >= DATE(YEAR(DATEVALUE(NOW()+210)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(NOW()+210)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(NOW()+210)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(NOW()+210) < DATE(YEAR(DATEVALUE(NOW()+210)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(NOW()+210)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(NOW()+210)),11,1) - DATE(1900,1,7),7))),NOW()+210 - (5/24),NOW()+210 - (6/24))}" /></apex:outputText>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

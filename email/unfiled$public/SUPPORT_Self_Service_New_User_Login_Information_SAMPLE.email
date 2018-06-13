@@ -1,0 +1,9 @@
+Dear {!Contact.FirstName},
+
+Your {!Organization.Name} Self-Service portal login and password information is below.
+
+Thank you,
+
+{!Organization.Name} Customer Support
+
+Please login to the portal at http://supermedia.force.com/ within 24hrs to set up your password as this temporary password will expire.

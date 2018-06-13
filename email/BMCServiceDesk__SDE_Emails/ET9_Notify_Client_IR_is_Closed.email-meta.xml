@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notify Client when an Incident is Closed</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET9-Notify Client-IR is Closed</name>
+    <style>none</style>
+    <subject>Incident # {!BMCServiceDesk__Incident__c.Name} has been closed</subject>
+    <textOnly>ET9
+
+Hello,
+
+This email is to inform you that  Incident # {!BMCServiceDesk__Incident__c.Name} has been closed.
+
+If you have any questions or if the incident was not resolved to your   satisfaction, please contact your regular Support Group or the Help   Desk at 1-866-TIP-1300 for further assistance. .
+For detailed information on how this particular issue was resolved, please see the notes below.
+
+This incident has the following details:
+Status:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Status_ID__c}
+
+Requester Information
+
+Client Name:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}     Email:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}
+Phone:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Phone__c}
+
+Incident Information
+
+Created Date:  {!BMCServiceDesk__Incident__c.CreatedDate}     Due Date:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c}
+Urgency:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Urgency_ID__c}     Impact:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Impact_Id__c}
+Category:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Category_ID__c}     Config item:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKBMC_BaseElement__c}
+Description:
+
+{!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}
+
+Resolution:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentResolution__c}
+
+ET9</textOnly>
+    <type>custom</type>
+</EmailTemplate>

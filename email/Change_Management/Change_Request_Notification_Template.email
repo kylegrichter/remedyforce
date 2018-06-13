@@ -1,0 +1,321 @@
+<messaging:emailTemplate subject="Change Request : {!IF(relatedTo.BMCServiceDesk__Status__c=='RISK & IMPACT','REJECTED',relatedTo.BMCServiceDesk__Status__c)} : {!relatedTo.Name}" recipientType="User" relatedToType="BMCServiceDesk__Change_Request__c">
+<messaging:htmlEmailBody >
+<head>
+    <style>
+        body{font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;font-size:14px;}
+    </style>
+</head>
+<body>
+    <apex:outputPanel id="instructions_opened" layout="block" rendered="{!relatedTo.BMCServiceDesk__Status__c = 'OPENED'}">
+        <p>Change Request <span style="font-weight:bold;color:blue;">{!relatedTo.Name}</span> has been opened. Ensure you create any additional tasks required to implement this change request.</p>
+        <apex:outputText rendered="{!relatedTo.Auto_Submit_for_Approval__c = false}"><p><span style="margin-top:15px;font-weight:bold; color:red;">Once the Change Request is filled out completely click the Submit for Approval button under the Action menu on the top of the change request.</span></p></apex:outputText>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="approval_flow" layout="block" rendered="{!relatedTo.BMCServiceDesk__Change_Type__c != 'Informational' && relatedTo.BMCServiceDesk__Open_Date_Time__c+1 < relatedTo.BMCServiceDesk__Scheduled_Start_Date__c && relatedTo.BMCServiceDesk__Status__c = 'OPENED'}">
+        <p>You can review the current approval status by viewing the Change Request in RemedyForce, navigating to the Request Details button at the top and scrolling down to the Approval History section.</p>
+        <p>This request follows the following approval workflow:</p>
+        <ul>
+            <li><b>Supervisor Approval: </b><i>{!relatedTo.Staffs_Supervisor__r.FirstName} {!relatedTo.Staffs_Supervisor__r.LastName}</i></li>
+            <apex:outputText rendered="{!relatedTo.BMCServiceDesk__Open_Date_Time__c+1 > relatedTo.BMCServiceDesk__Scheduled_Start_Date__c && relatedTo.BMCServiceDesk__Category__c != 'Firecall - Finance' && relatedTo.BMCServiceDesk__Category__c != 'Firecall' && relatedTo.BMCServiceDesk__Category__c != 'DBI/TBI' && relatedTo.BMCServiceDesk__Category__c != 'Firecall - MBS/ECAS'}" ><li><b>Senior IT Management: </b><i>Stephen Andrasko, Rich Gallagher, Mike Hendler</i></li></apex:outputText>
+            <li><b>Change Management</b></li>
+        </ul>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="note" layout="block" rendered="{!relatedTo.BMCServiceDesk__Change_Type__c == 'Informational' && relatedTo.BMCServiceDesk__Open_Date_Time__c+1 > relatedTo.BMCServiceDesk__Scheduled_Start_Date__c && relatedTo.BMCServiceDesk__Category__c != 'Firecall - Finance' && relatedTo.BMCServiceDesk__Category__c != 'Firecall' && relatedTo.BMCServiceDesk__Category__c != 'DBI/TBI' && relatedTo.BMCServiceDesk__Category__c != 'Firecall - MBS/ECAS'}">
+        <p><span style="margin-top:15px;font-weight:bold; color:red;">Note: This Request is classified as an Informational request that is also considered an Emergency. As a result, this is auto-approved, however it will notify all required parties. If this is found to NOT been an emergency or a proper informational activity it could be required to roll-back.</span></p>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="warning" layout="block" rendered="{!relatedTo.BMCServiceDesk__Open_Date_Time__c+1 > relatedTo.BMCServiceDesk__Scheduled_Start_Date__c && relatedTo.BMCServiceDesk__Category__c != 'Firecall - Finance' && relatedTo.BMCServiceDesk__Category__c != 'Firecall' && relatedTo.BMCServiceDesk__Category__c != 'DBI/TBI' && relatedTo.BMCServiceDesk__Category__c != 'Firecall - MBS/ECAS' && relatedTo.BMCServiceDesk__Change_Type__c != 'Informational'}">
+        <p><span style="margin-top:15px;font-weight:bold; color:red;">Warning: This Request will follow the emergency approval process requiring senior IR management approval!!!</span></p>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="instructions_pending_approval" layout="block" rendered="{!relatedTo.BMCServiceDesk__Status__c = 'PENDING APPROVAL'}">
+        <p>The below request requires your approval. Please review the request and grant your approval or rejection by either replying to this message with <span style="font-weight:bold; color:green;">APPROVED</span> or 
+        <span style="font-weight:bold; color:red;">REJECTED</span> in the first line of the body or by the following URL, <a href="https://remedy.my.salesforce.com/apex/ManageApprovals?type=change">Manage My Approvals</a>. Additional 
+        comments included in the second line of the email message will be added to the comments field of the approval request.</p>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="instructions_approved" layout="block" rendered="{!relatedTo.BMCServiceDesk__Status__c = 'APPROVED'}">
+        <p>The below request has been <span style="font-weight:bold; color:green;">APPROVED</span>.</p>
+        <p><span style="font-weight:bold; color:red;">Once the change is complete, close the CR by clicking the Close button at the top of the request.</span></p>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="instructions_rejected" layout="block" rendered="{!relatedTo.BMCServiceDesk__Status__c = 'RISK & IMPACT'}">
+        <p>The below request has been <span style="font-weight:bold; color:red;">REJECTED</span> and Closed.</p>
+        <apex:repeat rendered="{!relatedTo.BMCServiceDesk__Status__c = 'RISK & IMPACT'}" var="cx" value="{!relatedTo.ProcessSteps}">
+            <apex:outputPanel rendered="{!cx.StepStatus=='Rejected'}">    
+            <p><b><apex:outputField value="{!cx.createdDate}" />:{!cx.Actor.Name}</b> has <b style="color:red">{!cx.StepStatus}</b> approval for change request # {!relatedTo.Name}.<br />
+            <b>The following comments were provided:</b> <b style="color:red">{!cx.comments}</b></p>
+            </apex:outputPanel>
+        </apex:repeat>
+    </apex:outputPanel>
+    <style>
+        table{border-collapse: collapse;empty-cells: show;}
+        th{padding:4px 4px 4px 4px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#1797C0;color: #FFFFFF;font-size: 9pt;font-weight:bold;font-family: Calibri;}
+        td{padding:4px 4px 4px 4px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#FFFFFF;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;}
+        pre{font-family: Calibri;font-size: 9pt;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;}
+    </style>
+    <style>
+        .section{background-color:#DF7401;color:white;}
+        .columnA{padding:4px 4px 4px 4px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#1797C0;color: #FFFFFF;font-size: 9pt;font-weight:bold;text-align: left;font-family: Calibri;}
+        .columnB{border:1px solid #000000;font-size:12px;padding:4px 4px 4px 4px;}
+        .nowrap{white-space: nowrap;font-weight:bold;}
+    </style>
+    <apex:outputPanel id="details_main" layout="block">
+        <apex:panelGrid headerClass="section" columnClasses="columnA,columnB" columns="2" id="Change-Details">
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Name.Label}" />
+            <a href="https://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!relatedTo.Id}" id="crLink">{!relatedTo.Name}</a>
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Initiator_Full_Name__c.Label}" />
+            <apex:outputText value="{!relatedTo.Initiator_Full_Name__c}" />
+
+            <apex:outputText styleClass="nowrap" value="Queue/Staff" />
+            <apex:outputText value="{!relatedTo.BMCServiceDesk__Queue__c} ({!relatedTo.BMCServiceDesk__FKStaff__r.Name})" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Open_Date_Time__c.Label}" />
+            <apex:outputText value="{0,date,M/d/yyyy h:mm a' ('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(relatedTo.BMCServiceDesk__Open_Date_Time__c) >= DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Open_Date_Time__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Open_Date_Time__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Open_Date_Time__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(relatedTo.BMCServiceDesk__Open_Date_Time__c) < DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Open_Date_Time__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Open_Date_Time__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Open_Date_Time__c)),11,1) - DATE(1900,1,7),7))),relatedTo.BMCServiceDesk__Open_Date_Time__c - (5/24),relatedTo.BMCServiceDesk__Open_Date_Time__c - (6/24))}" /></apex:outputText>
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Scheduled_Start_Date__c.Label}" />
+            <apex:outputText value="{0,date,M/d/yyyy h:mm a' ('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c) >= DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c) < DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) - DATE(1900,1,7),7))),relatedTo.BMCServiceDesk__Scheduled_Start_Date__c - (5/24),relatedTo.BMCServiceDesk__Scheduled_Start_Date__c - (6/24))}" /></apex:outputText>
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Scheduled_End_Date__c.Label}" />
+            <apex:outputText value="{0,date,M/d/yyyy h:mm a' ('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c) >= DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c) < DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),11,1) - DATE(1900,1,7),7))),relatedTo.BMCServiceDesk__Scheduled_End_Date__c - (5/24),relatedTo.BMCServiceDesk__Scheduled_End_Date__c - (6/24))}" /></apex:outputText>
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Change_Type__c.Label}" />
+            <apex:outputText value="{!relatedTo.BMCServiceDesk__Change_Type__c}" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Change_Category__c.Label}" />
+            <apex:outputText value="{!relatedTo.BMCServiceDesk__Change_Category__c}" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Environment__c.Label}" />
+            <apex:outputText value="{!relatedTo.Environment__c}" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__FKPriority__c.Label}" />
+            <apex:outputText value="{!relatedTo.BMCServiceDesk__Priority__c} (Impact: {!relatedTo.BMCServiceDesk__Impact__c}/ Urgency: {!relatedTo.BMCServiceDesk__Urgency__c})" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__FKCategory__c.Label}" />
+            <apex:outputText value="{!relatedTo.BMCServiceDesk__Category__c}" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Title__c.Label}" />
+            <apex:outputText value="{!relatedTo.Title__c}" />
+            
+            <apex:outputText rendered="{!NOT(ISBLANK(relatedTo.BMCServiceDesk__FKServiceRequest__c))}" styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__FKServiceRequest__c.Label}" />
+            <apex:outputText rendered="{!NOT(ISBLANK(relatedTo.BMCServiceDesk__FKServiceRequest__c))}" value="{!relatedTo.BMCServiceDesk__FKServiceRequest__r.Name}" />
+
+            <apex:outputText rendered="{!NOT(ISBLANK(relatedTo.Release_Code__c))}" styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Release_Code__c.Label}" />
+            <apex:outputText rendered="{!NOT(ISBLANK(relatedTo.Release_Code__c))}" value="{!relatedTo.Release_Code__c}" />
+
+            <apex:outputText rendered="{!NOT(ISBLANK(relatedTo.Financial_Release__c))}" styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Financial_Release__c.Label}" />
+            <apex:outputText rendered="{!NOT(ISBLANK(relatedTo.Financial_Release__c))}" value="{!relatedTo.Financial_Release__c}" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Change_Description__c.Label}" />
+            <pre>{!relatedTo.BMCServiceDesk__Change_Description__c}</pre>
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Reason_for_Change_Details__c.Label}" />
+            <apex:outputText value="{!relatedTo.BMCServiceDesk__Reason_for_Change_Details__c}" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Affected_Systems_Applications__c.Label}" />
+            <pre>{!relatedTo.Affected_Systems_Applications__c}</pre>
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Roll_Out_Plan_Details__c.Label}" />
+            <apex:outputText value="{!relatedTo.BMCServiceDesk__Roll_Out_Plan_Details__c}" />
+            
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Validation_Steps__c.Label}" />
+            <apex:outputText value="{!relatedTo.Validation_Steps__c}" />
+
+            <apex:outputText styleClass="nowrap" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.BMCServiceDesk__Back_out_Plan_Details__c.Label}" />
+            <apex:outputText value="{!relatedTo.BMCServiceDesk__Back_out_Plan_Details__c}" />
+        </apex:panelGrid>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!OR(relatedTo.BMCServiceDesk__Category__c = 'Firecall',relatedTo.BMCServiceDesk__Category__c = 'Firecall - MBS/ECAS',relatedTo.BMCServiceDesk__Category__c = 'DBI/TBI')}" id="details_dbi_tbi" layout="block">
+        <br />
+        <apex:panelGrid headerClass="section"  columnClasses="columnA,columnB" columns="4" id="DBI-TBI-Details">
+            <apex:facet name="header">DBI/TBI Details</apex:facet>
+            
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.DBI_TBI_Application_Area__c.Label}" />
+            <apex:outputText value="{!relatedTo.DBI_TBI_Application_Area__c}" />
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Entitites_to_be_Updated__c.Label}" />
+            <apex:outputText value="{!relatedTo.Entitites_to_be_Updated__c}" />
+            
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Business_Approval__c.Label}" />
+            <apex:outputText value="{!relatedTo.Business_Approval__c}" />
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Business_Approver__c.Label}" />
+            <apex:outputText value="{!relatedTo.Business_Approver_Name__c}" />
+            
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Event_ID_s_On_Chng_Custs__c.Label}" />
+            <apex:outputText value="{!relatedTo.Event_ID_s_On_Chng_Custs__c}" />
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Run_From__c.Label}" />
+            <apex:outputText value="{!relatedTo.Run_From__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Non_VAST_DB__c)),NOT(ISBLANK(relatedTo.Non_VAST_DB__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Non_VAST_DB__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Non_VAST_DB__c)),NOT(ISBLANK(relatedTo.Non_VAST_DB__c)))}" value="{!relatedTo.Non_VAST_DB__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Non_VAST_DB__c)),NOT(ISBLANK(relatedTo.Non_VAST_DB__c)))}" value="" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Non_VAST_DB__c)),NOT(ISBLANK(relatedTo.Non_VAST_DB__c)))}" value="" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Non_VAST_Runtime__c)),NOT(ISBLANK(relatedTo.Non_VAST_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Non_VAST_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Non_VAST_Runtime__c)),NOT(ISBLANK(relatedTo.Non_VAST_Number_Affected__c)))}" value="{!relatedTo.Non_VAST_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Non_VAST_Runtime__c)),NOT(ISBLANK(relatedTo.Non_VAST_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Non_VAST_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Non_VAST_Runtime__c)),NOT(ISBLANK(relatedTo.Non_VAST_Number_Affected__c)))}" value="{!relatedTo.Non_VAST_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.C_Runtime__c)),NOT(ISBLANK(relatedTo.C_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.C_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.C_Runtime__c)),NOT(ISBLANK(relatedTo.C_Number_Affected__c)))}" value="{!relatedTo.C_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.C_Runtime__c)),NOT(ISBLANK(relatedTo.C_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.C_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.C_Runtime__c)),NOT(ISBLANK(relatedTo.C_Number_Affected__c)))}" value="{!relatedTo.C_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.E_Runtime__c)),NOT(ISBLANK(relatedTo.E_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.E_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.E_Runtime__c)),NOT(ISBLANK(relatedTo.E_Number_Affected__c)))}" value="{!relatedTo.E_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.E_Runtime__c)),NOT(ISBLANK(relatedTo.E_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.E_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.E_Runtime__c)),NOT(ISBLANK(relatedTo.E_Number_Affected__c)))}" value="{!relatedTo.E_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.H_Runtime__c)),NOT(ISBLANK(relatedTo.H_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.H_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.H_Runtime__c)),NOT(ISBLANK(relatedTo.H_Number_Affected__c)))}" value="{!relatedTo.H_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.H_Runtime__c)),NOT(ISBLANK(relatedTo.H_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.H_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.H_Runtime__c)),NOT(ISBLANK(relatedTo.H_Number_Affected__c)))}" value="{!relatedTo.H_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.I_Runtime__c)),NOT(ISBLANK(relatedTo.I_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.I_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.I_Runtime__c)),NOT(ISBLANK(relatedTo.I_Number_Affected__c)))}" value="{!relatedTo.I_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.I_Runtime__c)),NOT(ISBLANK(relatedTo.I_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.I_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.I_Runtime__c)),NOT(ISBLANK(relatedTo.I_Number_Affected__c)))}" value="{!relatedTo.I_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.J_Runtime__c)),NOT(ISBLANK(relatedTo.J_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.J_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.J_Runtime__c)),NOT(ISBLANK(relatedTo.J_Number_Affected__c)))}" value="{!relatedTo.J_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.J_Runtime__c)),NOT(ISBLANK(relatedTo.J_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.J_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.J_Runtime__c)),NOT(ISBLANK(relatedTo.J_Number_Affected__c)))}" value="{!relatedTo.J_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.L_Runtime__c)),NOT(ISBLANK(relatedTo.L_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.L_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.L_Runtime__c)),NOT(ISBLANK(relatedTo.L_Number_Affected__c)))}" value="{!relatedTo.L_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.L_Runtime__c)),NOT(ISBLANK(relatedTo.L_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.L_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.L_Runtime__c)),NOT(ISBLANK(relatedTo.L_Number_Affected__c)))}" value="{!relatedTo.L_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.P_Runtime__c)),NOT(ISBLANK(relatedTo.P_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.P_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.P_Runtime__c)),NOT(ISBLANK(relatedTo.P_Number_Affected__c)))}" value="{!relatedTo.P_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.P_Runtime__c)),NOT(ISBLANK(relatedTo.P_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.P_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.P_Runtime__c)),NOT(ISBLANK(relatedTo.P_Number_Affected__c)))}" value="{!relatedTo.P_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.R_Runtime__c)),NOT(ISBLANK(relatedTo.R_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.R_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.R_Runtime__c)),NOT(ISBLANK(relatedTo.R_Number_Affected__c)))}" value="{!relatedTo.R_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.R_Runtime__c)),NOT(ISBLANK(relatedTo.R_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.R_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.R_Runtime__c)),NOT(ISBLANK(relatedTo.R_Number_Affected__c)))}" value="{!relatedTo.R_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.S_Runtime__c)),NOT(ISBLANK(relatedTo.S_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.S_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.S_Runtime__c)),NOT(ISBLANK(relatedTo.S_Number_Affected__c)))}" value="{!relatedTo.S_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.S_Runtime__c)),NOT(ISBLANK(relatedTo.S_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.S_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.S_Runtime__c)),NOT(ISBLANK(relatedTo.S_Number_Affected__c)))}" value="{!relatedTo.S_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.F_Runtime__c)),NOT(ISBLANK(relatedTo.F_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.F_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.F_Runtime__c)),NOT(ISBLANK(relatedTo.F_Number_Affected__c)))}" value="{!relatedTo.F_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.F_Runtime__c)),NOT(ISBLANK(relatedTo.F_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.F_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.F_Runtime__c)),NOT(ISBLANK(relatedTo.F_Number_Affected__c)))}" value="{!relatedTo.F_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.A_Runtime__c)),NOT(ISBLANK(relatedTo.A_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.A_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.A_Runtime__c)),NOT(ISBLANK(relatedTo.A_Number_Affected__c)))}" value="{!relatedTo.A_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.A_Runtime__c)),NOT(ISBLANK(relatedTo.A_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.A_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.A_Runtime__c)),NOT(ISBLANK(relatedTo.A_Number_Affected__c)))}" value="{!relatedTo.A_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Central_1_Runtime__c)),NOT(ISBLANK(relatedTo.X1_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Central_1_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Central_1_Runtime__c)),NOT(ISBLANK(relatedTo.X1_Number_Affected__c)))}" value="{!relatedTo.Central_1_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Central_1_Runtime__c)),NOT(ISBLANK(relatedTo.X1_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.X1_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Central_1_Runtime__c)),NOT(ISBLANK(relatedTo.X1_Number_Affected__c)))}" value="{!relatedTo.X1_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.East_2_Runtime__c)),NOT(ISBLANK(relatedTo.X2_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.East_2_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.East_2_Runtime__c)),NOT(ISBLANK(relatedTo.X2_Number_Affected__c)))}" value="{!relatedTo.East_2_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.East_2_Runtime__c)),NOT(ISBLANK(relatedTo.X2_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.X2_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.East_2_Runtime__c)),NOT(ISBLANK(relatedTo.X2_Number_Affected__c)))}" value="{!relatedTo.X2_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Pennsylvania_3_Runtime__c)),NOT(ISBLANK(relatedTo.X3_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Pennsylvania_3_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Pennsylvania_3_Runtime__c)),NOT(ISBLANK(relatedTo.X3_Number_Affected__c)))}" value="{!relatedTo.Pennsylvania_3_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Pennsylvania_3_Runtime__c)),NOT(ISBLANK(relatedTo.X3_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.X3_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Pennsylvania_3_Runtime__c)),NOT(ISBLANK(relatedTo.X3_Number_Affected__c)))}" value="{!relatedTo.X3_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.C_P_4_Runtime__c)),NOT(ISBLANK(relatedTo.X4_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.C_P_4_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.C_P_4_Runtime__c)),NOT(ISBLANK(relatedTo.X4_Number_Affected__c)))}" value="{!relatedTo.C_P_4_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.C_P_4_Runtime__c)),NOT(ISBLANK(relatedTo.X4_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.X4_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.C_P_4_Runtime__c)),NOT(ISBLANK(relatedTo.X4_Number_Affected__c)))}" value="{!relatedTo.X4_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Northeast_5_Runtime__c)),NOT(ISBLANK(relatedTo.X5_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Northeast_5_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Northeast_5_Runtime__c)),NOT(ISBLANK(relatedTo.X5_Number_Affected__c)))}" value="{!relatedTo.Northeast_5_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Northeast_5_Runtime__c)),NOT(ISBLANK(relatedTo.X5_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.X5_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Northeast_5_Runtime__c)),NOT(ISBLANK(relatedTo.X5_Number_Affected__c)))}" value="{!relatedTo.X5_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.West_6_Runtime__c)),NOT(ISBLANK(relatedTo.X6_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.West_6_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.West_6_Runtime__c)),NOT(ISBLANK(relatedTo.X6_Number_Affected__c)))}" value="{!relatedTo.West_6_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.West_6_Runtime__c)),NOT(ISBLANK(relatedTo.X6_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.X6_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.West_6_Runtime__c)),NOT(ISBLANK(relatedTo.X6_Number_Affected__c)))}" value="{!relatedTo.X6_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.New_Jersey_7_Runtime__c)),NOT(ISBLANK(relatedTo.X7_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.New_Jersey_7_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.New_Jersey_7_Runtime__c)),NOT(ISBLANK(relatedTo.X7_Number_Affected__c)))}" value="{!relatedTo.New_Jersey_7_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.New_Jersey_7_Runtime__c)),NOT(ISBLANK(relatedTo.X7_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.X7_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.New_Jersey_7_Runtime__c)),NOT(ISBLANK(relatedTo.X7_Number_Affected__c)))}" value="{!relatedTo.X7_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Honolulu_8_Runtime__c)),NOT(ISBLANK(relatedTo.X8_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Honolulu_8_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Honolulu_8_Runtime__c)),NOT(ISBLANK(relatedTo.X8_Number_Affected__c)))}" value="{!relatedTo.Honolulu_8_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Honolulu_8_Runtime__c)),NOT(ISBLANK(relatedTo.X8_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.X8_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Honolulu_8_Runtime__c)),NOT(ISBLANK(relatedTo.X8_Number_Affected__c)))}" value="{!relatedTo.X8_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.G_General_Runtime__c)),NOT(ISBLANK(relatedTo.G_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.G_General_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.G_General_Runtime__c)),NOT(ISBLANK(relatedTo.G_Number_Affected__c)))}" value="{!relatedTo.G_General_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.G_General_Runtime__c)),NOT(ISBLANK(relatedTo.G_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.G_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.G_General_Runtime__c)),NOT(ISBLANK(relatedTo.G_Number_Affected__c)))}" value="{!relatedTo.G_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Sales_Comp_Runtime__c)),NOT(ISBLANK(relatedTo.Sales_Comp_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Sales_Comp_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Sales_Comp_Runtime__c)),NOT(ISBLANK(relatedTo.Sales_Comp_Number_Affected__c)))}" value="{!relatedTo.Sales_Comp_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Sales_Comp_Runtime__c)),NOT(ISBLANK(relatedTo.Sales_Comp_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Sales_Comp_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.Sales_Comp_Runtime__c)),NOT(ISBLANK(relatedTo.Sales_Comp_Number_Affected__c)))}" value="{!relatedTo.Sales_Comp_Number_Affected__c}" />
+            
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.VNET_Runtime__c)),NOT(ISBLANK(relatedTo.VNET_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.VNET_Runtime__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.VNET_Runtime__c)),NOT(ISBLANK(relatedTo.VNET_Number_Affected__c)))}" value="{!relatedTo.VNET_Runtime__c}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.VNET_Runtime__c)),NOT(ISBLANK(relatedTo.VNET_Number_Affected__c)))}" value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.VNET_Number_Affected__c.Label}" />
+            <apex:outputText rendered="{!OR(NOT(ISBLANK(relatedTo.VNET_Runtime__c)),NOT(ISBLANK(relatedTo.VNET_Number_Affected__c)))}" value="{!relatedTo.VNET_Number_Affected__c}" />
+        </apex:panelGrid>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!relatedTo.Run_From__c = 'Firecall'}" id="details_firecall" layout="block">
+        <br />
+        <apex:panelGrid headerClass="section" columnClasses="columnA,columnB" columns="4" id="Firecall-Details">
+            <apex:facet name="header">Firecall Details</apex:facet>
+            
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Firecall_Type__c.Label}" />
+            <apex:outputText value="{!relatedTo.Firecall_Type__c}" />
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Server_Affected__c.Label}" />
+            <apex:outputText value="{!relatedTo.Server_Affected__c}" />
+            
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Firecall_purpose__c.Label}" />
+            <apex:outputText value="{!relatedTo.Firecall_purpose__c}" />
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Firecall_DataChange__c.Label}" />
+            <apex:outputText value="{!relatedTo.Firecall_DataChange__c}" />
+            
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Firecall_Alternative_Option__c.Label}" />
+            <apex:outputText value="{!relatedTo.Firecall_Alternative_Option__c}" />
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Impact_if_not_done__c.Label}" />
+            <apex:outputText value="{!relatedTo.Impact_if_not_done__c}" />
+            
+            <apex:outputText value="{!$ObjectType.BMCServiceDesk__Change_Request__c.fields.Impact_to_Revenue__c.Label}" />
+            <apex:outputText value="{!relatedTo.Impact_to_Revenue__c}" />
+        </apex:panelGrid>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!AND(relatedTo.Number_of_Linked_Tasks__c != 0,relatedTo.Number_of_Linked_Tasks__c != null)}" id="related_tasks" layout="block" >
+        <br />
+        <c:TaskList ChgId="{!relatedTo.Id}"/>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!AND(relatedTo.Linked_PRs__c != 0,relatedTo.Linked_PRs__c != null)}" id="related_problems" layout="block" >
+        <br />
+        <c:ProblemList ChgId="{!relatedTo.Id}"/>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!AND(relatedTo.Linked_IRs__c != 0,relatedTo.Linked_IRs__c != null)}" id="related_incidents" layout="block" >
+        <br />
+        <c:IncidentList ChgId="{!relatedTo.Id}"/>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="approval_history" layout="block" rendered="{!relatedTo.BMCServiceDesk__Status__c != 'OPENED'}">
+        <p><b>Approval History:</b></p>
+        <c:ApprovalItem recordId="{!relatedTo.Id}" />
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="attachments" layout="block" >
+        <br />
+        <c:AttachmentList recordID="{!relatedTo.Id}"/>
+    </apex:outputPanel>
+    
+    <p style="font-size:12px;">Questions? Send an email to <a href="mailto:dl-dcchangemanagement@dexmedia.com">DL-DC Change Management</a>.</p>
+</body>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

@@ -1,0 +1,123 @@
+<apex:page controller="NewRFrequestController" title="New RemedyForce Access Request" sidebar="true" showHeader="true">
+    <c:LoadingBox />
+    <style type="text/css">
+        .italicText { font-style: italic; color:blue; font-weight:bold; }
+        .textheading { font-style: italic; font-weight:bold; font-size:150%;text-decoration: underline; }
+        <!-- .h2 { font-style: italic; color:blue; font-weight:bold; font-size:120%; } -->
+        .noWrap { white-space: nowrap; text-align: right;}
+    </style>
+    <br/><br/>
+    <center>
+        <apex:outputText styleclass="textheading" value="New Remedyforce Requests"/>
+    </center>
+    <br/>       
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1" title="New User & Set-up Like User">
+                <apex:inputText styleclass="italicText" value="{!NwUser}" id="NewUserID">New User&nbsp;</apex:inputText>
+                <apex:inputText styleclass="italicText" value="{!ReplicateLike}" id="SetupLikeID">Set-up Like&nbsp;</apex:inputText>
+            </apex:pageBlockSection>
+            <apex:commandButton status="loadStatus" rerender="outputComparision" value="Compare New User vs Set-up Like Id"/>
+        </apex:pageBlock><br/><br/>
+        <apex:outputPanel id="outputComparision" >
+            <apex:pageBlock rendered="{!(NwUser!=null && NwUser!= 'null'&& NwUser!= '' )||(ReplicateLike!=null && ReplicateLike!= 'null'&& ReplicateLike!= '')}">
+                <apex:pageBlockSection columns="1" title="New User" rendered="{!NwUser!=null && NwUser!= 'null'&& NwUser!= ''}">
+                    <apex:pageBlockTable value="{!NewU}" var="newuser">
+                        <apex:column styleClass="noWrap" id="newuser-name" headerValue="Name" ><apex:outputLink value="/{!newuser.id}">{!newuser.name}</apex:outputLink></apex:column>
+                        <apex:column styleClass="noWrap" id="newuser-fedid" value="{!newuser.FederationIdentifier}"/>
+                        <apex:column styleClass="noWrap" id="newuser-profile" value="{!newuser.ProfileId}"/>
+                        <apex:column styleClass="noWrap" id="newuser-role" value="{!newuser.UserRoleId}"/>
+                        <apex:column styleClass="noWrap" id="newuser-manager" value="{!newuser.ManagerId}"/>
+                        <apex:column styleClass="noWrap" id="newuser-staff" value="{!newuser.BMCServiceDesk__IsStaffUser__c}"/>
+                        <apex:column styleClass="noWrap" id="newuser-active" value="{!newuser.isActive}"/>
+                        <apex:column styleClass="noWrap" id="newuser-lan" value="{!newuser.Lan_ID__c}"/>  
+                        <apex:column styleClass="noWrap" id="newuser-primaryq" value="{!newuser.Primary_Queue_Assignment__c}"/>
+                        <apex:column styleClass="noWrap" id="newuser-permissions" headerValue="Permission Sets">
+                            <apex:repeat value="{!PermissionSetNewUser}" var="string" id="theRepeat">
+                                <apex:outputLink value="/{!string.PermissionSetId}" id="theValue">{!string.PermissionSet.name}</apex:outputLink>
+                                <apex:commandButton status="loadStatus" action="{!RemovePermissionSet}" value="Remove PermissionSet from new user" rerender="outputComparision">
+                                    <apex:param assignTo="{!PermSetId}" name="p1" value="{!string.PermissionSetId}"/>
+                                    <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                                </apex:commandButton>
+                                <br/>
+                            </apex:repeat>            
+                        </apex:column>
+                        <apex:column styleClass="noWrap" id="newuser-queues" headerValue="Queues">
+                            <apex:repeat value="{!QueueNewUser}" var="string" id="theRepeat2">
+                                <apex:outputLink value="/{!string.Group.Id}" id="theValue">{!string.Group.name}</apex:outputLink>
+                                <apex:commandButton status="loadStatus" action="{!RemoveQueue}" value="Remove Queue from new user" rerender="outputComparision">
+                                    <apex:param assignTo="{!PermSetId}" name="p1" value="{!string.Id}"/>
+                                    <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                                </apex:commandButton>
+                                <br/>
+                            </apex:repeat>            
+                        </apex:column>
+                    </apex:pageBlockTable>              
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1" title="Set-up Like" rendered="{!ReplicateLike!=null && ReplicateLike!= 'null'&& ReplicateLike!= ''}">
+                    <apex:pageBlockTable value="{!ReplicateU}" var="repluser">
+                        <apex:column headerValue="Name" styleClass="noWrap" ><apex:outputLink value="/{!repluser.id}">{!repluser.name}</apex:outputLink></apex:column>
+                        <apex:column styleClass="noWrap" value="{!repluser.FederationIdentifier}"/>
+                        <apex:column styleClass="noWrap" value="{!repluser.ProfileId}"/>
+                        <apex:column styleClass="noWrap" value="{!repluser.UserRoleId}"/>
+                        <apex:column styleClass="noWrap" value="{!repluser.ManagerId}"/>
+                        <apex:column styleClass="noWrap" value="{!repluser.BMCServiceDesk__IsStaffUser__c}"/>
+                        <apex:column styleClass="noWrap" value="{!repluser.isActive}"/>
+                        <apex:column styleClass="noWrap" value="{!repluser.Lan_ID__c}"/> 
+                        <apex:column styleClass="noWrap" value="{!repluser.Primary_Queue_Assignment__c}"/>
+                        <apex:column styleClass="noWrap" headerValue="Permission Sets">
+                            <apex:repeat value="{!PermissionSetReplicateLikeUser}" var="string" id="theRepeat">
+                                <apex:outputLink value="/{!string.PermissionSetId}" id="theValue">{!string.PermissionSet.name}</apex:outputLink>
+                                <apex:commandButton status="loadStatus" action="{!AssignPermissionSet}" value="Assign PermissionSet to new user" rerender="outputComparision">
+                                    <apex:param assignTo="{!PermSetId}" name="p1" value="{!string.PermissionSetId}"/>
+                                    <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                                </apex:commandButton>
+                                <br/>
+                            </apex:repeat>  
+                            <apex:commandButton status="loadStatus" action="{!AppendPermissionSet}" value="Append All Permission Sets to New User" rerender="outputComparision">
+                                <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                            </apex:commandButton>
+                            <br/>
+                            <apex:commandButton status="loadStatus" action="{!ReplacePermissionSet}" value="Replace All Permission Sets to New User" rerender="outputComparision">
+                                <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                            </apex:commandButton>
+                            <br/>
+                        </apex:column>
+                        <apex:column styleClass="noWrap" headerValue="Queues">
+                            <apex:repeat value="{!QueueReplicateLikeUser}" var="string" id="theRepeat2">
+                                <apex:outputLink value="/{!string.Group.Id}" id="theValue">{!string.Group.name}</apex:outputLink>
+                                <apex:commandButton status="loadStatus" action="{!AssignQueue}" value="Assign Queue to new user" rerender="outputComparision">
+                                    <apex:param assignTo="{!PermSetId}" name="p1" value="{!string.Group.Id}"/>
+                                    <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                                </apex:commandButton>
+                                <br/>
+                            </apex:repeat>  
+                            <apex:commandButton status="loadStatus" action="{!AppendQueue}" value="Append All Queues to New User" rerender="outputComparision">
+                                <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                            </apex:commandButton>
+                            <br/>
+                            <apex:commandButton status="loadStatus" action="{!ReplaceQueue}" value="Replace All Queues to New User" rerender="outputComparision">
+                                <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                            </apex:commandButton>
+                            <br/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection title="Note" columns="1" showHeader="false" collapsible="false" rendered="{!(NwUser!=null && NwUser!= 'null'&& NwUser!= '' && ReplicateLike!=null && ReplicateLike!= 'null'&& ReplicateLike!= '')}">
+                    <apex:outputText styleclass="italicText" value="Note: Please recheck for the New User, Existing user Fields before making any changes: eg. New user profile is updated on click of changeProfile button"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockButtons location="bottom" rendered="{!(NwUser!=null && NwUser!= 'null'&& NwUser!= '' && ReplicateLike!=null && ReplicateLike!= 'null'&& ReplicateLike!= '')}">
+                    <apex:commandButton status="loadStatus" oncomplete="window.alert('New User Profile Changed!');" action="{!changeProfile}" value="Change Profile"  rerender="outputComparision"/>
+                    <apex:commandButton status="loadStatus" oncomplete="window.alert('New User Role Changed!');" action="{!changeRole}" value="Change Role"  rerender="outputComparision"/>
+                    <apex:commandButton status="loadStatus" oncomplete="window.alert('New User ServiceDeskStaff License Assigned!');" action="{!changeServiceDeskStaff}" value="Enable ServiceDeskStaff" rerender="outputComparision"/>
+                    <apex:commandButton status="loadStatus" oncomplete="window.alert('New User Primary Queue Changed!');" action="{!AddPrimaryQueue}" value="Add Primary Queue"  rerender="outputComparision"/>
+                    <apex:commandButton status="loadStatus" oncomplete="window.alert('Email issued to New User!');" action="{!sendEMailNwuser}" value="Send Email to New User"  rerender="outputComparision"/>
+                    <br /><br />
+                    <apex:commandButton status="loadStatus" oncomplete="window.alert('Profile, Role, Staff, Primary Queue, Permission Sets, and Queues Changed! Email Notificaiton Sent!');" action="{!updateAll}" value="Update All!"  rerender="outputComparision">
+                        <apex:param assignTo="{!NwUser}" name="p2" value="{!NwUser}"/>
+                    </apex:commandButton>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,85 @@
+<head>
+	<style>
+		body{
+			font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;
+			font-size:14px;
+		}
+		table{
+			border-collapse:collapse;
+		}
+		th{
+			border:1px solid #000000;
+			background-color:#666699;
+			color:white;
+			font-size:12px;
+		}
+		td{
+			border:1px solid #000000;
+			font-size:12px;
+		}
+		.blank{
+			border:0px solid #000000;
+			height:10px;
+		}
+		.blank2{
+			border:1px solid #000000;
+			background-color:#A4A4A4;
+			height:5px;
+		}		
+		.section{
+			background-color:#DF7401;
+			color:white;
+		}
+	</style>
+</head>
+<body>
+           <p>To review, approve or reject the ticket, go to the following link. <a https://remedy.my.salesforce.com/{!BMCServiceDesk__Incident__c.Id}>https://remedy.my.salesforce.com/{!BMCServiceDesk__Incident__c.Id}</a> To approve or reject scroll down to the Approval History section.</p>
+
+<table>
+           <tr>
+                 <th>SR#</th>
+                 <td>{!BMCServiceDesk__Incident__c.Name} </td>
+           </tr>
+           <tr>
+                 <th>Requestor Name </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}</td>
+           <tr>
+                 <th>Requestor Email: </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}</td>
+           </tr>
+           <tr>
+                 <th>Due Date: </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c}</td>
+           </tr>
+           <tr>
+                 <th>Requested Due by Date: </th>
+                 <td>{!BMCServiceDesk__Incident__c.Requested_Due_By_Date__c}</td>
+           </tr>
+           <tr>
+                 <th>Service Title: </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__FKRequestDefinition__c}</td>
+           </tr>
+           <tr>
+                 <th>Description: </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}</td>
+           </tr>
+           <tr>
+                 <th>Impacted CI: </th>
+                 <td>{!BMCServiceDesk__Incident__c.CI_Name__c}</td>
+           </tr>
+           <tr>
+                 <th>Approval User 1: </th>
+                 <td>{!BMCServiceDesk__Incident__c.User_FKLookup_1__c}</td>
+           </tr>
+           <tr>
+                 <th>Approval User 2: </th>
+                 <td>{!BMCServiceDesk__Incident__c.User_FKLookup_2__c}</td>
+           </tr>
+           <tr>
+                 <th>Request Detail Inputs: </th>
+                 <td>{!BMCServiceDesk__Incident__c.Request_Detail_Inputs__c}</td>
+           </tr>
+
+</table>
+</br>
+<p style=font-size:12px;>If you would like to discuss this request with the Service Provider contact {!BMCServiceDesk__Incident__c.OwnerEmail} </p>

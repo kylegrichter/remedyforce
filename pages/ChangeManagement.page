@@ -1,0 +1,826 @@
+<apex:page controller="ChangeManagement" showHeader="true" sidebar="true" title="Change Management">
+    <apex:includeScript value="{!$Resource.changeJS}"/>
+    <apex:outputText rendered="{!$CurrentPage.parameters.print='weekendchg'}">
+        <head>
+            <style>
+                .table{
+                border-collapse: collapse;
+                empty-cells: show;
+                }
+                .th{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#1797C0; <!--#4F81BD; -->
+                color: #FFFFFF;
+                font-size: 9pt;
+                font-weight:bold;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .td{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#FFFFFF;
+                color:#000000;
+                font-size: 9pt;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .pre{
+                font-family: Calibri;
+                font-size: 9pt;
+                white-space: pre-wrap;
+                white-space: -moz-pre-wrap;
+                white-space: -pre-wrap;
+                white-space: -o-pre-wrap;
+                word-wrap: break-word;
+                margin:1px;
+                }
+                .section{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#CFEEF8; <!--#B8CCE4; -->
+                color:#000000;
+                font-size: 9pt;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .blank{
+                background-color: #FFFFFF;
+                border: none;
+                }    
+            </style>
+        </head>
+        <body>
+            <script type="text/javascript">
+            window.print();
+            setTimeout('window.close()', 500);
+            </script>
+            <p>Displaying&nbsp;<b><apex:outputField value="{!weekend.Start_Date_Time__c}" /></b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.End_Date_Time__c}" /></b>.</p>
+            <div>
+                <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!changes}" var="c" id="ChangesPrint" >
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Change #</apex:facet>
+                        <apex:outputText value="{!c.Name}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Status</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Status__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Pri.</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Priority__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Owner</apex:facet>
+                        <apex:outputText value="{!c.Owner.Name} - {!c.BMCServiceDesk__FKStaff__r.Name}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Scheduled Start</apex:facet>
+                        <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_Start_Date__c}" /><apex:outputText value=" - {!c.Start_Day_of_Week__c}" /></span>
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Scheduled End</apex:facet>
+                        <apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_End_Date__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Cat.</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Category__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Chg. Cat.</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Env.</apex:facet>
+                        <apex:outputText value="{!c.Environment__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Type</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" />
+                        <apex:outputText escape="false" rendered="{!c.Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=8>{!c.Title__c}<br /></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Change_Description__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Reason_for_Change_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Reason</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Reason_for_Change_Details__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.Affected_Systems_Applications__c != ''}" value="<tr><th class=blank></th><th class=th>Aff. Systems</th><td class=td colspan=8><pre class=pre>{!c.Affected_Systems_Applications__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Roll_Out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Roll Out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Roll_Out_Plan_Details__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Back_out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Back-out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Back_out_Plan_Details__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__ClosureCategory__c != ''}" value="<tr><th class=blank></th><th class=th>Closure Category</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__ClosureCategory__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Close_Comments__c != ''}" value="<tr><th class=blank></th><th class=th>Close Comments</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Close_Comments__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="<tr><th class=blank></th><th class=th>Additional Data</th><td class=td colspan=8>" />
+                        <apex:outputLink rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" value="javascript:;" onclick="window.open('/apex/TasksByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showTasks">Show Tasks ({!c.Number_of_Linked_Tasks__c})</apex:outputLink> &nbsp;
+                        <apex:outputLink rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" value="javascript:;" onclick="window.open('/apex/IncidentsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showIncidents">Show Incidents ({!c.Linked_IRs__c})</apex:outputLink> &nbsp;
+                        <apex:outputLink rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" value="javascript:;" onclick="window.open('/apex/ProblemsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showProblems">Show Problems ({!c.Linked_PRs__c})</apex:outputLink> &nbsp;
+                        <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="</td></tr>" />
+                    </apex:column>
+                </apex:dataTable>
+            </div>
+        </body>
+    </apex:outputText>
+    <apex:outputText rendered="{!$CurrentPage.parameters.print='weekendtsk'}">
+        <head>
+            <style>
+                .table{
+                border-collapse: collapse;
+                empty-cells: show;
+                }
+                .th{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#1797C0; <!--#4F81BD; -->
+                color: #FFFFFF;
+                font-size: 9pt;
+                font-weight:bold;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .td{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#FFFFFF;
+                color:#000000;
+                font-size: 9pt;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .pre{
+                font-family: Calibri;
+                font-size: 9pt;
+                white-space: pre-wrap;
+                white-space: -moz-pre-wrap;
+                white-space: -pre-wrap;
+                white-space: -o-pre-wrap;
+                word-wrap: break-word;
+                margin:1px;
+                }
+                .section{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#CFEEF8; <!--#B8CCE4; -->
+                color:#000000;
+                font-size: 9pt;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .blank{
+                background-color: #FFFFFF;
+                border: none;
+                }    
+            </style>
+        </head>
+        <body>
+            <script type="text/javascript">
+            window.print();
+            setTimeout('window.close()', 500);
+            </script>
+            <p>Displaying&nbsp;<b><apex:outputField value="{!weekend.Start_Date_Time__c}" /></b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.End_Date_Time__c}" /></b>.</p>
+            <div>
+                <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!tasks}" var="t" id="TasksPrint" >
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Task #</apex:facet>
+                        <apex:outputText value="{!t.Name}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Change #</apex:facet>
+                        <apex:outputText value="{!t.BMCServiceDesk__FKChange__r.Name}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Scheduled Start</apex:facet>
+                        <apex:outputField style="white-space: nowrap;" value="{!t.BMCServiceDesk__Scheduled_Start_Date__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Scheduled End</apex:facet>
+                        <apex:outputField style="white-space: nowrap;" value="{!t.BMCServiceDesk__Scheduled_End_Date__c}" />
+                        <apex:outputText escape="false" rendered="{!t.Task_Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=2>{!t.Task_Title__c}<br /></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!t.BMCServiceDesk__taskDescription__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=2><pre class=pre>{!t.BMCServiceDesk__taskDescription__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!t.Description_Rich_Text__c != ''}" value="<tr><th class=blank></th><th class=th>Additional Notes</th><td class=td colspan=2><pre class=pre>{!t.Description_Rich_Text__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!t.BMCServiceDesk__taskResolution__c != ''}" value="<tr><th class=blank></th><th class=th>Resolution</th><td class=td colspan=2><pre class=pre>{!t.BMCServiceDesk__taskResolution__c}</pre></td></tr>" />
+                    </apex:column>
+                </apex:dataTable>
+            </div>
+        </body>
+    </apex:outputText>
+    <apex:outputText rendered="{!$CurrentPage.parameters.print='forecast'}">
+        <head>
+            <style>
+                .table{
+                border-collapse: collapse;
+                empty-cells: show;
+                }
+                .th{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#1797C0; <!--#4F81BD; -->
+                color: #FFFFFF;
+                font-size: 9pt;
+                font-weight:bold;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .td{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#FFFFFF;
+                color:#000000;
+                font-size: 9pt;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .pre{
+                font-family: Calibri;
+                font-size: 9pt;
+                white-space: pre-wrap;
+                white-space: -moz-pre-wrap;
+                white-space: -pre-wrap;
+                white-space: -o-pre-wrap;
+                word-wrap: break-word;
+                margin:1px;
+                }
+                .section{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#CFEEF8; <!--#B8CCE4; -->
+                color:#000000;
+                font-size: 9pt;
+                text-align: left;
+                font-family: Calibri;
+                }
+                .blank{
+                background-color: #FFFFFF;
+                border: none;
+                }    
+            </style>
+        </head>
+        <body>
+            <script type="text/javascript">
+            window.print();
+            setTimeout('window.close()', 500);
+            </script>
+            <p>Displaying&nbsp;<b>Today</b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.TwoWeekDate__c}" /></b>.</p>
+            <div>
+                <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!forecast}" var="c" id="ChangesForecastPrint" >
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Change #</apex:facet>
+                        <apex:outputText value="{!c.Name}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Status</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Status__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Pri.</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Priority__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Owner</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Queue__c} ({!c.BMCServiceDesk__Queue__c})" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Scheduled Start</apex:facet>
+                        <apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_Start_Date__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Scheduled End</apex:facet>
+                        <apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_End_Date__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Cat.</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Category__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Chg. Cat.</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Env.</apex:facet>
+                        <apex:outputText value="{!c.Environment__c}" />
+                    </apex:column>
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Type</apex:facet>
+                        <apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" />
+                        <apex:outputText escape="false" rendered="{!c.Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=8>{!c.Title__c}<br /></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Change_Description__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Reason_for_Change_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Reason</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Reason_for_Change_Details__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.Affected_Systems_Applications__c != ''}" value="<tr><th class=blank></th><th class=th>Aff. Systems</th><td class=td colspan=8><pre class=pre>{!c.Affected_Systems_Applications__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Roll_Out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Roll Out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Roll_Out_Plan_Details__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Back_out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Back-out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Back_out_Plan_Details__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__ClosureCategory__c != ''}" value="<tr><th class=blank></th><th class=th>Closure Category</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__ClosureCategory__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Close_Comments__c != ''}" value="<tr><th class=blank></th><th class=th>Close Comments</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Close_Comments__c}</pre></td></tr>" />
+                        <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="<tr><th class=blank></th><th class=th>Additional Data</th><td class=td colspan=8>" />
+                        <apex:outputLink rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" value="javascript:;" onclick="window.open('/apex/TasksByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showTasks">Show Tasks ({!c.Number_of_Linked_Tasks__c})</apex:outputLink> &nbsp;
+                        <apex:outputLink rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" value="javascript:;" onclick="window.open('/apex/IncidentsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showIncidents">Show Incidents ({!c.Linked_IRs__c})</apex:outputLink> &nbsp;
+                        <apex:outputLink rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" value="javascript:;" onclick="window.open('/apex/ProblemsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showProblems">Show Problems ({!c.Linked_PRs__c})</apex:outputLink> &nbsp;
+                        <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="</td></tr>" />
+                    </apex:column>
+                </apex:dataTable>
+            </div>
+        </body>
+    </apex:outputText>
+    <apex:outputText rendered="{!ISNULL($CurrentPage.parameters.print)}">
+        <link href="{!$Resource.fullCalendarCSS}" rel="stylesheet" />
+        <link href="{!$Resource.fullCalendarPrintCSS}" rel="stylesheet" media="print" />
+        
+        <style>
+            .table{
+            border-collapse: collapse;
+            empty-cells: show;
+            }
+            .th{
+            margin:5px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #00305E; <!--#4F81BD; -->
+            background-color:#1797C0; <!--#4F81BD; -->
+            color: #FFFFFF;
+            font-size: 9pt;
+            font-weight:bold;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .td{
+            margin:5px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #00305E; <!--#4F81BD; -->
+            background-color:#FFFFFF;
+            color:#000000;
+            font-size: 9pt;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .pre{
+            font-family: Calibri;
+            font-size: 9pt;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            margin:1px;
+            }
+            .section{
+            margin:5px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: #00305E; <!--#4F81BD; -->
+            background-color:#CFEEF8; <!--#B8CCE4; -->
+            color:#000000;
+            font-size: 9pt;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .blank{
+            background-color: #F1F1F1;
+            border: none;
+            }
+            .activeTab {background-color: #236FBD; color:white;background-image:none}
+            .inactiveTab { background-color: lightgrey; color:black;background-image:none}
+            
+            #cal-options {float:left;}
+            #cal-legend { float:left;}
+            #cal-legend ul {margin:0;padding:0;list-style:none;}
+            #cal-legend ul li {margin:0;padding:5px;float:left;}
+            #cal-legend ul li span {display:block; height:16px; width:16px; margin-right:4px; float:left; border-radius:4px;}
+            #calendar {margin-top:20px;}
+            #calendar a:hover {color:#fff !important;}
+            
+            .fc-event-inner {padding:3px;}
+            .Production {background:#CC3300;border-color:#CC3300;}
+            .Test {background:#006600;border-color:#006600;}
+            .Development {background:#3a87ad;border-color:#3a87ad;}
+            .Current {background:#ff00ff;border-color:#ff00ff;}
+        </style>
+        <div>
+            <div id="weekendshortlist" style="display:;">
+                <apex:pageBlock title="Change Management" id="a" >
+                    <apex:form >
+                        <apex:selectList value="{!answer}" id="weekendlist" size="1">
+                            <apex:selectOptions value="{!answersshort}"/>
+                        </apex:selectList>
+                        <apex:commandButton value="Submit">
+                            <apex:param name="wk" value="{!answer}" />
+                        </apex:commandButton>
+                        <a style="cursor:pointer;" onclick="document.getElementById('weekendshortlist').style.display = 'none';document.getElementById('weekendalllist').style.display = '';"><b style="color:green;">Showing Fewer Dates</b></a>
+                        <p>
+                            <apex:outputText value="Please select a Date to display its' Weekend Change Report and Weekend Task Report. The Change Forecast will always display the changes for the next two weeks following the upcoming weekend." />
+                        </p>
+                    </apex:form>
+                </apex:pageBlock>
+            </div>
+            <div id="weekendalllist" style="display:none;">
+                <apex:pageBlock title="Change Management" id="b" >
+                    <apex:form >
+                        <apex:selectList value="{!answer}" id="weekendlist" size="1">
+                            <apex:selectOptions value="{!answers}"/>
+                        </apex:selectList>
+                        <apex:commandButton value="Submit">
+                            <apex:param name="wk" value="{!answer}" />
+                        </apex:commandButton>
+                        <a style="cursor:pointer;" onclick="document.getElementById('weekendshortlist').style.display = '';document.getElementById('weekendalllist').style.display = 'none';"><b style="color:red;">Showing All Dates</b></a>
+                        <p>
+                            <apex:outputText value="Please select a Date to display its' Weekend Change Report and Weekend Task Report. The Change Forecast will always display the changes for the next two weeks following the upcoming weekend." />
+                        </p>
+                    </apex:form>
+                </apex:pageBlock>
+            </div>
+        </div>
+        <apex:tabPanel switchType="client" value="{!IF(NOT(ISNULL($CurrentPage.parameters.goto)),$CurrentPage.parameters.goto,'forecast')}" tabClass="activeTab" inactiveTabClass="inactiveTab" id="theTabPanel">
+            <apex:tab label="Weekend Change Report" name="weekendreport" id="tab1">
+                <apex:outputPanel >
+                    <apex:form >
+                        <apex:commandButton reRender="weekendchangepanel" image="/servlet/servlet.FileDownload?file=015E0000008UTRF" value="Refresh"/>
+                        <apex:commandButton reRender="weekendchangepanel" image="/servlet/servlet.FileDownload?file=015E00000017mPi" rendered="{!answer != null}" value="Print" onclick="window.open('?print=weekendchg&isdtp=mn&wkid={!answer}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                        <apex:commandButton reRender="weekendchangepanel" image="/servlet/servlet.FileDownload?file=015E00000017mPi" rendered="{!answer == null}" value="Print" onclick="window.open('?print=weekendchg&isdtp=mn', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                        <apex:commandButton reRender="weekendchangepanel" image="/servlet/servlet.FileDownload?file=015E0000005Pvmu" value="Print" onclick="window.open('/apex/ChangeManagementPDF?print=weekendchg&wkid={!answer}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                        <!-- <apex:commandButton reRender="weekendchangecalendaroutput" image="/servlet/servlet.FileDownload?file=015E0000004oBJX" Value="Weekend Calendar" /> -->
+                        <p id="message">Displaying&nbsp;<b><apex:outputField value="{!weekend.Start_Date_Time__c}" /></b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.End_Date_Time__c}" /></b>.</p>
+                    </apex:form>
+                </apex:outputPanel>
+                <apex:outputPanel id="weekendchangepanel">
+                    <apex:includeScript value="{!$Resource.changeJS}"/>
+                    <div style="white-space: nowrap;">
+                        <div style="display:inline-block; white-space: normal; position: relative; max-width: 1215px;" id="weekendchangesdiv">
+                            <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!changes}" var="c" id="Changes" >
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Change #</apex:facet>
+                                    <apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Status</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Status__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Pri.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Priority__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Owner</apex:facet>
+                                    <apex:outputText value="{!c.Owner.Name} {!IF(NOT(ISNULL(c.BMCServiceDesk__FKStaff__r.Name)), '('+c.BMCServiceDesk__FKStaff__r.Name+')','')}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled Start</apex:facet>
+                                    <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_Start_Date__c}" /><apex:outputText value=" - {!c.Start_Day_of_Week__c}" /></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled End</apex:facet>
+                                    <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_End_Date__c}" /><apex:outputText value=" - {!c.End_Day_of_Week__c}" /></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Chg. Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Env.</apex:facet>
+                                    <apex:outputText value="{!c.Environment__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Type</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" />
+                                    <apex:outputText escape="false" rendered="{!c.Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=8>{!c.Title__c}<br /></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Change_Description__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Reason_for_Change_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Reason</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Reason_for_Change_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Affected_Systems_Applications__c != ''}" value="<tr><th class=blank></th><th class=th>Aff. Systems</th><td class=td colspan=8><pre class=pre>{!c.Affected_Systems_Applications__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Roll_Out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Roll Out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Roll_Out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Back_out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Back-out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Back_out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__ClosureCategory__c != ''}" value="<tr><th class=blank></th><th class=th>Closure Category</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__ClosureCategory__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Close_Comments__c != ''}" value="<tr><th class=blank></th><th class=th>Close Comments</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Close_Comments__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="<tr><th class=blank></th><th class=th>Additional Data</th><td class=td colspan=8>" />
+                                    <apex:form >
+                                        <apex:commandButton rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" reRender="weekendtaskpanel" value="Tasks ({!c.Number_of_Linked_Tasks__c})" onclick="window.open('/apex/TasksByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                        <apex:commandButton rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" reRender="weekendtaskpanel" value="Incidents ({!c.Linked_IRs__c})" onclick="window.open('/apex/IncidentsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                        <apex:commandButton rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" reRender="weekendtaskpanel" value="Problems ({!c.Linked_PRs__c})" onclick="window.open('/apex/ProblemsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                    </apex:form>
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="</td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL')}" value="<tr><th class=blank></th><th class=th>Actions</th><td class=td colspan=8>" />
+                                    <apex:form >
+                                        <apex:commandButton rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL')}" reRender="weekendchangepanel" value="Approve" action="{!ApproveChange}"><apex:param name="approve_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                        <apex:commandButton rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL')}" reRender="weekendchangepanel" value="Reject" action="{!RejectChange}"><apex:param name="reject_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                    </apex:form>
+                                    <apex:outputText escape="false" value="</td></tr>" />
+                                </apex:column>
+                            </apex:dataTable>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </apex:tab>
+            <apex:tab label="Weekend Task Report" name="weekendtasks" id="tab2">
+                <apex:outputPanel >
+                    <apex:form >
+                        <apex:commandButton reRender="weekendtaskpanel" image="/servlet/servlet.FileDownload?file=015E0000008UTRF" value="Refresh"/>
+                        <apex:commandButton reRender="weekendtaskpanel" image="/servlet/servlet.FileDownload?file=015E00000017mPi" rendered="{!answer != null}" value="Print" onclick="window.open('?print=weekendtsk&isdtp=mn&wkid={!answer}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                        <apex:commandButton reRender="weekendtaskpanel" image="/servlet/servlet.FileDownload?file=015E00000017mPi" rendered="{!answer == null}" value="Print" onclick="window.open('?print=weekendtsk&isdtp=mn', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                        <apex:commandButton reRender="weekendtaskpanel" image="/servlet/servlet.FileDownload?file=015E0000005Pvmu" value="Print" onclick="window.open('/apex/ChangeManagementPDF?print=weekendtsk&wkid={!answer}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                        <p>Displaying&nbsp;<b><apex:outputField value="{!weekend.Start_Date_Time__c}" /></b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.End_Date_Time__c}" /></b>.</p>
+                    </apex:form>
+                </apex:outputPanel>
+                <apex:outputPanel id="weekendtaskpanel">
+                    <div style="white-space: nowrap;">
+                        <div style="display:inline-block; white-space: normal; position: relative; max-width: 1215px;" id="weekendtasksdiv">
+                            <br />
+                            <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!tasks}" var="t" id="Tasks" >
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Task #</apex:facet>
+                                    <apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Task__c&record_id={!t.Id}" id="tkLink">{!t.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Change #</apex:facet>
+                                    <apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!t.BMCServiceDesk__FKChange__r.id}" id="crLink">{!t.BMCServiceDesk__FKChange__r.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled Start</apex:facet>
+                                    <apex:outputField style="white-space: nowrap;" value="{!t.BMCServiceDesk__Scheduled_Start_Date__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled End</apex:facet>
+                                    <apex:outputField style="white-space: nowrap;" value="{!t.BMCServiceDesk__Scheduled_End_Date__c}" />
+                                    <apex:outputText escape="false" rendered="{!t.Task_Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=2>{!t.Task_Title__c}<br /></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!t.BMCServiceDesk__taskDescription__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=2><pre class=pre>{!t.BMCServiceDesk__taskDescription__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!t.Description_Rich_Text__c != ''}" value="<tr><th class=blank></th><th class=th>Additional Notes</th><td class=td colspan=2><pre class=pre>{!t.Description_Rich_Text__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!t.BMCServiceDesk__taskResolution__c != ''}" value="<tr><th class=blank></th><th class=th>Resolution</th><td class=td colspan=2><pre class=pre>{!t.BMCServiceDesk__taskResolution__c}</pre></td></tr>" />
+                                </apex:column>
+                            </apex:dataTable>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </apex:tab>
+            <apex:tab label="Change Forecast" name="forecast" id="tab3">
+                <apex:outputPanel >
+                    <apex:form >
+                        <apex:commandButton reRender="changeforecastpanel" image="/servlet/servlet.FileDownload?file=015E0000008UTRF" value="Refresh"/>
+                        <apex:commandButton reRender="changeforecastpanel" image="/servlet/servlet.FileDownload?file=015E0000004oBJX" value="Calendar" onclick="window.open('/apex/Change_Calendar', '', 'width=1400, height=800, location=no, menubar=no');"/>
+                        
+                        <p id="message">Displaying&nbsp;<b>Today</b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.TwoWeekDate__c}" /></b>.</p>
+                    </apex:form>
+                </apex:outputPanel>
+                <apex:outputPanel id="changeforecastpanel">
+                    <div style="white-space: nowrap;">
+                        <div style="display:inline-block; white-space: normal; position: relative; max-width: 1215px;" id="changeforecast">
+                            <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!forecast}" var="c" id="Forecast" >
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Change #</apex:facet>
+                                    <apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Status</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Status__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Pri.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Priority__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Owner</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Queue__c} ({!c.BMCServiceDesk__FKStaff__r.Name})" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled Start</apex:facet>
+                                    <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_Start_Date__c}" /><apex:outputText value=" - {!c.Start_Day_of_Week__c}" /></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled End</apex:facet>
+                                    <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_End_Date__c}" /><apex:outputText value=" - {!c.End_Day_of_Week__c}" /></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Chg. Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Env.</apex:facet>
+                                    <apex:outputText value="{!c.Environment__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Type</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" />
+                                    <apex:outputText escape="false" rendered="{!c.Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=8>{!c.Title__c}<br /></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Change_Description__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Reason_for_Change_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Reason</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Reason_for_Change_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Affected_Systems_Applications__c != ''}" value="<tr><th class=blank></th><th class=th>Aff. Systems</th><td class=td colspan=8><pre class=pre>{!c.Affected_Systems_Applications__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Roll_Out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Roll Out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Roll_Out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Validation_Steps__c != ''}" value="<tr><th class=blank></th><th class=th>Validation Steps</th><td class=td colspan=8><pre class=pre>{!c.Validation_Steps__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Back_out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Back-out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Back_out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="<tr><th class=blank></th><th class=th>Additional Data</th><td class=td colspan=8>" />
+                                        <apex:form >
+                                            <apex:commandButton rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" reRender="weekendtaskpanel" value="Tasks ({!c.Number_of_Linked_Tasks__c})" onclick="window.open('/apex/TasksByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                            <apex:commandButton rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" reRender="weekendtaskpanel" value="Incidents ({!c.Linked_IRs__c})" onclick="window.open('/apex/IncidentsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                            <apex:commandButton rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" reRender="weekendtaskpanel" value="Problems ({!c.Linked_PRs__c})" onclick="window.open('/apex/ProblemsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                        </apex:form>
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="</td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Approval_Status__c != 'Change Approved'}" value="<tr><th class=blank></th><th class=th>Approval Status</th><td class=td colspan=8><pre class=pre>{!c.Approval_Status__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL',c.Approval_Status__c='Pending Change Manager Approval')}" value="<tr><th class=blank></th><th class=th>Actions</th><td class=td colspan=8>" />
+                                        <apex:form >
+                                            <apex:commandButton rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL',c.Approval_Status__c='Pending Change Manager Approval')}" reRender="changeforecastpanel" value="Approve" action="{!ApproveChange}"><apex:param name="approve_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                            <apex:commandButton rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL',c.Approval_Status__c='Pending Change Manager Approval')}" reRender="changeforecastpanel" value="Reject" action="{!RejectChange}"><apex:param name="reject_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                        </apex:form>
+                                    <apex:outputText rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL',c.Approval_Status__c='Pending Change Manager Approval')}" escape="false" value="</td></tr>" />
+                                </apex:column>
+                            </apex:dataTable>
+                        </div>
+                        <div style="display:inline-block; white-space: normal; position: relative;">
+                            <apex:form >
+                                
+                            </apex:form>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </apex:tab>
+            <apex:tab label="Changes - Decommissions" name="decommissions" id="tab7">
+                <apex:outputPanel >
+                    <apex:form >
+                        <apex:commandButton reRender="changedecommissionspanel" image="/servlet/servlet.FileDownload?file=015E0000008UTRF" value="Refresh"/>
+
+                        <p id="message">Displaying&nbsp;<b>Today</b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.TwoWeekDate__c}" /></b>.</p>
+                    </apex:form>
+                </apex:outputPanel>
+                <apex:outputPanel id="changedecommissionspanel">
+                    <div style="white-space: nowrap;">
+                        <div style="display:inline-block; white-space: normal; position: relative; max-width: 1215px;" id="changedecommissions">
+                            <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!changesserverdecom}" var="c" id="Decommissions" >
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Change #</apex:facet>
+                                    <apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Status</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Status__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Pri.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Priority__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Owner</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Queue__c} ({!c.BMCServiceDesk__FKStaff__r.Name})" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled Start</apex:facet>
+                                    <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_Start_Date__c}" /><apex:outputText value=" - {!c.Start_Day_of_Week__c}" /></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled End</apex:facet>
+                                    <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_End_Date__c}" /><apex:outputText value=" - {!c.End_Day_of_Week__c}" /></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Chg. Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Env.</apex:facet>
+                                    <apex:outputText value="{!c.Environment__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Type</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" />
+                                    <apex:outputText escape="false" rendered="{!c.Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=8>{!c.Title__c}<br /></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Change_Description__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Reason_for_Change_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Reason</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Reason_for_Change_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Affected_Systems_Applications__c != ''}" value="<tr><th class=blank></th><th class=th>Aff. Systems</th><td class=td colspan=8><pre class=pre>{!c.Affected_Systems_Applications__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Roll_Out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Roll Out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Roll_Out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Validation_Steps__c != ''}" value="<tr><th class=blank></th><th class=th>Validation Steps</th><td class=td colspan=8><pre class=pre>{!c.Validation_Steps__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Back_out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Back-out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Back_out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="<tr><th class=blank></th><th class=th>Additional Data</th><td class=td colspan=8>" />
+                                        <apex:form >
+                                            <apex:commandButton rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" reRender="weekendtaskpanel" value="Tasks ({!c.Number_of_Linked_Tasks__c})" onclick="window.open('/apex/TasksByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                            <apex:commandButton rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" reRender="weekendtaskpanel" value="Incidents ({!c.Linked_IRs__c})" onclick="window.open('/apex/IncidentsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                            <apex:commandButton rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" reRender="weekendtaskpanel" value="Problems ({!c.Linked_PRs__c})" onclick="window.open('/apex/ProblemsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');"/>
+                                        </apex:form>
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="</td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Approval_Status__c != 'Change Approved'}" value="<tr><th class=blank></th><th class=th>Approval Status</th><td class=td colspan=8><pre class=pre>{!c.Approval_Status__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL',c.Approval_Status__c='Pending Change Manager Approval')}" value="<tr><th class=blank></th><th class=th>Actions</th><td class=td colspan=8>" />
+                                        <apex:form >
+                                            <apex:commandButton rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL',c.Approval_Status__c='Pending Change Manager Approval')}" reRender="changeforecastpanel" value="Approve" action="{!ApproveChange}"><apex:param name="approve_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                            <apex:commandButton rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL',c.Approval_Status__c='Pending Change Manager Approval')}" reRender="changeforecastpanel" value="Reject" action="{!RejectChange}"><apex:param name="reject_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                        </apex:form>
+                                    <apex:outputText rendered="{!AND($UserRole.Name='Change Managers',c.BMCServiceDesk__Status__c='PENDING APPROVAL',c.Approval_Status__c='Pending Change Manager Approval')}" escape="false" value="</td></tr>" />
+                                </apex:column>
+                            </apex:dataTable>
+                        </div>
+                        <div style="display:inline-block; white-space: normal; position: relative;">
+                            <apex:form >
+                                
+                            </apex:form>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </apex:tab>
+            <apex:tab rendered="{!$UserRole.Name='Change Managers'}" label="Change Manager Functions" name="changemanager" id="tab4">
+                <div style="white-space: nowrap;">
+                    <apex:outputPanel id="changemanagerfunctions">
+                        <div style="display:inline-block; white-space: normal; position: relative; top: -12px; max-width: 1215px;">
+                            <br />
+                            <apex:form >
+                                <apex:commandButton reRender="changemanagerfunctions" image="/servlet/servlet.FileDownload?file=015E0000005M8xQ" html-height="32px" html-width="32px" rendered="{!weekend.Pre_Change_Email_Sent__c=false}" value="Send Pre-Change Email" action="{!SendEmail}"><apex:param name="email" assignTo="{!emailTem}" value="Weekend Change: Pre-Change" /></apex:commandButton><apex:commandButton image="/servlet/servlet.FileDownload?file=015E0000005M976" html-height="32px" html-width="32px" rendered="{!weekend.Pre_Change_Email_Sent__c=true}" disabled="true" title="This action has already been issued for this upcoming weekend." value="Send Pre-Change Email" />
+                                <apex:commandButton reRender="changemanagerfunctions" image="/servlet/servlet.FileDownload?file=015E0000005M90o" html-height="32px" html-width="32px" rendered="{!weekend.First_Draft_Email_Sent__c=false}" value="Send 1st-Draft Change Email" action="{!SendEmail}"><apex:param name="email" assignTo="{!emailTem}" value="Weekend Change: 1st Draft" /></apex:commandButton><apex:commandButton image="/servlet/servlet.FileDownload?file=015E0000005M97B" html-height="32px" html-width="32px" rendered="{!weekend.First_Draft_Email_Sent__c=true}" disabled="true" title="This action has already been issued for this upcoming weekend." value="Send 1st-Draft Change Email" />
+                                <apex:commandButton reRender="changemanagerfunctions" image="/servlet/servlet.FileDownload?file=015E0000005M90y" html-height="32px" html-width="32px" rendered="{!weekend.Second_Draft_Email_Sent__c=false}" value="Send 2nd-Draft Change Email" action="{!SendEmail}"><apex:param name="email" assignTo="{!emailTem}" value="Weekend Change: 2nd Draft" /></apex:commandButton><apex:commandButton image="/servlet/servlet.FileDownload?file=015E0000005M97a" html-height="32px" html-width="32px" rendered="{!weekend.Second_Draft_Email_Sent__c=true}" disabled="true" title="This action has already been issued for this upcoming weekend." value="Send 2nd-Draft Change Email" />
+                                <apex:commandButton reRender="changemanagerfunctions" image="/servlet/servlet.FileDownload?file=015E0000005M918" html-height="32px" html-width="32px" rendered="{!weekend.Final_Email_Sent__c=false}" value="Send Final Change Email" action="{!SendEmail}"><apex:param name="email" assignTo="{!emailTem}" value="Weekend Change: Final" /></apex:commandButton><apex:commandButton image="/servlet/servlet.FileDownload?file=015E0000005M97f" html-height="32px" html-width="32px" rendered="{!weekend.Final_Email_Sent__c=true}" disabled="true" title="This action has already been issued for this upcoming weekend." value="Send Final Change Email" />
+                                <br /><apex:commandButton value="Go To Change Weekends" action="/a4C?fcf=00BE0000003qfNT" />
+                            </apex:form>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+            </apex:tab>
+            <apex:tab rendered="{!$UserRole.Name='Change Managers'}" label="Pending Change Approvals" name="pendingapprovals" id="tab5">
+                <p>Displaying your Pending Change approval requests.</p>
+                <apex:outputPanel id="changependingapprovals">
+                    <div style="white-space: nowrap;">
+                        <div style="display:inline-block; white-space: normal; position: relative; max-width: 1215px;" id="pendingapprovalsdiv">
+                            <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!changespending}" var="c" id="PendingChanges" >
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Change #</apex:facet>
+                                    <apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Status</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Status__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Pri.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Priority__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Owner</apex:facet>
+                                    <apex:outputText value="{!c.Owner.Name}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled Start</apex:facet>
+                                    <apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_Start_Date__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled End</apex:facet>
+                                    <apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_End_Date__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Chg. Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Env.</apex:facet>
+                                    <apex:outputText value="{!c.Environment__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Type</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" />
+                                    <apex:outputText escape="false" rendered="{!c.Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=8>{!c.Title__c}<br /></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Change_Description__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Reason_for_Change_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Reason</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Reason_for_Change_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Affected_Systems_Applications__c != ''}" value="<tr><th class=blank></th><th class=th>Aff. Systems</th><td class=td colspan=8><pre class=pre>{!c.Affected_Systems_Applications__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Roll_Out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Roll Out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Roll_Out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Back_out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Back-out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Back_out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__ClosureCategory__c != ''}" value="<tr><th class=blank></th><th class=th>Closure Category</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__ClosureCategory__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Close_Comments__c != ''}" value="<tr><th class=blank></th><th class=th>Close Comments</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Close_Comments__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="<tr><th class=blank></th><th class=th>Additional Data</th><td class=td colspan=8>" />
+                                    <apex:outputLink rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" value="javascript:;" onclick="window.open('/apex/TasksByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showTasks">Show Tasks ({!c.Number_of_Linked_Tasks__c})</apex:outputLink> &nbsp;
+                                    <apex:outputLink rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" value="javascript:;" onclick="window.open('/apex/IncidentsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showIncidents">Show Incidents ({!c.Linked_IRs__c})</apex:outputLink> &nbsp;
+                                    <apex:outputLink rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" value="javascript:;" onclick="window.open('/apex/ProblemsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showProblems">Show Problems ({!c.Linked_PRs__c})</apex:outputLink> &nbsp;
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="</td></tr>" />
+                                    <apex:outputText escape="false" value="<tr><th class=blank></th><th class=th>Actions</th><td class=td colspan=8>" />
+                                    <apex:form >
+                                        <apex:commandButton reRender="changependingapprovals" value="Approve" action="{!ApproveChange}"><apex:param name="approve_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                        <apex:commandButton reRender="changependingapprovals" value="Reject" action="{!RejectChange}"><apex:param name="reject_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                    </apex:form>
+                                    <apex:outputText escape="false" value="</td></tr>" />
+                                    <apex:outputText escape="false" value="<tr><th class=blank></th><th class=th>Approval Status</th><td class=td colspan=8><pre class=pre>{!c.Approval_Status__c}</pre></td></tr>" />
+                                </apex:column>
+                            </apex:dataTable>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </apex:tab>
+            <apex:tab rendered="{!$UserRole.Name='Change Managers'}" label="Change Calendar" name="changecalendar" id="tab6">
+                <apex:iframe src="/apex/Change_Calendar" scrolling="true" height="725px" id="theIframe"/>
+            </apex:tab>
+        </apex:tabPanel>
+    </apex:outputText>
+</apex:page>

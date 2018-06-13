@@ -1,0 +1,556 @@
+<apex:page controller="BMCRF_CNTRL_ConditionsPage" docType="html-5.0"  showHeader="false">
+    
+    <div style="top:-5px;position:relative;">
+    
+    <apex:pageBlock tabStyle="BMCServiceDesk__Remedyforce_Administration__tab" id="pageBlock">
+    <apex:outputText value="{!callfunc}" escape="false"></apex:outputText>
+        
+        <apex:form >
+        <div style="top:-5px;left:-15px;position:relative;width:105%;height:40px;background:#DEECFD;">
+            <div style="top:7px;position:relative;left:10px;">
+                <!--input type="button"  value="New" onclick="parent.addTab('New Condition','BMCRF_VF_ConditionsPage');"/-->
+                <input type="button"  id="submitButton" onclick="submitData()" value="Save" />
+            </div>
+        </div>
+        <apex:pageBlockSection title="Description" showHeader="false" columns="2">
+            
+            <apex:pageblockSectionItem >
+                <apex:outputText >Name *</apex:outputText>
+                <apex:inputField value="{!conditionObj.Name__c}" styleClass="input validation" onchange="setParentFlag();"/>                
+            </apex:pageblockSectionItem>
+            <apex:pageblockSectionItem >
+                <apex:outputText >Active</apex:outputText>
+                <apex:inputField value="{!conditionObj.Active__c}" onchange="setParentFlag();"/>
+            </apex:pageblockSectionItem>
+            <apex:pageblockSectionItem >
+                <apex:outputText >Short Description</apex:outputText>
+                <apex:inputTextarea value="{!conditionObj.Short_Description__c}" styleClass="input" rows="3" cols="25" onchange="setParentFlag();"/>
+            </apex:pageblockSectionItem>
+            <apex:pageblockSectionItem >
+                <apex:outputText >Override Contact</apex:outputText>
+                <apex:inputField value="{!conditionObj.Override_Contact__c}" onchange="setParentFlag();"/>
+            </apex:pageblockSectionItem>
+            <apex:pageblockSectionItem >
+                
+                     <apex:outputText >Object</apex:outputText>
+                    <apex:selectList size="1" value="{!selectedObject}" multiselect="false" styleClass="SelObjName input" > <!--onchange="setParentFlag();" -->
+                        <apex:selectOptions value="{!objects}"/>
+                        <apex:actionSupport event="onchange" rerender="pageBlock"/>
+                    </apex:selectList>    
+                
+           
+            </apex:pageblockSectionItem>
+            <apex:pageblockSectionItem >
+                <apex:outputText >Override Group</apex:outputText>
+                <apex:inputField value="{!conditionObj.Override_Contact_Group__c}" onchange="setParentFlag();"/>
+                
+                
+            </apex:pageblockSectionItem>
+            <apex:pageblockSectionItem >
+                
+                     <apex:outputText >Sort Order *</apex:outputText>
+                     <apex:inputField value="{!conditionObj.BMCRF_Sort_Order__c}" styleClass="input validation" onchange="setParentFlag();"/>
+                
+           
+            </apex:pageblockSectionItem>
+             <apex:pageblockSectionItem >
+                
+                     <apex:outputText >Close Without Notification</apex:outputText>
+                    <apex:inputField value="{!conditionObj.Close_Without_Notification__c}" styleClass="validation" onchange="setParentFlag();"/> 
+                
+           
+            </apex:pageblockSectionItem>
+           
+            
+             <apex:pageblockSectionItem >
+                
+                     <apex:outputText >Everbridge Template</apex:outputText>
+                    <apex:selectList size="1" value="{!selectedEBTemplate}" multiselect="false" styleClass="SelObjName input" onchange="setParentFlag();">
+                        <apex:selectOptions value="{!EBTemplates}"/>
+                        
+                    </apex:selectList>    
+                
+           
+            </apex:pageblockSectionItem>
+        </apex:pageBlockSection>
+        <!-- apex:pageBlockSection title="Object Selection" showHeader="true">
+            <apex:pageBlockSectionItem helpText="Object" dataStyle="">
+                     Object
+                    <apex:selectList size="1" value="{!selectedObject}" multiselect="false" styleClass="SelObjName input" >
+                        <apex:selectOptions value="{!objects}"/>
+                        <apex:actionSupport event="onchange" rerender="pageBlock"/>
+                    </apex:selectList>    
+                
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection -->
+        <apex:pageBlockSection title="Conditions" id="conditionSection" columns="1" showHeader="true">
+            <apex:pageBlockSectionItem >
+                <div id="conditionDiv">
+                    <div id="dynamicInput">
+                                      
+                    </div> 
+                    <div id="buttonDiv">
+                        <input type="button" id="addButton" onclick="addCondition(this.value)" value="+ Add"  />
+                        <input type="button" id="orButton" onclick="addCondition(this.value)" value="OR" style="visibility:hidden;" />
+                        
+                        
+                    </div>   
+                </div>     
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:actionFunction name="Save" action="{!saveRecord}" reRender="all">
+            <apex:param assignTo="{!queryJSON}" name="param1" value=""/>
+        </apex:actionFunction>
+       
+        </apex:form>
+        
+    </apex:pageBlock>
+    </div>
+    
+    <script>
+        
+        function setParentFlag()
+        {
+            parent.flagConfirm=1;
+            //parent.testConfirm();
+        }
+        
+        var previousOnload = window.onload; 
+        window.onload = function() 
+        { 
+            if (previousOnload) 
+            { previousOnload(); } 
+            
+            if(jsonString1)
+            {
+                //alert(jsonString1);
+                var jsonString=JSON.parse(jsonString1);
+                //alert(jsonString.expressions.length); 
+                for(var i=0;i<jsonString.expressions.length;i++)
+                {
+                    var j=i+1;
+                    
+                    addCondition(jsonString.logicals[i].value);
+                    var field=document.getElementsByClassName("field");
+                    field[i].value=jsonString.expressions[i].attribute;
+                    var newDiv = document.createElement('div');
+                    newDiv.id="div"+j;
+                    addCheckbox(newDiv);
+                    var values=document.getElementsByClassName("value");
+                    values[i].value=jsonString.expressions[i].value;
+                    var comparison=document.getElementsByClassName("comparison");
+                    
+                    var op=jsonString.expressions[i].operator;
+                    var not=document.getElementsByClassName("not");
+                    if(op.toString()=='Equals')
+                    {
+                        comparison[i].value='Equals';
+                    }
+                    else if(op.toString()=='Not Equals')
+                    {
+                        //not[i].checked=true;
+                        comparison[i].value='Equals';
+                    }
+                    else if(op.toString()=='Begins With')
+                    {
+                        comparison[i].value='Begins With';
+                    }
+                    else if(op.toString()=='Contains')
+                    {
+                        
+                        comparison[i].value='Contains';
+                    }
+                }
+                
+                
+               
+            }
+        }  
+        
+        var objArray = [];
+        var incFields = '{!incidentFieldList}';
+        var changeFields = '{!changeRequestFieldList}';
+        var impactList='{!impactValues}';
+        var urgencyList='{!urgencyValues}';
+        var categoryList='{!categoryValues}';
+        var statusList='{!statusValues}';
+        var queryString='';
+        var jsonString={
+            'expressions':[],
+            'logicals':[],
+        };
+        var jsonString1='{!queryJSON}';
+        var expressionCount=0;
+        
+        function addCheckbox(id1)
+        {
+            //alert(document.getElementById(id1.id).childNodes.length);
+           
+            if(document.getElementById(id1.id).childNodes.length<=2)
+            {  
+                addComparisons(id1);
+            }
+            else
+            {
+               getValues(id1); 
+            }
+        }
+        function addComparisons(id1)
+        {
+            var arrayComparison = ['Equals','Not Equals','Begins With','Contains'];
+            
+            var selectHTML = "";
+            
+            var newspan = document.createElement('span');
+            var compid='comparison'+id1.id;
+            selectHTML="&nbsp&nbsp<select onchange='getValues("+id1.id+")' class='comparison' id='"+compid+"'>";
+            for(i = 0; i < arrayComparison.length; i = i + 1) 
+            {
+                selectHTML += "<option value='" + arrayComparison[i] + "'>" + arrayComparison[i] + "</option>";
+            }
+            selectHTML += "</select>";
+            newspan.innerHTML = selectHTML;
+            document.getElementById(id1.id).appendChild(newspan);
+            //document.getElementById("dynamicInput").innerHTML += selectHTML;
+            getValues(id1);
+        }
+        function addCondition(val)
+        {
+            
+            document.getElementById("addButton").value="AND";
+            document.getElementById("orButton").style.visibility="visible";
+            //document.getElementById("submitButton").disabled=false;
+            expressionCount++;            
+            getObjArray();
+            var newDiv = document.createElement('div');
+            newDiv.id="div"+expressionCount;
+            newDiv.className="expressionClass";
+            var selectId="selectdiv"+expressionCount;
+            var selectHTML = "";
+            selectHTML="<span class='operator'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><select onchange='addCheckbox("+newDiv.id+")' class='field' id='"+selectId+"'>";
+            
+            if(val=="AND")
+                selectHTML="<span><label class='operator' value='AND'>AND</label>&nbsp;</span><select onchange='addCheckbox("+newDiv.id+")' class='field' id='"+selectId+"'>";
+            else if(val=="OR")
+                selectHTML="<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label value='OR' class='operator'>OR</label>&nbsp;</span><select onchange='addCheckbox("+newDiv.id+")' class='field' id='"+selectId+"'>";
+                
+            for(i = 0; i < objArray.length; i = i + 1) 
+            {
+                selectHTML += "<option value='" + objArray[i].value + "'>" + objArray[i].label + "</option>";
+            }
+            
+            
+                selectHTML += "</select>";
+            
+            selectHTML += "</select>";
+            newDiv.innerHTML = selectHTML;
+            document.getElementById("dynamicInput").appendChild(newDiv);  
+            //document.getElementById("dynamicInput").insertBefore(newDiv,document.getElementById(buttonAdd));  
+            //document.getElementById("dynamicInput").innerHTML += selectHTML;
+            
+            //var parent=document.getElementById("dynamicInput");
+            //var child=document.getElementById("buttonAdd");
+            //parent.insertBefore(newDiv,child);
+        }
+        function getObjArray()
+        {
+            var x;
+            //alert(
+            if(document.getElementsByClassName("SelObjName")[0].value=="Incident")
+                x = incFields;
+            else
+                 x = changeFields;
+            
+            
+            x = x.substring(0, x.length - 1).substring(1, x.length).replace(/System.SelectOption/g,"");
+            var xp = x.substring(0, x.length - 1).substring(1, x.length).replace(/, /g,",");
+            var y = xp.split('],[');
+            objArray = [];
+            for(var i=0;i<y.length;i++)
+            {
+                var z = y[i].split(',');
+                var elements = [];
+                for(var j=0;j<z.length;j++)
+                {
+                    var m = z[j] ;
+                    m =m.split('=');
+                    if(m[1]=='"<BLANK>"')
+                    {
+                        m[1]="BLANK";
+                        elements[m[0]] = m[1];
+                    }
+                    else
+                    {
+                        var n=m[1].split('"');
+                    
+                        m[1]=n[1];
+                        elements[m[0]] = m[1];
+                    }
+                    
+                }
+                
+                objArray.push(elements);
+            }
+            
+            var samplelement = objArray[1];
+            
+            //alert("Sample output saved as key-value pairs, value is : " + samplelement.value +  "and label is : "+ samplelement.label);
+        }
+        
+        function getValues(x)
+        { 
+            var selectId="select"+x.id;
+            selectId=selectId.toString();
+            var val=document.getElementById(selectId).value;
+            //alert(val);
+            if(val.indexOf('Impact') > -1 || val.indexOf('Urgency') > -1 || val.indexOf('Category') > -1 || val.indexOf('Status') > -1)//=="BMCServiceDesk__FKImpact__c" || val=="BMCServiceDesk__FKUrgency__c")
+            {
+                // ***** to restrict the contans and begins with ********* 
+                var compid='comparison'+x.id;
+                var select=document.getElementById(compid);
+                for (var i=0;i<select.length;  i++) 
+                {
+                   if (select.options[i].value=='Contains' || select.options[i].value=='Begins With') 
+                   {
+                       select.remove(i);
+                       i=0;
+                   }
+                   
+                }
+                
+                // ****************************** 
+                
+                var list;
+                if(val.indexOf('Impact') > -1)
+                    list=impactList;
+                else if(val.indexOf('Urgency') > -1)
+                    list=urgencyList;
+                else if(val.indexOf('Category') > -1)
+                    list=categoryList;
+                else if(val.indexOf('Status') > -1)
+                    list=statusList;
+                   
+                list=list.toString();
+                list=list.replace("[","");
+                list=list.replace("]","");
+                list=list.replace(" ","");
+                list=list.replace(" ","");
+                //alert(list);
+                list=list.split(",");
+                createSelect(list,x);
+            }
+            else
+            {
+                createTextField(x);
+            }
+            
+        }
+        function createSelect(x,id1)
+        {
+           
+            
+            var selectHTML = "";
+            var arrayValues = x;
+            var newspan = document.createElement('span');
+            selectHTML="&nbsp&nbsp<select  class='value'>";
+            for(i = 0; i < arrayValues.length; i = i + 1) 
+            {
+                selectHTML += "<option value='" + arrayValues[i] + "'>" + arrayValues[i] + "</option>";
+            }
+            selectHTML += "</select>";
+            newspan.innerHTML = selectHTML;
+            if(document.getElementById(id1.id).childNodes.length<5)
+                document.getElementById(id1.id).appendChild(newspan);
+            else
+            {
+                var item = document.getElementById(id1.id);
+                item.replaceChild(newspan, item.childNodes[3]);
+                //alert("Replaced");
+            }
+            
+            createCloseButton(id1);
+            
+        }
+        function createTextField(id1)
+        {
+             // ***** to add the contains and begins with in dropdown********* 
+                var compid='comparison'+id1.id;
+                var select=document.getElementById(compid);
+                if(select.length==2)
+                {
+                    var option1 = document.createElement("option");
+                    option1.text = "Contains";
+                    option1.value = "Contains";
+                    select.add(option1, select[2]);
+                    var option2 = document.createElement("option");
+                    option2.text = "Begins With";
+                    option2.value = "Begins With";
+                    select.add(option2, select[2]);
+                }
+                
+         // ****************************** 
+            var newspan = document.createElement('span');
+            var selectHTML = "";
+            selectHTML=" &nbsp;&nbsp;<input type='text' class='value' ></input>";
+            newspan.innerHTML = selectHTML;
+            
+            if(document.getElementById(id1.id).childNodes.length<5)
+                document.getElementById(id1.id).appendChild(newspan);
+            else
+            {
+                var item = document.getElementById(id1.id);
+                item.replaceChild(newspan, item.childNodes[3]);
+                //alert("Replaced");
+            }
+            createCloseButton(id1);
+        }
+        function createCloseButton(id1)
+        {
+            
+            var newspan = document.createElement('span');
+            var btnHtml="";
+            btnHtml="&nbsp;<input type='button' onclick='closeDiv("+id1.id+")' value='X'/>";
+            newspan.innerHTML=btnHtml;
+            if(document.getElementById(id1.id).childNodes.length<5)
+                document.getElementById(id1.id).appendChild(newspan);
+        }
+        function closeDiv(x)
+        {
+            
+            x.parentNode.removeChild(x);
+            if(document.getElementsByClassName("operator").length==0)
+            {
+                document.getElementById("addButton").value="+ Add";
+                document.getElementById("orButton").style.visibility="hidden";
+                //document.getElementById("submitButton").disabled=true;
+            }
+            document.getElementsByClassName("operator")[0].innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        }
+        
+        function submitData()
+        {
+            jsonString={
+                'expressions':[],
+                'logicals':[],
+            };
+            var validFlag=0;
+            var length=document.getElementsByClassName("operator").length;
+            var operator=document.getElementsByClassName("operator");
+            var field=document.getElementsByClassName("field");
+            var not=document.getElementsByClassName("not");
+            var comparison=document.getElementsByClassName("comparison");
+            var values=document.getElementsByClassName("value");
+            
+            var valid1=document.getElementsByClassName('validation');
+            if(field.length==0 || values.length==0)
+            {
+                alert('Atleast one condition is required to save the record...');
+            }
+            else if(valid1[0].value=='')
+                alert('Please Enter Name');
+            else if(valid1[1].value=='')
+                alert('Please Enter Sort Order');
+            else 
+                validFlag=1;
+            
+            for(i=0;i<length;i++)
+            {
+                var fieldName=field[i].value;
+                var val=values[i].value;
+                var op=comparison[i].value;
+               
+                jsonString.expressions.push({'attribute':fieldName,'operator':op,'value':val});
+                
+                var logic=operator[i].textContent.toString().trim();
+                
+                jsonString.logicals.push({'value':logic});   
+            }
+            
+            
+            var str=JSON.stringify(jsonString);
+            
+            
+            if(validFlag==1)
+                Save(str);
+        }
+        
+    </script>
+    <style>
+        .not{
+            visibility:hidden;
+        }
+        #buttonDiv
+        {
+            position:relative;
+            top:10px;
+        }
+        .expressionClass
+        {
+            height:30px;
+        }
+        #conditionDiv
+        {
+            margin-left:16%;
+        }
+        input[type="text"] 
+        {
+             
+        }
+        input[type="button"]
+        {
+            background: url(/resource/1440688622000/bmcservicedesk__SSThemes/SSTemplateTheme/SDEFimages/grey_bg.gif) repeat-x scroll 0 0 transparent !important;
+            border: 1px solid #004376;
+            border-color: #CCCCCC #666666 #666666 #CCCCCC !important;
+              
+            
+            vertical-align: middle;
+            font-family: 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif !Important;
+            font-size: 12px;
+            color: #000;
+            cursor: default;
+      }
+
+      input[type="button"]:hover 
+      {
+            background-image: none;
+            background: #E8E8E9 !important;
+            cursor: pointer;
+        } 
+        input[type="button"]:disabled
+       {
+           cursor:no-drop;
+       }
+
+
+
+
+  /* for input texts */
+      .input{
+          width: 100%;
+      }
+      .field,.comparison,.value
+      {
+          width:150px;
+      }
+  input[type="text"],select,textarea {
+        //width: 100%;
+        padding: 2px;
+        border: 1px solid #d4d4d4;
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 4px;
+        
+        
+    
+        /* some box shadow sauce */
+        box-shadow: inset 0px 2px 2px #ececec;
+        }
+
+  input[type="text"]:focus {
+        /* No outline on focus */
+        outline: 1;
+        /* a darker border ? */
+        border: 1px solid #bbb;
+        }
+        
+    </style>
+</apex:page>

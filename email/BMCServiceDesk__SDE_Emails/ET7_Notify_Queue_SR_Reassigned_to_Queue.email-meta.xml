@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notify Queue of a Service Request Ressigned to Queue</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET7-Notify Queue-SR Reassigned to Queue</name>
+    <style>none</style>
+    <subject>Service Request # {!BMCServiceDesk__Incident__c.Name} with a Priority of {!BMCServiceDesk__Incident__c.BMCServiceDesk__Priority_ID__c} has been reassigned to the {!BMCServiceDesk__Incident__c.OwnerFullName} Queue</subject>
+    <textOnly>ET7
+
+Service Request #  {!BMCServiceDesk__Incident__c.Name}      Priority:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Priority_ID__c}
+Queue Assignment:  {!BMCServiceDesk__Incident__c.OwnerFullName}     Sent from:  {!BMCServiceDesk__Incident__c.LastModifiedBy}
+
+Requester Information
+
+Client Name:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}     Email:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}
+Location:  {!BMCServiceDesk__Incident__c.Real_Location__c}     Phone:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Phone__c}
+
+Service Request Information
+
+Status:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Status_ID__c}
+Created Date:  {!BMCServiceDesk__Incident__c.CreatedDate}     SLA Due Date:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c}
+Urgency:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Urgency_ID__c}     Impact:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Impact_Id__c}
+Category:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Category_ID__c}     Config item:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKBMC_BaseElement__c}
+Short Description:  {!BMCServiceDesk__Incident__c.Incident_Title__c}
+Long Description:
+
+{!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}
+
+Additional Information
+
+Service Request Title:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Service_Request_Title__c}     Service:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKBusinessService__c}
+Requested Due Date:  {!BMCServiceDesk__Incident__c.Requested_Due_By_Date__c}     Expected Due Date:  {!BMCServiceDesk__Incident__c.Expected_Due_By_Date__c}
+
+ET7</textOnly>
+    <type>custom</type>
+</EmailTemplate>

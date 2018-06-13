@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>Create Linked IR to CR {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Create Linked IR to CR</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Linked_IR_to_CR_Record</name>
+        <label>Create Linked IR to CR Record</label>
+        <locationX>165</locationX>
+        <locationY>108</locationY>
+        <inputAssignments>
+            <field>BMCServiceDesk__FKChange__c</field>
+            <value>
+                <elementReference>CRNumber</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BMCServiceDesk__FKIncident__c</field>
+            <value>
+                <elementReference>SRNumber</elementReference>
+            </value>
+        </inputAssignments>
+        <object>BMCServiceDesk__Incident_Change_Link__c</object>
+    </recordCreates>
+    <startElementReference>Create_Linked_IR_to_CR_Record</startElementReference>
+    <variables>
+        <name>CRNumber</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>SRNumber</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

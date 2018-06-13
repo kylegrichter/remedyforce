@@ -1,0 +1,11 @@
+Incident # {!BMCServiceDesk__Incident__c.Name} has been Closed. This incident has the following details:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Incident Number: {!BMCServiceDesk__Incident__c.Name}  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Incident Description: {!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open Date: {!BMCServiceDesk__Incident__c.BMCServiceDesk__openDateTime__c}  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Due Date: {!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Closed Date: {!BMCServiceDesk__Incident__c.BMCServiceDesk__closeDateTime__c} <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Category:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Category_ID__c} <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Client Name: {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientFirstName__c} {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientLastName__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Urgency: {!BMCServiceDesk__Incident__c.BMCServiceDesk__Urgency_ID__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Impact: {!BMCServiceDesk__Incident__c.BMCServiceDesk__Impact_Id__c} <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Priority: {!BMCServiceDesk__Incident__c.BMCServiceDesk__Priority_ID__c}

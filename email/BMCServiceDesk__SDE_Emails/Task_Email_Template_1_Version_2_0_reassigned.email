@@ -1,0 +1,13 @@
+Task # {!BMCServiceDesk__Task__c.Name} has been reassigned to {!BMCServiceDesk__Task__c.OwnerFullName}. This task has the following details:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Task Number: {!BMCServiceDesk__Task__c.Name}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Task Description: {!BMCServiceDesk__Task__c.BMCServiceDesk__taskDescription__c}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open Date: {!BMCServiceDesk__Task__c.BMCServiceDesk__openDateTime__c} <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Due Date: {!BMCServiceDesk__Task__c.BMCServiceDesk__dueDateTime__c}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Category:   {!BMCServiceDesk__Task__c.BMCServiceDesk__FKCategory__c}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Client Name: {!BMCServiceDesk__Task__c.BMCServiceDesk__Client_Name__c}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Urgency: {!BMCServiceDesk__Task__c.BMCServiceDesk__Urgency_ID__c}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Impact: {!BMCServiceDesk__Task__c.BMCServiceDesk__Impact_ID__c}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Priority: {!BMCServiceDesk__Task__c.BMCServiceDesk__Priority_ID__c}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Related Incident Number: {!BMCServiceDesk__Task__c.BMCServiceDesk__FKIncident__c}<br>
+
+TTV2

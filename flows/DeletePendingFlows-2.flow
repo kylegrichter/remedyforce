@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>DeletePendingFlows {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>DeletePendingFlows</label>
+    <processType>Flow</processType>
+    <recordDeletes>
+        <name>Deleted_Pending_Flows</name>
+        <label>Deleted Pending Flows</label>
+        <locationX>251</locationX>
+        <locationY>264</locationY>
+        <filters>
+            <field>InterviewLabel</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>JobCode_Change-6_InterviewLabel</stringValue>
+            </value>
+        </filters>
+        <object>FlowInterview</object>
+    </recordDeletes>
+    <startElementReference>Deleted_Pending_Flows</startElementReference>
+</Flow>

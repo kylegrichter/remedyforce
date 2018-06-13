@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ET1</title>
+<style type="text/css">
+<!--
+#emaillogo tr td {
+	border-bottom-style: solid;
+	border-bottom-color: #004990;
+}
+#emailheader tr td {
+	border-top-style: none;	
+}
+#emailcontainer {
+	border-top-style: none;
+}
+#sectiontitle tr td {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+}
+#sectionbody tr td {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	font-style:  normal;
+	}
+	
+#emailfooter tr td {
+	border-bottom-style: solid;
+	border-bottom-color: #666;	
+}
+.mainsectiontitle {
+	border-bottom-style: solid;
+	border-bottom-color: #58a618;
+	color: #58a618;
+	font-weight: bold;
+}
+.mainsectionspace {
+	border-bottom-style: solid;
+	border-bottom-color: #004990;
+}
+.sectiontitle {
+	font-weight: bold;
+}
+.important {
+	color: #F00;	
+}
+.highlighttext {
+	font-weight: bold;	
+}
+-->
+</style></head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="bodytable">
+  <tr>
+    <td valign="top" align="left">
+    	<table id="emailcontainer" width="750" border="0" cellspacing="0" cellpadding="10">
+        	
+            <tr>
+            	<td valign="top" align="left">
+               	  <table width="100%" border="0" cellpadding="0" cellspacing="0" id="emaillogo">
+        				<tr>
+            				<td width="25%" height="29" align="left" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEG&oid=00DE0000000caBt" alt="RF Logo" />
+                        </td>
+            				<td width="25%" height="29" align="right" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&oid=00DE0000000caBt"  alt="DM Logo" /></td>
+                            
+                        </tr>
+				  </table>
+                    
+              </td>
+            </tr>
+        <tr>
+            	<td valign="top" align="center">
+             
+              </td>
+          </tr>
+            <tr>
+            	<td valign="top" align="center">
+                	<table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+       				  <tr>
+            				<td width="23%" align="left"  valign="top">&nbsp;</td>
+            				<td width="77%" align="left"  valign="top">&nbsp;</td>
+           			  </tr>
+   					</table>
+<table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+       				  <tr>
+            				<td width="23%" align="left" class="mainsectiontitle" valign="top">Message from your RemedyForce Team
+</td>
+            				<td width="77%" align="left" valign="top">&nbsp;</td>
+           			  </tr>
+   					</table>
+                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+        				<tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">
+           				   Highlight</td>
+           				  <td align="left" valign="top">{!BMCServiceDesk__Broadcasts__c.BMCServiceDesk__broadcastMessage__c}</td>
+       				  </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">Additional Information</td>
+           				  <td align="left" valign="top">{!BMCServiceDesk__Broadcasts__c.BMCServiceDesk__broadcastDescription__c}</td>
+       				  </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">KB Article</td>
+           				  <td align="left" valign="top"><a href="{!BMCServiceDesk__Broadcasts__c.00NE0000004Q2rp}">{!BMCServiceDesk__Broadcasts__c.Knowledge_Article_Number__c}</a></td>
+       				  </tr>
+   					</table>
+                </td>
+            </tr>
+            
+
+   					</table>
+                </td>
+            </tr>
+            
+        </table>
+    </td>
+  </tr>
+</table>
+<span class="ETname">ET13</span>
+</body>
+</html>

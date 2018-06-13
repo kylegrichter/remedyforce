@@ -1,0 +1,3 @@
+<apex:page standardController="BMCServiceDesk__Change_Request__c" title="Change Calendar" showHeader="false" sidebar="false">
+    <c:ChangeCalendarComponent />
+</apex:page>

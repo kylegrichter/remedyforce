@@ -1,0 +1,522 @@
+<apex:page controller="ManageApprovals" showHeader="false" sidebar="false" title="Manage Approvals">
+    <c:LoadingBox />
+    <apex:outputText rendered="{!$CurrentPage.parameters.type==null}">
+        <style>
+            .paragraph{
+            color: #414042;
+            font-size: 14pt;
+            text-align: left;
+            font-family: Calibri;
+            left: 20px;
+            position: relative;
+            }
+            .paragraphbold{
+            color: #F86E00;
+            font-weight:bold;
+            }
+        </style>
+        <div>
+            <p class="paragraph">To Display Pending Requests for <b class="paragraphbold">{!$User.FirstName} {!$User.LastName}</b>, please choose one of the following:</p>
+            <ul>
+                <li class="paragraph"><a href="?type=change">Change Approval Requests</a></li>
+                <li class="paragraph"><a href="?type=incident">Incident/Service Request Approval Requests</a></li>
+                <li class="paragraph"><a href="?type=task">Task Approval Requests</a></li>
+            </ul>
+        </div>
+    </apex:outputText>
+    <apex:outputText rendered="{!$CurrentPage.parameters.type='change'}">
+        <style>
+            .table{
+            border-collapse: collapse;
+            empty-cells: show;
+            }
+            .th{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 2px;
+            border-color: #414042 #414042 #F86E00;
+            background-color:#414042;
+            color: #F86E00;
+            font-size: 11pt;
+            font-weight:bold;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .td{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 1px 0px;
+            border-color: #BDBDBD;
+            background-color:#FFFFFF;
+            color:#000000;
+            font-size: 9pt;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .pre{
+            font-family: Calibri;
+            font-size: 9pt;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            margin:1px;
+            }
+            .section{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 1px 0px;
+            border-color: #BDBDBD;
+            background-color:#E0E3E6;
+            color:#4A4A4A;
+            font-size: 9pt;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .blank{
+            background-color: #FFFFFF;
+            border: none;
+            }
+            .paragraph{
+            color: #414042;
+            font-size: 14pt;
+            text-align: left;
+            font-family: Calibri;
+            left: 20px;
+            position: relative;
+            }
+            .paragraphbold{
+            color: #F86E00;
+            font-weight:bold;
+            }
+            .bmc-btn-primary {
+            height: 22px;
+            padding: 0 14px;
+            font-size: 12px;
+            line-height: 14px;
+            display: inline-block;
+            border-radius: 2px;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            background-image: none!important;
+            color: #fff!important;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #f86e00!important;
+            vertical-allign: middle;
+            background-color: #f86e00!important;
+            }
+            .bmc-btn-disabled{
+            height: 22px;
+            padding: 0 14px;
+            font-size: 12px;
+            line-height: 14px;
+            display: inline-block;
+            border-radius: 2px;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            background-image: none!important;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #C9C9C9!important;
+            vertical-allign: middle;
+            color: #333;
+            background-color: transparent;
+            opacity: .6;
+            filter: alpha(opacity=60);
+            }
+        </style>
+        <div>
+            <p class="paragraph">Displaying Pending Change approval requests for <b class="paragraphbold">{!$User.FirstName} {!$User.LastName}</b></p>
+            <div style="position: relative;display: inline-block; left: 20px; max-width: 1080px; float: left;">
+                <apex:outputPanel id="changependingapprovals">
+                    <div style="white-space: nowrap;">
+                        <div style="display:inline-block; white-space: normal; position: relative; max-width: 1215px;" id="pendingapprovalsdiv">
+                            <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!changespending}" var="c" id="PendingChanges" >
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Change #</apex:facet>
+                                    <span id="{!c.Name}"><apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Status</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Status__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Pri.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Priority__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Owner</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Queue__c} ({!c.BMCServiceDesk__FKStaff__r.Name})" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled Start</apex:facet>
+                                    <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_Start_Date__c}" /><apex:outputText value=" - {!c.Start_Day_of_Week__c}" /></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Scheduled End</apex:facet>
+                                    <span><apex:outputField style="white-space: nowrap;" value="{!c.BMCServiceDesk__Scheduled_End_Date__c}" /><apex:outputText value=" - {!c.End_Day_of_Week__c}" /></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Category</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Chg. Cat.</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Env.</apex:facet>
+                                    <apex:outputText value="{!c.Environment__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Type</apex:facet>
+                                    <apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" />
+                                    <apex:outputText escape="false" rendered="{!c.Title__c != ''}" value="<tr><th class=blank><a href=#>Back to Top</a></th><th class=th>Title</th><td class=td colspan=8>{!c.Title__c}<br /></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Change_Description__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Reason_for_Change_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Reason</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Reason_for_Change_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.Affected_Systems_Applications__c != ''}" value="<tr><th class=blank></th><th class=th>Aff. Systems</th><td class=td colspan=8><pre class=pre>{!c.Affected_Systems_Applications__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Roll_Out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Roll Out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Roll_Out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Back_out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Back-out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Back_out_Plan_Details__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__ClosureCategory__c != ''}" value="<tr><th class=blank></th><th class=th>Closure Category</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__ClosureCategory__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Close_Comments__c != ''}" value="<tr><th class=blank></th><th class=th>Close Comments</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Close_Comments__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="<tr><th class=blank></th><th class=th>Additional Data</th><td class=td colspan=8>" />
+                                    <apex:outputLink rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" value="javascript:;" onclick="window.open('/apex/TasksByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showTasks">Show Tasks ({!c.Number_of_Linked_Tasks__c})</apex:outputLink> &nbsp;
+                                    <apex:outputLink rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" value="javascript:;" onclick="window.open('/apex/IncidentsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showIncidents">Show Incidents ({!c.Linked_IRs__c})</apex:outputLink> &nbsp;
+                                    <apex:outputLink rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" value="javascript:;" onclick="window.open('/apex/ProblemsByChange?crid={!c.Id}', '', 'width=1000, height=600, location=no, menubar=no');" id="showProblems">Show Problems ({!c.Linked_PRs__c})</apex:outputLink> &nbsp;
+                                    <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="</td></tr>" />
+                                    <apex:outputText escape="false" value="<tr><th class=blank></th><th class=th>Actions</th><td class=td colspan=8>" />
+                                    <apex:form >
+                                        <apex:commandButton status="loadStatus" reRender="changependingapprovals" value="Approve" styleClass="bmc-btn-primary" action="{!ApproveChange}"><apex:param name="approve_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                        <apex:commandButton status="loadStatus" reRender="changependingapprovals" value="Reject" styleClass="bmc-btn-disabled" action="{!RejectChange}"><apex:param name="reject_change" assignTo="{!approvalWorkItem}" value="{!c.Id}" /></apex:commandButton>
+                                    </apex:form>
+                                    <apex:outputText escape="false" value="</td></tr>" />
+                                    <apex:outputText escape="false" value="<tr><th class=blank></th><th class=th>Approval Status</th><td class=td colspan=8><pre class=pre>{!c.Approval_Status__c}</pre></td></tr>" />
+                                </apex:column>
+                            </apex:dataTable>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+            <div style="position: relative; top: 15px; left: 40px; width: 75px; float: left;">
+                <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!changespending}" var="c" id="PendingChangesJumplist" >
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Change #</apex:facet>
+                        <apex:outputLink value="#{!c.Name}">{!c.Name}</apex:outputLink>
+                    </apex:column>
+                </apex:dataTable>
+            </div>
+        </div>
+    </apex:outputText>
+    <apex:outputText rendered="{!$CurrentPage.parameters.type='incident'}">
+        <style>
+            .table{
+            border-collapse: collapse;
+            empty-cells: show;
+            }
+            .th{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 2px;
+            border-color: #414042 #414042 #F86E00;
+            background-color:#414042;
+            color: #F86E00;
+            font-size: 11pt;
+            font-weight:bold;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .td{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 1px 0px;
+            border-color: #BDBDBD;
+            background-color:#FFFFFF;
+            color:#000000;
+            font-size: 9pt;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .pre{
+            font-family: Calibri;
+            font-size: 9pt;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            margin:1px;
+            }
+            .section{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 1px 0px;
+            border-color: #BDBDBD;
+            background-color:#E0E3E6;
+            color:#4A4A4A;
+            font-size: 9pt;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .blank{
+            background-color: #FFFFFF;
+            border: none;
+            }
+            .paragraph{
+            color: #414042;
+            font-size: 14pt;
+            text-align: left;
+            font-family: Calibri;
+            left: 20px;
+            position: relative;
+            }
+            .paragraphbold{
+            color: #F86E00;
+            font-weight:bold;
+            }
+            .bmc-btn-primary {
+            height: 22px;
+            padding: 0 14px;
+            font-size: 12px;
+            line-height: 14px;
+            display: inline-block;
+            border-radius: 2px;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            background-image: none!important;
+            color: #fff!important;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #f86e00!important;
+            vertical-allign: middle;
+            background-color: #f86e00!important;
+            }
+            .bmc-btn-disabled{
+            height: 22px;
+            padding: 0 14px;
+            font-size: 12px;
+            line-height: 14px;
+            display: inline-block;
+            border-radius: 2px;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            background-image: none!important;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #C9C9C9!important;
+            vertical-allign: middle;
+            color: #333;
+            background-color: transparent;
+            opacity: .6;
+            filter: alpha(opacity=60);
+            }
+        </style>
+        <div>
+            <p class="paragraph">Displaying Pending Incident/Service Request approval requests for <b class="paragraphbold">{!$User.FirstName} {!$User.LastName}</b></p>
+            <div style="position: relative;display: inline-block; left: 20px; max-width: 1080px; float: left;">
+                <apex:outputPanel id="incidentpendingapprovals">
+                    <div style="white-space: nowrap;">
+                        <div style="display:inline-block; white-space: normal; position: relative; max-width: 1215px;" id="pendingapprovalsdiv2">
+                            <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!incidentspending}" var="i" id="PendingIncidents" >
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">IR/SR #</apex:facet>
+                                    <span id="{!i.Name}"><apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Incident__c&record_id={!i.Id}" id="irLink">{!i.Name}</apex:outputLink></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Status</apex:facet>
+                                    <apex:outputText value="{!i.BMCServiceDesk__Status_ID__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Pri.</apex:facet>
+                                    <apex:outputText value="{!i.BMCServiceDesk__Priority_ID__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Requesting User/Client</apex:facet>
+                                    <apex:outputText value="{!i.BMCServiceDesk__Client_Name__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Type</apex:facet>
+                                    <apex:outputText value="{!i.BMCServiceDesk__Type__c}" />
+                                    <c:SRDDetailsListApprovals recordID="{!i.Id}"/>
+                                    <apex:outputText escape="false" value="<tr><th class=blank></th><th class=th>Actions</th><td class=td colspan=8>" />
+                                    <apex:form >
+                                        <apex:commandButton status="loadStatus" reRender="incidentpendingapprovals" value="Approve" styleClass="bmc-btn-primary" action="{!ApproveChange}"><apex:param name="approve_change" assignTo="{!approvalWorkItem}" value="{!i.Id}" /></apex:commandButton>
+                                        <apex:commandButton status="loadStatus" reRender="incidentpendingapprovals" value="Reject" styleClass="bmc-btn-disabled" action="{!RejectChange}"><apex:param name="reject_change" assignTo="{!approvalWorkItem}" value="{!i.Id}" /></apex:commandButton>
+                                    </apex:form>
+                                    <apex:outputText escape="false" value="</td></tr>" />
+                                </apex:column>
+                            </apex:dataTable>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+            <div style="position: relative; top: 15px; left: 40px; width: 75px; float: left;">
+                <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!incidentspending}" var="i" id="PendingIncidentsJumplist" >
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">IR/SR #</apex:facet>
+                        <apex:outputLink value="#{!i.Name}">{!i.Name}</apex:outputLink>
+                    </apex:column>
+                </apex:dataTable>
+            </div>
+        </div>
+    </apex:outputText>
+    <apex:outputText rendered="{!$CurrentPage.parameters.type='task'}">
+        <style>
+            .table{
+            border-collapse: collapse;
+            empty-cells: show;
+            }
+            .th{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 2px;
+            border-color: #414042 #414042 #F86E00;
+            background-color:#414042;
+            color: #F86E00;
+            font-size: 11pt;
+            font-weight:bold;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .td{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 1px 0px;
+            border-color: #BDBDBD;
+            background-color:#FFFFFF;
+            color:#000000;
+            font-size: 9pt;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .pre{
+            font-family: Calibri;
+            font-size: 9pt;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            margin:1px;
+            }
+            .section{
+            margin:5px;
+            border-style: solid;
+            border-width: 0px 0px 1px 0px;
+            border-color: #BDBDBD;
+            background-color:#E0E3E6;
+            color:#4A4A4A;
+            font-size: 9pt;
+            text-align: left;
+            font-family: Calibri;
+            }
+            .blank{
+            background-color: #FFFFFF;
+            border: none;
+            }
+            .paragraph{
+            color: #414042;
+            font-size: 14pt;
+            text-align: left;
+            font-family: Calibri;
+            left: 20px;
+            position: relative;
+            }
+            .paragraphbold{
+            color: #F86E00;
+            font-weight:bold;
+            }
+            .bmc-btn-primary {
+            height: 22px;
+            padding: 0 14px;
+            font-size: 12px;
+            line-height: 14px;
+            display: inline-block;
+            border-radius: 2px;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            background-image: none!important;
+            color: #fff!important;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #f86e00!important;
+            vertical-allign: middle;
+            background-color: #f86e00!important;
+            }
+            .bmc-btn-disabled{
+            height: 22px;
+            padding: 0 14px;
+            font-size: 12px;
+            line-height: 14px;
+            display: inline-block;
+            border-radius: 2px;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+            background-image: none!important;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #C9C9C9!important;
+            vertical-allign: middle;
+            color: #333;
+            background-color: transparent;
+            opacity: .6;
+            filter: alpha(opacity=60);
+            }
+        </style>
+        <div>
+            <p class="paragraph">Displaying Pending Task approval requests for <b class="paragraphbold">{!$User.FirstName} {!$User.LastName}</b></p>
+            <div style="position: relative;display: inline-block; left: 20px; max-width: 1080px; float: left;">
+                <apex:outputPanel id="taskpendingapprovals">
+                    <div style="white-space: nowrap;">
+                        <div style="display:inline-block; white-space: normal; position: relative; max-width: 1215px;" id="pendingapprovalsdiv3">
+                            <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!taskspending}" var="i" id="PendingTasks" >
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Task #</apex:facet>
+                                    <span id="{!i.Name}"><apex:outputLink value="/apex/BMCServiceDesk__RemedyforceConsole?objectName=Task__c&record_id={!i.Id}" id="irLink">{!i.Name}</apex:outputLink></span>
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Status</apex:facet>
+                                    <apex:outputText value="{!i.BMCServiceDesk__Status_ID__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Pri.</apex:facet>
+                                    <apex:outputText value="{!i.BMCServiceDesk__Priority_ID__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Owner</apex:facet>
+                                    <apex:outputText value="{!i.BMCServiceDesk__Queue__c}" />
+                                </apex:column>
+                                <apex:column styleClass="td" style="white-space: nowrap;">
+                                    <apex:facet name="header">Template</apex:facet>
+                                    <apex:outputText value="{!i.Template_Name_2__c}" />
+                                    <apex:outputText escape="false" rendered="{!i.BMCServiceDesk__taskDescription__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!i.BMCServiceDesk__taskDescription__c}</pre></td></tr>" />
+                                    <apex:outputText escape="false" value="<tr><th class=blank></th><th class=th>Actions</th><td class=td colspan=8>" />
+                                    <apex:form >
+                                        <apex:commandButton status="loadStatus" reRender="taskpendingapprovals" value="Approve" styleClass="bmc-btn-primary" action="{!ApproveChange}"><apex:param name="approve_change" assignTo="{!approvalWorkItem}" value="{!i.Id}" /></apex:commandButton>
+                                        <apex:commandButton status="loadStatus" reRender="taskpendingapprovals" value="Reject" styleClass="bmc-btn-disabled" action="{!RejectChange}"><apex:param name="reject_change" assignTo="{!approvalWorkItem}" value="{!i.Id}" /></apex:commandButton>
+                                    </apex:form>
+                                    <apex:outputText escape="false" value="</td></tr>" />
+                                </apex:column>
+                            </apex:dataTable>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+            <div style="position: relative; top: 15px; left: 40px; width: 75px; float: left;">
+                <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!taskspending}" var="i" id="PendingTasksJumplist" >
+                    <apex:column styleClass="td" style="white-space: nowrap;">
+                        <apex:facet name="header">Task #</apex:facet>
+                        <apex:outputLink value="#{!i.Name}">{!i.Name}</apex:outputLink>
+                    </apex:column>
+                </apex:dataTable>
+            </div>
+        </div>
+    </apex:outputText>
+</apex:page>

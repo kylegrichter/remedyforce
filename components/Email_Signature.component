@@ -1,0 +1,7 @@
+<apex:component access="global">
+    <p style="font-size:12pt;font-family:Arial Narrow;color:#221E1F;">
+    <b style="font-size:10pt;font-family:Arial;">{!$User.FirstName} {!$User.LastName}</b><br />
+    IT Change Manager-Infrastructure<br />
+    <a href="http://www.dexyp.com/"><img src="https://remedy--c.na38.content.force.com/servlet/servlet.ImageServer?id=0154400000AvCzK&oid=00DE0000000caBt&lastMod=1504879386000" width="112" height="33" /></a>
+    </p>
+</apex:component>

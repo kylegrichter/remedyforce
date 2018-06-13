@@ -1,0 +1,84 @@
+<apex:page controller="ChangeManagement" title="Weekend Change Calendar" showHeader="false" sidebar="false">
+    <link href="{!$Resource.fullCalendarCSS}" rel="stylesheet" />
+    <link href="{!$Resource.fullCalendarPrintCSS}" rel="stylesheet" media="print" />
+     
+    <script src="{!$Resource.jQueryMinJS}"></script>
+    <script src="{!$Resource.momentJS}"></script>
+    <script src="{!$Resource.fullCalendarMinJS}"></script>
+     
+    <script>
+        $(document).ready(function() {   
+            $('#calendar').fullCalendar({
+                header: {
+                    left: '',
+                    center: '',
+                    right: ''
+                },
+                defaultView: "agendaFourDay",
+                views: {
+                    agendaFourDay: {
+                        type: 'agenda',
+                        duration: { days: {!weekend.Weekend_Length__c} },
+                        buttonText: '4 day'
+                    }
+                }, 
+                allDaySlot: true,
+                eventLimit: false,
+                contentHeight: 'auto',
+                allDayText: 'Multi-Day',
+                fixedWeekCount: false,
+                editable: false,
+                slotDuration: '01:00:00',
+                defaultDate: '{!weekend.Start_Date__c}',
+                events:
+                [
+                    <apex:repeat value="{!changesCal}" var="e">
+                        {
+                            title: "{!SUBSTITUTE(e.title, '\"', '')}",
+                            start: '{!e.startString}',
+                            end: '{!e.endString}',
+                            url: '{!e.url}',
+                            allDay: {!e.allDay},
+                            className: "{!IF(LEFT(RIGHT(e.url, 18),15)=$CurrentPage.parameters.id,'Current',e.className)}"
+                        },
+                    </apex:repeat>
+                ],
+                eventClick: function(event) {
+                    if (event.url) {
+                        window.open(event.url);
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+     
+    <style>
+        #cal-options {float:left;}
+        #cal-legend { float:left;}
+        #cal-legend ul {margin:0;padding:0;list-style:none;}
+        #cal-legend ul li {margin:0;padding:5px;float:left;}
+        #cal-legend ul li span {display:block; height:16px; width:16px; margin-right:4px; float:left; border-radius:4px;}
+        #calendar {margin-bottom:-20px;}
+        #calendar a:hover {color:#fff !important;}
+         
+        .fc-event-inner {padding:3px;}
+        .Production {background:#CC3300;border-color:#CC3300;}
+        .Test {background:#006600;border-color:#006600;}
+        .Development {background:#3a87ad;border-color:#3a87ad;}
+        .Current {background:#ff00ff;border-color:#ff00ff;}
+    </style>
+    <body style="background-color: #F1F1F1;">
+    <apex:outputPanel id="calPanel">
+        <div id="cal-legend">
+            <div style="clear:both;"><!--fix floats--></div>
+            <ul>
+                <li><span class="Production"></span>Production</li>
+                <li><span class="Test"></span>Test</li>
+                <li><span class="Development"></span>Development</li>
+            </ul>
+        </div>
+        <div id="calendar" style="width: 1200px" ></div>
+    </apex:outputPanel>
+    </body>
+</apex:page>

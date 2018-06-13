@@ -1,0 +1,14 @@
+<messaging:emailTemplate subject="Pre-Change Weekend Activities : {!relatedTo.Start_Date__c} - {!relatedTo.End_Date__c}" recipientType="Contact" relatedToType="Change_Weekend__c">
+<messaging:htmlEmailBody >
+    <head>
+        <style type="text/css">
+            body{font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;font-size:14px;}
+        </style>
+    </head>
+    <body>
+        <c:Pre_Change_Header />
+        <c:Weekend_Change_Details />
+        <c:Email_Signature />
+    </body>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

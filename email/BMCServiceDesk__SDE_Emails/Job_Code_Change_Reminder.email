@@ -1,0 +1,19 @@
+<messaging:emailTemplate subject="Incident #{!relatedto.Name} (Ref:IN:{!relatedto.Name})" recipientType="User" relatedToType="BMCServiceDesk__Incident__c">
+<messaging:htmlEmailBody >
+<html>
+    <body>
+    Hello <b>{!relatedto.BMCServiceDesk__Client_Name__c}</b>,<br />
+        <br />
+        <p>Several days ago we sent an email stating that we have received a job code change notification for you.</p>
+        <p>Please submit an ASA selecting “job code change” in the ASA form, and answer the prompts accordingly. The ASA form is available through Remedyforce.  Click on Remedyforce Self Service, then on Request a Service and then on the ASA Request for Additional Access form.</p>
+        <p>You also need to submit the Request Access for PeopleSoft form to keep or change your PeopleSoft access for anything other than IAR_SELF_SERVICE, if you have not already done so. The Peoplesoft form is located in Remedyforce with the other ASA forms.</p>
+        <p>If no action is taken, your application access will be removed.</p>
+        <p>Thank You</p>
+        <br /><br />
+        <p>Record link for Self Service Client: <apex:outputlink value="https://remedy.my.salesforce.com/apex/bmcservicedesk__ssredirect?inc={!relatedto.Id}&iscalledFromEmail=true">{!relatedto.Name}</apex:outputlink></p>
+        <p>(Ref:IN:{!relatedto.Name})</p>
+        <p>Important: Do not change the subject line while replying.</p>
+    </body>
+</html>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

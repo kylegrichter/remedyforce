@@ -1,0 +1,136 @@
+<messaging:emailTemplate subject="Service Request # {!relatedTo.Name} has been created and assigned to the {!relatedTo.Owner.Name} Queue" relatedToType="BMCServiceDesk__Incident__c">
+    <messaging:htmlEmailBody >
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <style type="text/css">
+                table {
+                    font-family: Calibri;
+                    font-size: 14px;
+                    align: left;
+                    border: 0px;
+                    border-spacing: 0px;
+                    border-collapse: separate;
+                }
+                .logo {
+                    border-top-style: none;
+                    border-bottom-style: solid;
+                    border-bottom-color: #004990;
+                    width: 50%;
+                }
+                .mainsectiontitle {
+                    border-bottom-style: solid;
+                    border-bottom-color: #58a618;
+                    color: #58a618;
+                    font-weight: bold;
+                    font-style: italic;
+                    vertical-align: top;
+                    padding-top: 20px;
+                }
+                .mainsectionspace {
+                    border-bottom-style: solid;
+                    border-bottom-color: #004990;
+                }
+                .sectiontitle {
+                    font-weight: bold;
+                    vertical-align: center;
+                    font-style: normal;
+                    padding-top: 5px;
+                }
+                .sectiondata {
+                    font-weight: normal;
+                    vertical-align: center;
+                    font-style: normal;
+                    padding-top: 5px;
+                }
+                .important {
+                    color: #F00;    
+                }
+            </style></head>
+        <body>
+            <table>
+                <tr valign="top">
+                    <td class="logo" colspan="2"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEG&oid=00DE0000000caBt" alt="Remedyforce" /></td>
+                    <td class="logo" colspan="2" align="right"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&oid=00DE0000000caBt" alt="Dex Media" /></td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">{!relatedTo.BMCServiceDesk__Type__c} #</td>
+                    <td width="28%" class="sectiondata"><a href="https://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?record_id={!relatedTo.Id}&objectName=Incident__c">{!relatedTo.Name}</a></td>
+                    <td width="22%" class="sectiontitle">Priority:</td>
+                    <td width="28%" class="sectiondata important">{!relatedTo.BMCServiceDesk__Priority_ID__c}</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Queue Assignment:</td>
+                    <td width="28%" class="important">{!relatedTo.Owner.Name}</td>
+                    <td colspan="2" class="sectiondata"><a href="https://remedy.my.salesforce.com/apex/AcceptActionIncident?incidentid={!relatedTo.Name}">Accept and Assign to Me</a></td>
+                </tr>
+                <tr>
+                    <td width="25%" class="mainsectiontitle">Requester Information</td>
+                    <td colspan="3" class="mainsectionspace">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Client Name:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__Client_Name__c}</td>
+                    <td width="22%" class="sectiontitle">Email:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__clientEmail__c}</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Location:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.Real_Location__c}</td>
+                    <td width="22%" class="sectiontitle">Phone:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__Client_Phone__c}</td>
+                </tr>
+                <tr>
+                    <td width="25%" class="mainsectiontitle">{!relatedTo.BMCServiceDesk__Type__c} Information</td>
+                    <td colspan="3" class="mainsectionspace">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Status:</td>
+                    <td width="78%" class="sectiondata">{!relatedTo.BMCServiceDesk__Status_ID__c}</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Created Date:</td>
+                    <td width="28%" class="sectiondata"><apex:outputField style="white-space: nowrap;" value="{!relatedTo.CreatedDate}" /></td>
+                    <td width="22%" class="sectiontitle">SLA Due Date:</td>
+                    <td width="28%" class="sectiondata important"><apex:outputField style="white-space: nowrap;" value="{!relatedTo.BMCServiceDesk__dueDateTime__c}" /></td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Urgency:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__Urgency_ID__c}</td>
+                    <td width="22%" class="sectiontitle">Impact:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__Impact_Id__c}</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Category:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__Category_ID__c}</td>
+                    <td width="22%" class="sectiontitle">Config item:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__FKBMC_BaseElement__r.Name}</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Short Description:</td>
+                    <td colspan="3" class="sectiondata">{!relatedTo.Incident_Title__c}</td>
+                </tr>
+                <c:SR_Details_for_Email recordID="{!relatedTo.Id}"/>
+                <tr>
+                    <td colspan="2" class="sectiontitle">Setup Like ID</td>
+                    <td colspan="2" class="sectiondata">{!relatedTo.SetupLikeLanID__r.FederationIdentifier}</td>
+                </tr>
+                <tr>
+                    <td width="25%" class="mainsectiontitle">Additional Information</td>
+                    <td colspan="3" class="mainsectionspace">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Service Request Title:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__Service_Request_Title__c}</td>
+                    <td width="22%" class="sectiontitle">Service:</td>
+                    <td width="28%" class="sectiondata">{!relatedTo.BMCServiceDesk__FKBusinessService__r.Name}</td>
+                </tr>
+                <tr>
+                    <td width="22%" class="sectiontitle">Requested Due Date:</td>
+                    <td width="28%" class="sectiondata"><apex:outputField style="white-space: nowrap;" value="{!relatedTo.Requested_Due_By_Date__c}" /></td>
+                    <td width="22%" class="sectiontitle">Expected Due Date:</td>
+                    <td width="28%" class="sectiondata"><apex:outputField style="white-space: nowrap;" value="{!relatedTo.Expected_Due_By_Date__c}" /></td>
+                </tr>
+            </table>
+        </body>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

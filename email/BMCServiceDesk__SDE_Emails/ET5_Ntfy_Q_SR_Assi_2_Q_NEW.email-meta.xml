@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>41.0</apiVersion>
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET5-Notify Queue_Client-SR Assigned to Queue</name>
+    <packageVersions>
+        <majorNumber>201702</majorNumber>
+        <minorNumber>68</minorNumber>
+        <namespace>BMCServiceDesk</namespace>
+    </packageVersions>
+    <style>none</style>
+    <type>visualforce</type>
+</EmailTemplate>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>33.0</apiVersion>
+    <available>true</available>
+    <description>This is the template used to send to the Approver for the ASA form</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET17-ASA-Notify Approver (VF) TESTING</name>
+    <packageVersions>
+        <majorNumber>201503</majorNumber>
+        <minorNumber>50</minorNumber>
+        <namespace>BMCServiceDesk</namespace>
+    </packageVersions>
+    <style>none</style>
+    <subject>Additional System Access - APPROVAL Required</subject>
+    <type>visualforce</type>
+</EmailTemplate>

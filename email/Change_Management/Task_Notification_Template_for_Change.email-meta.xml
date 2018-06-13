@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>29.0</apiVersion>
+    <available>true</available>
+    <description>Standard email template for Tasks associated with Change Requests.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Task: Notification Template for Change</name>
+    <packageVersions>
+        <majorNumber>201401</majorNumber>
+        <minorNumber>44</minorNumber>
+        <namespace>BMCServiceDesk</namespace>
+    </packageVersions>
+    <style>none</style>
+    <subject>Change Request :  :</subject>
+    <type>visualforce</type>
+</EmailTemplate>

@@ -1,0 +1,5 @@
+Incident Record #{!BMCServiceDesk__Incident__c.Name}  was monitored by operation and has been closed by {!BMCServiceDesk__Incident__c.BMCServiceDesk__Closed_By__c}.
+
+The Ops Monitor box has been unchecked, thus this ticket will no longer show up in the Operation Turnover quickview. 
+
+Link to IR-> {!BMCServiceDesk__Incident__c.Link}

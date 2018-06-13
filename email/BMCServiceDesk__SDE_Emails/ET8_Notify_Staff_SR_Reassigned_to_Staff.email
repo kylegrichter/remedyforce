@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Email Template 8</title>
+<style type="text/css">
+<!--
+#emaillogo tr td {
+	border-bottom-style: solid;
+	border-bottom-color: #004990;
+}
+#emailheader tr td {
+	border-top-style: none;	
+}
+#emailcontainer {
+	border-top-style: none;
+}
+#sectiontitle tr td {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	font-style: italic;
+}
+#sectionbody tr td {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	font-style:  normal;
+	}
+	
+#emailfooter tr td {
+	border-bottom-style: solid;
+	border-bottom-color: #666;	
+}
+.mainsectiontitle {
+	border-bottom-style: solid;
+	border-bottom-color: #58a618;
+	color: #58a618;
+	font-weight: bold;
+}
+.mainsectionspace {
+	border-bottom-style: solid;
+	border-bottom-color: #004990;
+}
+.sectiontitle {
+	font-weight: bold;
+}
+.important {
+	color: #F00;	
+}
+.highlighttext {
+	font-weight: bold;	
+}
+-->
+</style></head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="bodytable">
+  <tr>
+    <td valign="top" align="left">
+    	<table id="emailcontainer" width="750" border="0" cellspacing="0" cellpadding="10">
+        	
+            <tr>
+            	<td valign="top" align="left">
+               	  <table width="100%" border="0" cellpadding="0" cellspacing="0" id="emaillogo">
+        				<tr>
+            				<td width="25%" height="29" align="left" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEG&oid=00DE0000000caBt" alt="RF Logo" />
+                        </td>
+            				<td width="25%" height="29" align="right" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                            
+                        </tr>
+   					</table>
+                    
+              </td>
+            </tr>
+        <tr>
+            	<td valign="top" align="center">
+               	  <table id="emailheader" width="100%" border="0" cellspacing="0" cellpadding="5">
+        				<tr>
+            				<td width="22%" height="29" align="left" valign="bottom" class="sectiontitle">
+                				Service Request #</td>
+            				<td width="25%" align="left" valign="bottom"><a href="https://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?record_id={!BMCServiceDesk__Incident__c.Id}&objectName=Incident__c">{!BMCServiceDesk__Incident__c.Name}</a></td>
+           				  <td width="" align="center" valign="bottom">&nbsp;</td>
+       				    <td width="21%" align="left" valign="bottom" class="sectiontitle">
+           				    Priority:</td>
+           				  <td width="32%" align="left" valign="bottom" class="important">{!BMCServiceDesk__Incident__c.BMCServiceDesk__Priority_ID__c}</td>
+           				</tr>
+                        <tr>
+            				<td width="22%" height="29" align="left" valign="top" class="sectiontitle">Staff Assignment:</td>
+            				<td width="25%" align="left" valign="top"><span class="important">{!BMCServiceDesk__Incident__c.BMCServiceDesk__FKOpenBy__c}</span></td>
+           				  <td width="" align="center" valign="top">&nbsp;</td>
+       				    <td width="21%" align="left" valign="top" class="sectiontitle">Sent from:</td>
+           				  <td width="32%" align="left" valign="top">{!BMCServiceDesk__Incident__c.LastModifiedBy}</td>
+           				</tr>
+   					</table>
+              </td>
+            </tr>
+            <tr>
+            	<td valign="top" align="center">
+                	<table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+       				  <tr>
+            				<td width="23%" align="left" class="mainsectiontitle" valign="top">
+Requester Information</td>
+            				<td width="77%" align="left" class="mainsectionspace" valign="top">&nbsp;</td>
+            			</tr>
+   					</table>
+                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+        				<tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">
+           				    Client Name:</td>
+           				  <td width="25%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}</td>
+            				<td width="" align="left" valign="top">&nbsp;</td>
+            				<td width="21%" align="left" valign="top" class="sectiontitle">Email:</td>
+            				<td width="32%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}</td>
+       			      </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">Location:</td>
+           				  <td width="25%" align="left" valign="top">{!BMCServiceDesk__Incident__c.Real_Location__c}</td>
+            				<td width="" align="left" valign="top">&nbsp;</td>
+            				<td width="21%" align="left" valign="top" class="sectiontitle">Phone:</td>
+            				<td width="32%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Phone__c}</td>
+       			      </tr>
+   					</table>
+                </td>
+            </tr>
+            <tr>
+            	<td valign="top" align="center">
+           		  <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+       				  <tr>
+            				<td width="23%"  align="left" valign="top" class="mainsectiontitle">
+                				Service Request Information</td>
+            				<td width="77%"  align="left" class="mainsectionspace" valign="top" >&nbsp;</td>
+       			    </tr>
+   					</table>
+                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+        				<tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">
+           				    Status:</td>
+           				  <td width="25%" align="left" valign="top" class="highlighttext">{!BMCServiceDesk__Incident__c.BMCServiceDesk__Status_ID__c}</td>
+            				<td width="" align="left" valign="top">&nbsp;</td>
+            				<td width="21%" align="left" valign="top">&nbsp;</td>
+            				<td width="32%" align="left" valign="top">&nbsp;</td>
+                            
+       			      </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">Created Date:</td>
+           				  <td width="25%" align="left" valign="top">{!BMCServiceDesk__Incident__c.CreatedDate}</td>
+            				<td width="" align="left" valign="top">&nbsp;</td>
+            				<td width="21%" align="left" valign="top" class="sectiontitle">SLA Due Date:</td>
+            				<td width="32%" align="left" valign="top"><span class="important">{!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c}</span></td>
+                            
+       			      </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">
+           				    Urgency:</td>
+           				  <td width="25%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__Urgency_ID__c}</td>
+            				<td width="" align="left" valign="top">&nbsp;</td>
+            				<td width="21%" align="left" valign="top" class="sectiontitle">Impact:</td>
+            				<td width="32%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__Impact_Id__c}</td>
+                            
+       			      </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">
+           				    Category:</td>
+           				  <td width="25%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__Category_ID__c}</td>
+            				<td width="" align="left" valign="top">&nbsp;</td>
+            				<td width="21%" align="left" valign="top" class="sectiontitle">Config item:</td>
+            				<td width="32%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__FKBMC_BaseElement__c}</td>
+                            
+       			      </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">Short Description:</td>
+           				  <td colspan="4" align="left" valign="top">{!BMCServiceDesk__Incident__c.Incident_Title__c}</td>
+       				  </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">
+           				    Long Description:</td>
+           				  <td colspan="4" align="left" valign="top"><p>{!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}</p></td>
+       				  </tr>
+   					</table>
+                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+<tr>
+            				<td width="23%" align="left" class="mainsectiontitle" valign="top">
+  Additional Information</td>
+            				<td width="77%" align="left" class="mainsectionspace" valign="top">&nbsp;</td>
+           			  </tr>
+   					</table>
+                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+        				<tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">
+           				    Service Request Title:</td>
+           				  <td width="25%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__Service_Request_Title__c}</td>
+            				<td width="" align="left" valign="top">&nbsp;</td>
+            				<td width="21%" align="left" valign="top" class="sectiontitle">Service:</td>
+            				<td width="32%" align="left" valign="top">{!BMCServiceDesk__Incident__c.BMCServiceDesk__FKBusinessService__c}</td>
+       			      </tr>
+                      <tr>
+            				<td width="22%" align="left" valign="top" class="sectiontitle">Requested Due Date:</td>
+           				  <td width="25%" align="left" valign="top">{!BMCServiceDesk__Incident__c.Requested_Due_By_Date__c}</td>
+            				<td width="" align="left" valign="top">&nbsp;</td>
+            				<td width="21%" align="left" valign="top" class="sectiontitle">Expected Due Date:</td>
+            				<td width="32%" align="left" valign="top" class="important">{!BMCServiceDesk__Incident__c.Expected_Due_By_Date__c}</td>
+       			      </tr>
+   					</table>
+                </td>
+            </tr>
+         </table>
+	 </td>
+  </tr>
+</table>
+<span class="ETname">ET8</span>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<head>
+	<style>
+		body{
+			font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;
+			font-size:14px;
+		}
+		table{
+			border-collapse:collapse;
+		}
+		th{
+			border:1px solid #000000;
+			background-color:#666699;
+			color:white;
+			font-size:12px;
+		}
+		td{
+			border:1px solid #000000;
+			font-size:12px;
+		}
+		.blank{
+			border:0px solid #000000;
+			height:10px;
+		}
+		.blank2{
+			border:1px solid #000000;
+			background-color:#A4A4A4;
+			height:5px;
+		}		
+		.section{
+			background-color:#DF7401;
+			color:white;
+		}
+	</style>
+</head>
+<body>
+           <p>To approve or reject the activities of this request, reply to this email with the APPROVE, APPROVED, YES, REJECT, REJECTED, or NO in the first line of the email message.</p>
+
+            <p>Alternately if you have Staff access you can review, approve or reject the ticket by following this link. <a https://remedy.my.salesforce.com/{!BMCServiceDesk__Incident__c.Id}>https://remedy.my.salesforce.com/{!BMCServiceDesk__Incident__c.Id}</a> To approve or reject scroll down to the Approval History section.</p>
+
+<table>
+           <tr>
+                 <th>SR#</th>
+                 <td>{!BMCServiceDesk__Incident__c.Name} </td>
+           </tr>
+           <tr>
+                 <th>Requestor Name </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}</td>
+           <tr>
+                 <th>Requestor Email: </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}</td>
+           </tr>
+           <tr>
+                 <th>Service Title: </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__FKRequestDefinition__c}</td>
+           </tr>
+           <tr>
+                 <th>Description: </th>
+                 <td>{!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}</td>
+           </tr>
+           <tr>
+                 
+
+</table>
+</br>
+<p style=font-size:12px;>If you require additional information on this Request, please contact the 1300 Help Desk at (866) 847-1300, Option 1 </p>

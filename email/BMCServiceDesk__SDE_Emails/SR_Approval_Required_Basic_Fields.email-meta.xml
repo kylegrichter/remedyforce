@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Approval for Service Requests</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SR Approval Required-Basic Fields</name>
+    <style>none</style>
+    <subject>Service Request #{!BMCServiceDesk__Incident__c.Name} requires your approval.</subject>
+    <textOnly>To approve or reject the activities of this request, reply to this email with the APPROVE, APPROVED, YES, REJECT, REJECTED, or NO in the first line of the email message.
+
+Alternately if you have Staff access you can review, approve or reject the ticket by following this link. https://remedy.my.salesforce.com/{!BMCServiceDesk__Incident__c.Id} To approve or reject scroll down to the Approval History section.
+
+SR# {!BMCServiceDesk__Incident__c.Name}
+Requestor Name  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}
+Requestor Email:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}
+Service Title:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKRequestDefinition__c}
+Description:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}
+
+If you would like to discuss this request with the Client, please contact {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}</textOnly>
+    <type>custom</type>
+</EmailTemplate>

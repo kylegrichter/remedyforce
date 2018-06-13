@@ -1,0 +1,63 @@
+<messaging:emailTemplate subject="Change Request {!relatedTo.Name} : {!relatedTo.Title__c}" recipientType="User" relatedToType="BMCServiceDesk__Change_Request__c">
+<messaging:htmlEmailBody >
+<head>
+    <style>
+        body{
+            font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;
+            font-size:14px;
+        }
+    </style>
+</head>
+<body>
+    <style>
+        .title{
+            font-weight:bold;
+            text-decoration:underline;
+            font-style:italic;
+        }
+        .header{
+            font-size:28px;
+            font-weight:bold;
+            text-decoration:underline;
+            text-align:center;
+        }
+        pre{
+            font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            white-space:pre-wrap;
+            word-wrap:break-word;
+        }
+    </style>
+    <apex:outputPanel id="header" layout="block" styleClass="header">
+        <p><apex:outputText value="CHANGE REQUEST NOTIFICATION" /></p>
+    </apex:outputPanel>
+    <apex:outputPanel id="what_is_changing" layout="block">
+        <br /><p><pre><apex:outputText styleClass="title" value="What we are changing:" />&nbsp;<apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!relatedTo.Id}" id="crLink">{!relatedTo.Name}</apex:outputLink><br />{!relatedTo.BMCServiceDesk__Change_Description__c}</pre></p>
+    </apex:outputPanel>
+    <apex:outputPanel id="reason" layout="block">
+        <br /><p><pre><apex:outputText styleClass="title" value="Reason" /><br />{!relatedTo.BMCServiceDesk__Reason_for_Change_Details__c}</pre></p>
+    </apex:outputPanel>
+    <apex:outputPanel id="what_is_affected" layout="block">
+        <br /><p><pre><apex:outputText styleClass="title" value="What will be affected:" /><br />{!relatedTo.Affected_Systems_Applications__c}</pre></p>
+    </apex:outputPanel>
+    <apex:outputPanel id="when" layout="block">
+        <br /><p><pre><apex:outputText styleClass="title" value="When will it occur:" /><br /><apex:outputText value="{0,date,M/d/yyyy h:mm a' ('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c) >= DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c) < DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) - DATE(1900,1,7),7))),relatedTo.BMCServiceDesk__Scheduled_Start_Date__c - (5/24),relatedTo.BMCServiceDesk__Scheduled_Start_Date__c - (6/24))}" /></apex:outputText> to&nbsp; <apex:outputText value="{0,date,M/d/yyyy h:mm a' ('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c) >= DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c) < DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(relatedTo.BMCServiceDesk__Scheduled_End_Date__c)),11,1) - DATE(1900,1,7),7))),relatedTo.BMCServiceDesk__Scheduled_End_Date__c - (5/24),relatedTo.BMCServiceDesk__Scheduled_End_Date__c - (6/24))}" /></apex:outputText> (CST)</pre></p>
+    </apex:outputPanel>
+    <apex:outputPanel id="backout" layout="block">
+        <br /><p><pre><apex:outputText styleClass="title" value="What the high level backup plan is:" /><br />{!relatedTo.BMCServiceDesk__Back_out_Plan_Details__c}</pre></p>
+    </apex:outputPanel>
+    <apex:outputPanel id="who" layout="block">
+        <br /><p><pre><apex:outputText styleClass="title" value="Who should be contacted if problems occur immediately following the change:" /><br />{!relatedTo.Owner.Name}<br />{!relatedTo.Owner.Phone}</pre></p>
+    </apex:outputPanel>
+    <apex:outputPanel id="approval" layout="block">
+        <p><apex:outputText styleClass="title" value="Approved by:" /><br />
+        <apex:repeat var="cx" value="{!relatedTo.ProcessSteps}">
+            <apex:outputPanel rendered="{!cx.StepStatus=='Approved'}">
+                {!cx.Actor.Name} on&nbsp;<apex:outputField value="{!cx.createdDate}" />&nbsp;CST<br />
+            </apex:outputPanel>
+        </apex:repeat></p>
+    </apex:outputPanel>
+    <p style="font-size:12px;">Questions? Send an email to <a href="mailto:dl-dcchangemanagement@dexmedia.com">DL-DC Change Management</a>.</p>
+</body>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

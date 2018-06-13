@@ -1,0 +1,33 @@
+<apex:component controller="ChangeManagement" access="global">
+    <style type="text/css">
+        table{border-collapse: collapse;empty-cells: show;}
+        th{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#1797C0;color: #FFFFFF;font-size: 9pt;font-weight:bold;text-align: left;font-family: Calibri;}
+        td{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#FFFFFF;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;}
+        pre{font-family: Calibri;font-size: 9pt;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;margin:1px;}
+        .section{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;}
+        .blank{background-color: #FFFFFF;border: none;}
+    </style>
+    <p>Displaying&nbsp;<b><apex:outputField value="{!weekend.Start_Date_Time__c}" /></b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.End_Date_Time__c}" /></b>.</p>
+    <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!releasetasks}" var="t" id="Tasks" >
+        <apex:column styleClass="td" style="white-space: nowrap;">
+            <apex:facet name="header">Task #</apex:facet>
+            <apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Task__c&record_id={!t.Id}" id="tkLink">{!t.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column styleClass="td" style="white-space: nowrap;">
+            <apex:facet name="header">Change #</apex:facet>
+            <apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!t.BMCServiceDesk__FKChange__r.id}" id="crLink">{!t.BMCServiceDesk__FKChange__r.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column styleClass="td" style="white-space: nowrap;">
+            <apex:facet name="header">Scheduled Start</apex:facet>
+            <apex:outputField style="white-space: nowrap;" value="{!t.BMCServiceDesk__Scheduled_Start_Date__c}" />
+        </apex:column>
+        <apex:column styleClass="td" style="white-space: nowrap;">
+            <apex:facet name="header">Scheduled End</apex:facet>
+            <apex:outputField style="white-space: nowrap;" value="{!t.BMCServiceDesk__Scheduled_End_Date__c}" />
+            <apex:outputText escape="false" rendered="{!t.Task_Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=2>{!t.Task_Title__c}<br /></td></tr>" />
+            <apex:outputText escape="false" rendered="{!t.BMCServiceDesk__taskDescription__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=2><pre class=pre>{!t.BMCServiceDesk__taskDescription__c}</pre></td></tr>" />
+            <apex:outputText escape="false" rendered="{!t.Description_Rich_Text__c != ''}" value="<tr><th class=blank></th><th class=th>Additional Notes</th><td class=td colspan=2><pre class=pre>{!t.Description_Rich_Text__c}</pre></td></tr>" />
+            <apex:outputText escape="false" rendered="{!t.BMCServiceDesk__taskResolution__c != ''}" value="<tr><th class=blank></th><th class=th>Resolution</th><td class=td colspan=2><pre class=pre>{!t.BMCServiceDesk__taskResolution__c}</pre></td></tr>" />
+        </apex:column>
+    </apex:dataTable>
+</apex:component>

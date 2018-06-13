@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notify Staff-Task Assigned to Staff</description>
+    <encodingKey>UTF-8</encodingKey>
+    <name>ET15-Notify Staff-Task Assigned to Staff</name>
+    <style>none</style>
+    <subject>Task # {!BMCServiceDesk__Task__c.Name} has been opened and assigned to {!BMCServiceDesk__Task__c.BMCServiceDesk__FKOpenBy__c}</subject>
+    <textOnly>Task # {!BMCServiceDesk__Task__c.Name} has been opened and assigned to {!BMCServiceDesk__Task__c.OwnerFullName}. This task has the following details:
+      Task Number: {!BMCServiceDesk__Task__c.Name}
+      Task Link: {!BMCServiceDesk__Task__c.Link}
+      Task Description: {!BMCServiceDesk__Task__c.BMCServiceDesk__taskDescription__c}
+      Open Date: {!BMCServiceDesk__Task__c.BMCServiceDesk__openDateTime__c}
+      Due Date: {!BMCServiceDesk__Task__c.BMCServiceDesk__dueDateTime__c}
+      Category: {!BMCServiceDesk__Task__c.BMCServiceDesk__FKCategory__c}
+      Client Name: {!BMCServiceDesk__Task__c.BMCServiceDesk__FKClient__c}
+      Urgency: {!BMCServiceDesk__Task__c.BMCServiceDesk__Urgency_ID__c}
+      Impact: {!BMCServiceDesk__Task__c.BMCServiceDesk__Impact_ID__c}
+      Priority: {!BMCServiceDesk__Task__c.BMCServiceDesk__Priority_ID__c}
+      Related Incident Number: {!BMCServiceDesk__Task__c.BMCServiceDesk__FKIncident__c}</textOnly>
+    <type>custom</type>
+</EmailTemplate>

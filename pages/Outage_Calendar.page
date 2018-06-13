@@ -1,0 +1,3 @@
+<apex:page standardController="BMCServiceDesk__Projected_Service_Outage__c" title="Outage Calendar" showHeader="false" sidebar="false">
+    <c:PSOCalendarComponent />
+</apex:page>

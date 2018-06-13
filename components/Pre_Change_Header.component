@@ -1,0 +1,7 @@
+<apex:component controller="ChangeManagement" access="global">
+    <p>The Pre-Change meeting is at <b><font color="blue">1:00 pm Central Time</font></b>. I will host a Skype for Business meeting. Those of you who have changes for the weekend need to be at the meeting. Below is the Change Detail report of all open changes for this immediate weekend, &nbsp;<b><apex:outputField value="{!weekend.Start_Date_Time__c}" /></b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.End_Date_Time__c}" /></b>. We will be covering all changes from today through the next two weeks, with focus on the below items for this coming weekend.</p>
+    <p>If you have changes scheduled and are not yet approved, you must be in attendance otherwise the Chagnes are at risk of being Rejected and rescheduled.</p>
+    <p>Additionally, the future system downtime report can be found <a href="http://dexmedia.force.com/SystemDowntime/">here</a>.</p>
+    <p><b>Voice Conference Information:</b><br />(972) 453-7537<br />(844) 800-5962<br />Conference ID 269350<br /><a style="font-size: 8pt" href="https://dialin.dexmedia.com/">Find a local number</a></p>
+    <p><b>Web Conference Information:</b><br /><a href="https://meet.dexmedia.com/kyle.richter/H9WT3ZRD">Join Skype Meeting</a></p>
+</apex:component>

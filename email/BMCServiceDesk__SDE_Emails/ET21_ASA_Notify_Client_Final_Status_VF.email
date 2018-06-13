@@ -1,0 +1,147 @@
+<messaging:emailTemplate subject="Additional System Access for {!relatedTo.Configuration_Item__r.Name} - {!relatedTo.BMCServiceDesk__Client_Name__c} - Conf# {!relatedTo.BMCServiceDesk__FKIncident__r.Name}" recipientType="User" relatedToType="BMCServiceDesk__Task__c">
+    <messaging:htmlEmailBody > 
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>ET21</title>
+            <style type="text/css">
+                #emaillogo tr td {
+                border-bottom-style: solid;
+                border-bottom-color: #004990;
+                }
+                #emailheader tr td {
+                border-top-style: none; 
+                }
+                #emailcontainer {
+                border-top-style: none;
+                }
+                #sectiontitle tr td {
+                font-family: Verdana, Geneva, sans-serif;
+                font-size: 12px;
+                font-style: italic;
+                }
+                #sectionbody tr td {
+                font-family: Verdana, Geneva, sans-serif;
+                font-size: 12px;
+                font-style:  normal;
+                }
+                pre {
+                font-family: Verdana, Geneva, sans-serif;
+                font-size: 12px;
+                font-style:  normal;
+                }
+                #emailfooter tr td {
+                border-bottom-style: solid;
+                border-bottom-color: #666;  
+                }
+                .mainsectiontitle {
+                border-bottom-style: solid;
+                border-bottom-color: #58a618;
+                color: #58a618;
+                font-weight: bold;
+                }
+                .mainsectionspace {
+                border-bottom-style: solid;
+                border-bottom-color: #004990;
+                }
+                .sectiontitle {
+                font-weight: bold;
+                }
+                .important {
+                color: #F00;    
+                }
+                .highlighttext {
+                font-weight: bold;  
+                }
+                .ETname {
+                color: #FFF;
+                }
+            </style></head>
+        <body>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="bodytable">
+                <tr>
+                    <td valign="top" align="left">
+                        <table id="emailcontainer" width="750" border="0" cellspacing="0" cellpadding="10">
+                            <tr>
+                                <td valign="top" align="left">
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="emaillogo">
+                                        <tr>
+                                            <td width="11%" height="40" align="left" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005PvQK&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="48%" align="left" valign="bottom"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005PvPg&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="41%" height="40" align="right" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&oid=00DE0000000caBt"  alt="DM Logo" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="emailheader" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="border-top-style: none;">
+                                            <td width="11%" height="40" align="left" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005sujC&oid=00DE0000000caBt&lastMod=1437659928000" alt="Process Stage" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="22%" height="29" align="left" valign="bottom" class="sectiontitle">Additional Access for:</td>
+                                            <td width="49%" align="left" valign="bottom">{!relatedTo.Configuration_Item__r.Name}</td>
+                                            <td width="29%" align="center" valign="bottom">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="22%" height="29" align="left" valign="top" class="sectiontitle">The Request has been &nbsp;<c:Approval_Last_Status relatedToId="{!relatedTo.id}"/> by:</td>
+                                            <td width="49%" align="left" valign="top"><span class="important"><c:Approval_Last_ActorID_Name relatedToId="{!relatedTo.id}"/></span></td>
+                                            <td width="29%" align="center" valign="bottom">&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="22%" height="29" align="left" valign="top" class="sectiontitle">Approver's Contact Information:</td>
+                                            <td width="49%" align="left" valign="top"><span class="important"><c:Approval_Last_ActorID_Phone relatedToId="{!relatedTo.id}"/></span></td>
+                                            <td width="29%" align="center" valign="bottom">&nbsp;</td>
+                                        </tr>
+                                        <c:Approval_Last_Comment_Email relatedToId="{!relatedTo.id}"/>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr>
+                                            <td width="23%" align="left" class="mainsectiontitle" valign="top">Access Information</td>
+                                            <td width="77%" align="left" class="mainsectionspace" valign="top">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <c:Approval_Last_Status_Email relatedToId="{!relatedTo.id}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr>
+                                            <td width="23%"  align="left" valign="top" class="mainsectiontitle">
+                                                Request Information</td>
+                                            <td width="77%"  align="left" class="mainsectionspace" valign="top" >&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr>
+                                            <td width="22%" align="left" valign="top" class="sectiontitle">Submitted on:</td>
+                                            <td width="25%" align="left" valign="top">{!relatedTo.CreatedDate}</td>
+                                            <td align="left" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <c:AttachmentList recordID="{!relatedTo.Id}"/>
+                                        <tr>
+                                            <td width="22%" align="left" valign="top" class="sectiontitle">
+                                                Description:</td>
+                                            <td colspan="2" align="left" valign="top"><pre>{!relatedTo.BMCServiceDesk__taskDescription__c}</pre></td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr>
+                                            <td  align="left" valign="top">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <span class="ETname">ET21</span>
+        </body>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

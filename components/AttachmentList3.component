@@ -1,0 +1,11 @@
+<apex:component controller="AttachmentLinking" access="global">
+    <apex:attribute name="recordID" type="Id" description="Id of the parent record" assignTo="{!parentId}"/>
+    <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+        <td colspan="2" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Attachment(s):</td>
+        <td colspan="3" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: normal;">
+            <apex:repeat value="{!attachmentsbyir}" var="a">
+                <apex:outputLink value="https://remedy.my.salesforce.com/servlet/servlet.FileDownload?file={!a.Id}" id="prLink">{!a.Name}</apex:outputLink><br />
+            </apex:repeat>
+        </td>
+    </tr>
+</apex:component>

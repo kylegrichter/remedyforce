@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>28.0</apiVersion>
+    <available>true</available>
+    <description>Change Request is has not been Submitted for Approval</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Change Request: Not Approved Before 1 Hour</name>
+    <packageVersions>
+        <majorNumber>201301</majorNumber>
+        <minorNumber>14</minorNumber>
+        <namespace>BMCServiceDesk</namespace>
+    </packageVersions>
+    <style>none</style>
+    <type>visualforce</type>
+</EmailTemplate>

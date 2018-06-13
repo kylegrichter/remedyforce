@@ -1,0 +1,5 @@
+<apex:page controller="NotifyQueueAssociations" action="{!LookupCreate}" contentType="text/xml" title="GenTicket" id="page">
+    <RemedyResponse>
+        {!resultxml}
+    </RemedyResponse>
+</apex:page>

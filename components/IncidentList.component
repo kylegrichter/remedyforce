@@ -1,0 +1,17 @@
+<apex:component controller="ChangeManagement" access="global">
+    <apex:attribute name="ChgId" type="Id" description="Id of the change" assignTo="{!changeId}"/>
+    <apex:dataTable width="700px" columnsWidth="65px,80px,*" cellpadding="4px" value="{!incidentsbycr}" var="i" id="Related-Incidents" >
+        <apex:column style="white-space: nowrap;">
+            <apex:facet name="header">IR/SR #</apex:facet>
+            <apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Incident__c&record_id={!i.Id}" id="irLink">{!i.Name}</apex:outputLink><br />{!i.BMCServiceDesk__Type__c}
+        </apex:column>
+        <apex:column style="white-space: nowrap;">
+            <apex:facet name="header">Owner</apex:facet>
+            <apex:outputText value="{!i.Owner.Name}" />
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">Description</apex:facet>
+            <pre>{!i.BMCServiceDesk__incidentDescription__c}</pre>
+        </apex:column>
+    </apex:dataTable>
+</apex:component>

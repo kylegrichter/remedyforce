@@ -1,0 +1,17 @@
+<apex:component controller="SRDDetailsList" access="global">
+    <apex:attribute name="recordID" type="Id" description="Id of the parent record" assignTo="{!serviceRequestId}"/>
+    <apex:outputText escape="false" value="<tr><th class=blank></th><th class=th>Request Details</th><td class=td colspan=8>" />
+    <apex:repeat value="{!requestdetailinputsbyir}" var="a">
+        <table>
+            <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                <td width="250px" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-weight: bold;{!IF(a.BMCServiceDesk__Response__c='header section','font-style: italic;border-bottom-style: solid;border-bottom-color: #004990;','font-style:normal;')}">
+                    {!IF(a.BMCServiceDesk__Input__c='I am Requesting Additional Access to: (CTRL+ Click) to select multiple values','I am Requesting Additional Access to:',IF(a.BMCServiceDesk__Input__c='I am Requesting Additional Access to: (CTRL+ Click to select multiple values, These Apps do not have additional Questions)','',a.BMCServiceDesk__Input__c))}
+                </td>
+                <td width="400px" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;{!IF(a.BMCServiceDesk__Response__c='header section','font-style: italic;border-bottom-style: solid;border-bottom-color: #004990;','font-style:normal;')}">
+                    {!IF(a.BMCServiceDesk__Response__c='header section','',a.BMCServiceDesk__Response__c)}
+                </td>
+            </tr>
+        </table>
+    </apex:repeat>
+    <apex:outputText escape="false" value="</td></tr>" />
+</apex:component>

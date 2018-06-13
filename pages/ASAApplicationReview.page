@@ -1,0 +1,45 @@
+<apex:page controller="ASAApplicationReview">
+    <apex:repeat value="{!use}" var="u">
+        <apex:outputText rendered="{!$User.Id!=u.ManagerId}">
+            <h1>Welcome: {!$User.FirstName} {!$User.LastName}</h1>
+            <p>You are not authorized to view this page. Only the Manager of the user you are trying to view can see this content.</p>
+        </apex:outputText>
+        <apex:outputText rendered="{!ISNULL($CurrentPage.parameters.id)}">
+            <h1>Welcome: {!$User.FirstName} {!$User.LastName}</h1>
+            <p>You are missing a user parameter and there is nothing to display.</p>
+        </apex:outputText>
+        <apex:outputText rendered="{!$User.Id=u.ManagerId || $Profile.Name='System Administrator'}">
+            <h1>Welcome: {!$User.FirstName} {!$User.LastName}</h1>
+            <p>Please carefully review the access below as this will provide continued access or <b style="color: Red;">remove access</b> for the current listed user.</p> 
+            <apex:form ><!--a0GE0000003TjgzMAC-->
+                <apex:pageBlock >
+                    <h1>User Details:</h1>
+                    <apex:pageblockTable value="{!use}" var="b">
+                        <apex:column value="{!b.Name}"/>
+                        <apex:column value="{!b.Email}"/>
+                        <apex:column value="{!b.Phone}"/>                
+                    </apex:pageblockTable>      
+                    <h1>User Profile is:</h1> 
+                    <apex:pageblockTable value="{!BE}" var="a">
+                        <apex:column value="{!a.ASA_Application__r.Additional_System_Access_Label__c}"/>
+                        <apex:column value="{!a.Review_Date_Time__c}"/>                        
+                        <apex:column >
+                            <apex:facet name="header"><apex:commandButton action="{!ApproveAllRecord}" id="ApproveAllRecord" value="Approve All"/></apex:facet>
+                            <apex:commandLink value="Approve" action="{!ApproveRecord}" styleclass="btn"  style="text-decoration:none;padding:4px;"> 
+                                <apex:param name="approveBE" value="{!a.Id}" assignTo="{!aBEId}"/>
+                            </apex:commandLink>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandButton action="{!RejectAllRecord}" id="RejectAllRecord" value="Reject All"/>
+                            </apex:facet>             
+                            <apex:commandLink value="Reject" action="{!RejectRecord}" styleclass="btn"  style="text-decoration:none;padding:4px;"> 
+                                <apex:param name="rejectBE" value="{!a.Id}" assignTo="{!sBEId}"/>
+                            </apex:commandLink>
+                        </apex:column>
+                    </apex:pageblockTable>
+                </apex:pageBlock>  
+            </apex:form> 
+        </apex:outputText>
+    </apex:repeat>
+</apex:page>

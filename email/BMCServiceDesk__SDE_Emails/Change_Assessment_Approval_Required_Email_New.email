@@ -1,0 +1,54 @@
+<!--
+A Change Assessment has been submitted to you for Change Request: {!BMCServiceDesk__Change_Request__c.Name}
+-->
+<head>
+	<style>
+		body{
+			font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;
+			font-size:14px;
+		}
+		table{
+			border-collapse:collapse;
+		}
+		th{
+			border:1px solid #000000;
+			background-color:#666699;
+			color:white;
+			font-size:12px;
+		}
+		td{
+			border:1px solid #000000;
+			font-size:12px;
+		}
+		.blank{
+			border:0px solid #000000;
+			height:10px;
+		}
+		.blank2{
+			border:1px solid #000000;
+			background-color:#A4A4A4;
+			height:5px;
+		}		
+		.section{
+			background-color:#DF7401;
+			color:white;
+		}
+	</style>
+</head>
+<body>
+	<p>{!BMCServiceDesk__Change_Assessment__c.CreatedBy} has requested your review for change assessment: {!BMCServiceDesk__Change_Assessment__c.Name}</p>
+
+	<p><a href={!BMCServiceDesk__Change_Assessment__c.Link}>{!BMCServiceDesk__Change_Assessment__c.Link}</a></p>
+
+	<table>
+		<tr>
+			<th>Associated CR</th>
+			<td>{!BMCServiceDesk__Change_Assessment__c.BMCServiceDesk__FKChange__c}</td>
+		</tr>
+		<tr>
+			<th>CR Description</th>
+			<td>{!BMCServiceDesk__Change_Request__c.BMCServiceDesk__Change_Description__c}</td>
+		</tr>
+	</table>
+	<p style=font-size:12px;>Questions? Send an email to <a href="mailto:dl-dcchangemanagement@supermedia.com">DL-DC Change Management</a>.</p>
+</body>

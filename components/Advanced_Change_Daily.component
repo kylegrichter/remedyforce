@@ -1,0 +1,106 @@
+<apex:component controller="ChangeManagement" access="global">
+    <apex:attribute name="range" type="Integer" description="Range for SOQL" assignTo="{!rangeNum}"/>
+    <apex:variable var="stylebody" value="font-family:Calibri; color:#4A4A4A; font-weight: normal; font-size: 9pt;" />
+    <apex:variable var="styletable" value="border-collapse: collapse;empty-cells: show;" />
+    <apex:variable var="styleth" value="margin:5px; border-style: solid; border-width: 0px 0px 2px; border-color: #414042 #414042 #F86E00; background-color:#414042; color: #F86E00; font-size: 11pt; font-weight:bold; text-align: left; vertical-align: top; font-family: Calibri; text-overflow: ellipsis;" />
+    <apex:variable var="styletd" value="margin:5px; border-style: solid; border-width: 1px 0px 1px 0px; border-color: #BDBDBD; background-color:#FFFFFF; color:#000000; font-size: 9pt; text-align: left; vertical-align: top; font-family: Calibri;" />
+    <apex:variable var="stylepre" value="font-family: Calibri;font-size: 9pt;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;" />
+    <apex:variable var="stylesection" value="margin:5px; border-style: solid; border-width: 0px 0px 1px 0px; border-color: #BDBDBD; background-color:#E0E3E6; color:#4A4A4A; font-size: 9pt; text-align: left; font-family: Calibri;" />
+    <apex:variable var="styleblank" value="border: none; background-color: #FFFFFF;" />
+    <table style="{!styletable}">
+        <thead>
+            <tr>
+                <th style="{!styleth}">Change #</th>
+                <th style="{!styleth}">Status</th>
+                <th style="{!styleth}">Pri.</th>
+                <th style="{!styleth}">Owner</th>
+                <th style="{!styleth}">Scheduled Start</th>
+                <th style="{!styleth}">Scheduled End</th>
+                <th style="{!styleth}">Category</th>
+                <th style="{!styleth}">Chg. Cat.</th>
+                <th style="{!styleth}">Env.</th>
+                <th style="{!styleth}">Type</th>
+            </tr>
+        </thead>
+        <tbody>
+    <apex:repeat value="{!changesDaily}" var="c">
+            <tr>
+                <td style="{!stylesection}" ><apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink></td>
+                <td style="{!stylesection}" nowrap="nowrap"><apex:outputText value="{!c.BMCServiceDesk__Status__c}" /></td>
+                <td style="{!stylesection}"><apex:outputText value="{!c.BMCServiceDesk__Priority__c}" /></td>
+                <td style="{!stylesection}"><apex:outputText value="{!c.Owner.Name}" /></td>
+                <td style="{!stylesection}" nowrap="nowrap"><apex:outputText escape="false" value="{0,date,M/d/yyyy h:mm a'<br/>('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c) >= DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c) < DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) - DATE(1900,1,7),7))),c.BMCServiceDesk__Scheduled_Start_Date__c - (5/24),c.BMCServiceDesk__Scheduled_Start_Date__c - (6/24))}" /></apex:outputText></td>
+                <td style="{!stylesection}" nowrap="nowrap"><apex:outputText escape="false" value="{0,date,M/d/yyyy h:mm a'<br/>('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c) >= DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c) < DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),11,1) - DATE(1900,1,7),7))),c.BMCServiceDesk__Scheduled_End_Date__c - (5/24),c.BMCServiceDesk__Scheduled_End_Date__c - (6/24))}" /></apex:outputText></td>
+                <td style="{!stylesection}"><apex:outputText value="{!c.BMCServiceDesk__Category__c}" /></td>
+                <td style="{!stylesection}"><apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" /></td>
+                <td style="{!stylesection}"><apex:outputText value="{!c.Environment__c}" /></td>
+                <td style="{!stylesection}"><apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" /></td>
+            </tr>
+            <tr>
+                <th style="{!styleblank}"></th>
+                <th style="{!styleth}">Title</th>
+                <td style="{!styletd}" colspan="8">{!c.Title__c}</td>
+            </tr>
+            <tr>
+                <th style="{!styleblank}"></th>
+                <th style="{!styleth}">Description</th>
+                <td style="{!styletd}" colspan="8"><pre style="{!stylepre}">{!c.BMCServiceDesk__Change_Description__c}</pre></td>
+            </tr>
+            <tr>
+                <th style="{!styleblank}"></th>
+                <th style="{!styleth}">Reason</th>
+                <td style="{!styletd}" colspan="8"><pre style="{!stylepre}">{!c.BMCServiceDesk__Reason_for_Change_Details__c }</pre></td>
+            </tr>
+            <tr>
+                <th style="{!styleblank}"></th>
+                <th style="{!styleth}">Aff. Systems</th>
+                <td style="{!styletd}" colspan="8"><pre style="{!stylepre}">{!c.Affected_Systems_Applications__c }</pre></td>
+            </tr>
+            <tr>
+                <th style="{!styleblank}"></th>
+                <th style="{!styleth}">Roll-out Plan</th>
+                <td style="{!styletd}" colspan="8"><pre style="{!stylepre}">{!c.BMCServiceDesk__Roll_Out_Plan_Details__c }</pre></td>
+            </tr>
+            <tr>
+                <th style="{!styleblank}"></th>
+                <th style="{!styleth}">Back-out Plan</th>
+                <td style="{!styletd}" colspan="8"><pre style="{!stylepre}">{!c.BMCServiceDesk__Back_out_Plan_Details__c }</pre></td>
+            </tr>
+        <apex:outputText escape="true" rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}">
+            <tr>
+                <th style="{!styleblank}" colspan="2"></th>
+                <th style="{!styleth}">Tasks</th>
+                <th style="{!styleth}">#</th>
+                <th style="{!styleth}">Description</th>
+                <th style="{!styleth}">Owner</th>
+                <th style="{!styleth}">Scheduled Start</th>
+                <th style="{!styleth}">Scheduled End</th>
+            </tr>
+            <c:DailyChangeTaskList rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" ChgId="{!c.Id}"/>
+        </apex:outputText>
+        <apex:outputText escape="true" rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}">
+            <tr>
+                <th style="{!styleblank}" colspan="2"></th>
+                <th style="{!styleth}">Incidents/SRs</th>
+                <th style="{!styleth}"># and Type</th>
+                <th style="{!styleth}">Description</th>
+                <th style="{!styleth}">Owner</th>
+                <th style="{!styleblank}" colspan="2"></th>
+            </tr>
+            <c:DailyChangeIncidentList rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" ChgId="{!c.Id}"/>
+        </apex:outputText>
+        <apex:outputText escape="true" rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}">
+            <tr>
+                <th style="{!styleblank}" colspan="2"></th>
+                <th style="{!styleth}">Problems</th>
+                <th style="{!styleth}">#</th>
+                <th style="{!styleth}">Description</th>
+                <th style="{!styleth}">Owner and CI</th>
+                <th style="{!styleblank}" colspan="2"></th>
+            </tr>
+            <c:DailyChangeProblemList rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" ChgId="{!c.Id}"/>
+        </apex:outputText>
+    </apex:repeat>
+        </tbody>
+    </table>
+</apex:component>

@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Survey-IR</title>
+	</head>
+	<body>
+		<div style="width: 750px; font-family: Calibri, Times New Roman, sans-serif; font-style: normal;">
+			<table style="border-top-style: none; border-bottom-style: solid; border-bottom-color: #004990;" width="100%" >
+				<tr>
+					<td width="25%" height="29" align="left" valign="top">
+						<img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEG&amp;oid=00DE0000000caBt" alt="RF Logo" />
+					</td>
+					<td width="25%" height="29" align="right" valign="top">
+						<img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&amp;oid=00DE0000000caBt" alt="DM Logo" />
+					</td>
+				</tr>
+			</table>
+			<p>Dear <b>{!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}</b>,</p>
+			<p>In order to provide continuous improvement in regard to your customer support experience with one of our IT Support Services Teams, we would like your feedback about the service you recently received.</p>
+			<p>
+				Ticket <b>{!BMCServiceDesk__Incident__c.Name}</b> Details:
+				<ul>
+					<li><b>Type:</b> {!BMCServiceDesk__Incident__c.BMCServiceDesk__Type__c}</li>
+					<li><b>Description:</b> {!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}</li>
+					<li><b>IT Support Team Assigned the Ticket (Queue):</b> {!BMCServiceDesk__Incident__c.BMCServiceDesk__Queue__c}</li>
+					<li><b>Open Date:</b> {!BMCServiceDesk__Incident__c.BMCServiceDesk__openDateTime__c}</li>
+					<li><b>Due Date:</b> {!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c}</li>
+					<li><b>Closed Date:</b> {!BMCServiceDesk__Incident__c.BMCServiceDesk__closeDateTime__c}</li>
+					<li><b>Priority:</b> {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKPriority__c}</li>
+				</ul>
+			</p>							
+			<p>Please take the time to answer a short questionnaire by clicking on the link below. It should only take a couple of minutes. Please do not send this link to anyone else, this URL links to the survey for your specific Incident support case information.</p>
+			<p><a style="font-size: xx-large;" href="http://dexmedia.force.com/apex/BMCServiceDesk__SurveyPage?i={!BMCServiceDesk__Incident__c.Id}">Survey Link</a></p>
+			<p>We value your input, positive and constructive, and will use it to help improve our service to you in the future. If you have any questions about this survey, please call <b>Phil Olechna</b> at <b>972-453-7258</b>.</p>
+			<p>Thank  you for your feedback,</p>
+			<p><i>Your IT Support Services Teams</i></p>
+		</div>
+	</body>
+</html>

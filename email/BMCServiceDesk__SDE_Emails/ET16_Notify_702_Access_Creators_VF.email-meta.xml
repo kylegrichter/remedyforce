@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>33.0</apiVersion>
+    <available>true</available>
+    <description>Notifies the Group responsible to create the ID</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET16-ASA-Notify Product Admin (VF-SR)</name>
+    <packageVersions>
+        <majorNumber>201501</majorNumber>
+        <minorNumber>14</minorNumber>
+        <namespace>BMCServiceDesk</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>2</minorNumber>
+        <namespace>Field_Trip</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>2</minorNumber>
+        <namespace>SFGA</namespace>
+    </packageVersions>
+    <style>none</style>
+    <subject>Additional System Access for  - Conf#</subject>
+    <type>visualforce</type>
+</EmailTemplate>

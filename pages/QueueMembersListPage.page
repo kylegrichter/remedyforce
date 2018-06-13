@@ -1,0 +1,83 @@
+<apex:page controller="QueueMembersController" title="Queue Members" sidebar="false" docType="html-5.0">
+
+    <apex:form id="mainForm">
+
+        <apex:pageBlock id="mainPageBlock" title="Queue Members">
+            
+            <apex:pageMessages />
+
+            <apex:pageBlockButtons >
+            
+                <apex:commandButton value="Export Details"
+                                    onclick="window.open('{!URLFOR($Page.QueueMembersExcelPage, null, [ queueId = queueId ])}');"
+                                    rendered="{!(queueId != null)}"/>
+                
+                <apex:commandButton value="Manage Queue"
+                                  	onclick="window.open('{!URLFOR("/p/own/Queue/d", null, [ id= queueId, setupid="Queues" ])}');"
+                           	        rendered="{!(queueId != null)}"/>
+                
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection >
+
+                <apex:pageBlockSectionItem >
+                    <b>Queue:</b>
+                    <apex:selectList value="{!queueId}" size="1">
+                        <apex:selectOptions value="{!queueOptions}"/>
+                        <apex:actionSupport event="onchange" action="{!refresh}" reRender="mainForm"/>
+                    </apex:selectList>
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+            
+            <apex:variable var="rowCounter" value="1"/>
+            <apex:pageBlockTable value="{!queueMembers}" var="user" rendered="{!(queueId != null)}">
+                
+                <apex:column headerValue="#">
+                    <apex:outputText value="{!rowCounter}"/>.
+                    <apex:variable var="rowCounter" value="{!VALUE(rowCounter) + 1}"/>
+                </apex:column>
+                
+                <apex:column headerValue="Name">
+                    <apex:outputLink value="/{!user.id}">
+                        <apex:outputText value="{0} {1}">
+                            <apex:param value="{!user.firstName}"/>
+                            <apex:param value="{!user.lastName}"/>
+                        </apex:outputText>
+                    </apex:outputLink>
+                </apex:column>
+                
+                <apex:column value="{!user.IsActive}"/>
+                <apex:column value="{!user.username}"/>
+                <apex:column value="{!user.email}"/>
+                <apex:column value="{!user.userRole.name}" headerValue="Role"/>
+                <apex:column value="{!user.profile.name}" headerValue="Profile"/>
+                <apex:column value="{!user.BMCServiceDesk__IsStaffUser__c}" headerValue="Is Remedcyforce Staff" />
+                
+            </apex:pageBlockTable>
+            
+        </apex:pageBlock>
+        
+    </apex:form>
+
+<!-- 
+* THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED 
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR 
+* FITNESS FOR A PARTICULAR PURPOSE.
+*
+* This script is not supported under any BMC Software standard support program or service. 
+* The script is provided AS IS without warranty of any kind. BMC Software further disclaims all
+* implied warranties including, without limitation, any implied warranties of merchantability
+* or of fitness for a particular purpose. The entire risk arising out of the use or performance
+* of the scripts and documentation remains with you. In no event shall BMC Software, its authors,
+* or anyone else involved in the creation, production, or delivery of the script be liable for 
+* any damages whatsoever (including, without limitation, damages for loss of business profits, 
+* business interruption, loss of business information, or other pecuniary loss) arising out of 
+* the use of or inability to use the script or documentation, even if BMC Software has been advised 
+* of the possibility of such damages.
+* 
+* We'd like to thank Doug Ayers (https://douglascayers.wordpress.com/) for graciously allowing us
+* to use his code in this unmanaged package!
+ -->
+
+</apex:page>

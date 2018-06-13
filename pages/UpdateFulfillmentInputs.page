@@ -1,0 +1,16 @@
+<apex:page controller="FulfillmentPicklistUpdates">
+    <apex:form >
+        <apex:commandButton action="{!sos_picklists}" value="Run update for sos_picklists" /><br />
+        <apex:commandButton action="{!ror_approver_picklists}" value="Run update for ror_approver_picklists" /><br />
+        <apex:commandButton action="{!queue_picklists}" value="Run update for queue_picklists" /><br />
+        <apex:commandButton action="{!queue_picklists_2}" value="Run update for queue_picklists_2" /><br />
+        <apex:commandButton action="{!prdctrl_picklists}" value="Run update for prdctrl_picklists" /><br />
+        <apex:commandButton action="{!infra_monitoring_picklists}" value="Run update for infra_monitoring_picklists" /><br />
+        <apex:commandButton action="{!dba_picklists}" value="Run update for dba_picklists" /><br />
+        <apex:commandButton action="{!additional_access_applications_questions_picklists}" value="Run update for additional_access_applications_questions_picklists" /><br />
+        <apex:commandButton action="{!additional_access_applications_no_questions_picklists}" value="Run update for additional_access_applications_no_questions_picklists" /><br />
+        <apex:commandButton action="{!additional_access_vast_profiles_picklists}" value="Run update for additional_access_vast_profiles_picklists" /><br />
+        <apex:commandButton action="{!additional_access_kgen_profiles_picklists}" value="Run update for additional_access_kgen_profiles_picklists" /><br />
+        <apex:commandButton action="{!notification_groups_picklists}" value="Run update for notification_groups_picklists" /><br />
+    </apex:form>
+</apex:page>

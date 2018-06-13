@@ -1,0 +1,26 @@
+<apex:component controller="ChangeManagement" access="global">
+    <apex:attribute name="ChgId" type="Id" description="Id of the change" assignTo="{!changeId}"/>
+    <apex:dataTable width="700px" columnsWidth="65px,80px,*,*,*" cellpadding="4px" value="{!tasksbycr}" var="t" id="Related-Tasks" >
+        <apex:column style="white-space: nowrap;">
+            <apex:facet name="header">Task #</apex:facet>
+            <apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Task__c&record_id={!t.Id}" id="tkLink">{!t.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column style="white-space: nowrap;">
+            <apex:facet name="header">Owner</apex:facet>
+            <apex:outputText value="{!t.Owner.Name}" />
+        </apex:column>
+        <apex:column style="white-space: nowrap;">
+            <apex:facet name="header">Scheduled Start</apex:facet>
+            <apex:outputField value="{!t.BMCServiceDesk__Scheduled_Start_Date__c}" />
+        </apex:column>
+        <apex:column style="white-space: nowrap;">
+            <apex:facet name="header">Scheduled End</apex:facet>
+            <apex:outputField style="white-space: nowrap;" value="{!t.BMCServiceDesk__Scheduled_End_Date__c}" />
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">Description</apex:facet>
+            <pre>{!t.BMCServiceDesk__taskDescription__c}</pre>
+            <apex:outputText escape="false" styleClass="nowrap" rendered="{!NOT(ISBLANK(t.Description_Rich_Text__c))}" value="{!t.Description_Rich_Text__c}" />
+        </apex:column>
+    </apex:dataTable>
+</apex:component>

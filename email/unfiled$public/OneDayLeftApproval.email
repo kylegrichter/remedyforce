@@ -1,0 +1,11 @@
+<messaging:emailTemplate subject="1 Day Left" recipientType="User" relatedToType="User">
+<messaging:plainTextEmailBody >
+Hi,
+
+ASA Application is waiting for your approval.
+Please click on the below link to approve/reject. 
+Link:https://remedy--c.na38.visual.force.com/apex/BMC_Profile?id={!relatedTo.Id} 
+
+Thanks!
+</messaging:plainTextEmailBody>
+</messaging:emailTemplate>

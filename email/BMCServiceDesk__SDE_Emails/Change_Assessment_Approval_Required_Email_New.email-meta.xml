@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>Change Assessment: Approval Required Email (New)</name>
+    <style>none</style>
+    <subject>A Change Assessment has been submitted to you for Change Request: {!BMCServiceDesk__Change_Request__c.Name}</subject>
+    <textOnly>{!BMCServiceDesk__Change_Assessment__c.CreatedBy} has requested your review for change assessment: {!BMCServiceDesk__Change_Assessment__c.Name}
+
+{!BMCServiceDesk__Change_Assessment__c.Link}
+
+Associated CR {!BMCServiceDesk__Change_Assessment__c.BMCServiceDesk__FKChange__c}
+CR Description {!BMCServiceDesk__Change_Request__c.BMCServiceDesk__Change_Description__c}
+
+Questions? Send an email to DL-DC Change Management.</textOnly>
+    <type>custom</type>
+</EmailTemplate>

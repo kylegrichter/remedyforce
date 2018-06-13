@@ -1,0 +1,154 @@
+<apex:page ShowHeader="false" sidebar="false" controller="BMCRF_CNTRL_EBDetails" action="{!getDeliveryDetails}">
+
+<script type="text/javascript">
+    function refreshPage()
+        {
+            document.getElementById("table1").setAttribute("reRender","table1");
+
+        }
+</script>
+<html>
+    <head>
+        <style>
+            column.hover {
+               background:#ff54f3 ;  
+                 
+            } 
+            .tabContainer:hover{  
+                                 
+            }
+            .act{
+                background:#F1EFED;
+                font-weight: bold;
+                font-size:13px;
+            }
+            .inact{
+                background:#9DAECE;
+                font-size:12px;
+            }
+            
+            .header{
+                background:#1A82E2;
+                border-width: 1px;     
+                border-color: #999999;
+                padding: 0 10px;
+                border-style: solid;
+                
+                color: #ffffff;
+                height:20px; 
+            }
+            .space{
+                padding: 0 10px;
+                height:20px;
+            }
+    
+            .rf-top-banner-div {
+                min-height: 65px;
+                padding: 0 0 0 10px;
+                max-height: 70px;
+                position: relative;
+                background-image: -ms-linear-gradient(top, #FFFFFF 0%, #EAEAEB 100%);
+                background-image: -moz-linear-gradient(top, #FFFFFF 0%, #EAEAEB 100%);
+                background-image: -o-linear-gradient(top, #FFFFFF 0%, #EAEAEB 100%);
+                background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #EAEAEB));
+                background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #EAEAEB 100%);
+                background-image: linear-gradient(to bottom, #FFFFFF 0%, #EAEAEB 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFFFFF', endColorstr='#EAEAEB',GradientType=0 );
+            }
+           .rf-ticker-div {
+                min-height: 30px;
+                padding-right: 15px;
+                padding-top: 2px;
+                border: 1px solid #2188C9;
+                box-shadow: 0px 0px 5px #99BCC8;
+                background-image: -ms-linear-gradient(top, #C1E1F5 0%, #268BCD 100%);
+                background-image: -moz-linear-gradient(top, #C1E1F5 0%, #268BCD 100%);
+                background-image: -o-linear-gradient(top, #C1E1F5 0%, #268BCD 100%);
+                background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #C1E1F5), color-stop(1, #268BCD));
+                background-image: -webkit-linear-gradient(top, #C1E1F5 0%, #268BCD 100%);
+                background-image: linear-gradient(to bottom, #C1E1F5 0%, #268BCD 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#C1E1F5', endColorstr='#268BCD',GradientType=0 );
+                height: 40px;
+            }
+        .rf-toolbar-btn {
+            background: url(/resource/1440688622000/bmcservicedesk__SSThemes/SSTemplateTheme/SDEFimages/grey_bg.gif) repeat-x scroll 0 0 transparent !important;
+            border: 1px solid #004376;
+            border-color: #CCCCCC #666666 #666666 #CCCCCC !important;
+            height: 30px;
+            margin-top: 4px !Important;
+            margin-left: 16px !Important;
+            vertical-align: middle;
+            font: 12px arial;
+            color: #000;
+            cursor: default;
+         }
+        .rf-toolbar-btn:hover {
+            background-image: none;
+            background: #E8E8E9 !important;
+            cursor: pointer;
+        }
+        </style>
+    
+    </head>
+    <body>
+    <apex:form >
+    <div class="rf-top-banner-div" ><apex:image url="{!$Resource.Everbridgelogo}" /> </div>
+    <div class="rf-ticker-div">  
+    
+     </div> 
+    
+    <apex:actionStatus startText=" Please Wait....."  StyleClass="margin-left: 10px !Important;" stopText="" id="counterStatus">
+    <apex:facet name="start" >
+       <img src="/img/loading.gif" /> Please Wait...  
+                           
+     </apex:facet>
+     </apex:actionStatus>
+    
+
+    </apex:form>
+        <div id="table1">
+           <apex:tabPanel reRender="" switchType="client" activeTabClass="act" disabledTabClass="dis" selectedTab="IN" styleClass="tabContainer"
+                                     inactiveTabClass="inact" contentStyle="font-size: 12px;"  ><br/>
+                
+                <apex:tab label="Incident Notification" style="min-height: 25px;" name="IN"><br/>
+                    <apex:dataTable id="table" value="{!incNotification}" var="inc"  width="100%" headerClass="header">                
+                        <apex:column value="{!inc.BMCRF_Name__c}" styleClass="space"  headerValue="Name" /> 
+                        <apex:column value="{!inc.BMCRF_Confirmed__c}" styleClass="space"  headerValue="Confirmed"/>
+                        <apex:column value="{!inc.BMCRF_Confirmed_Late__c}" styleClass="space"  headerValue="Confirmed Late"/>
+                        <apex:column value="{!inc.BMCRF_Unconfirmed__c}" styleClass="space" headerValue="Unconfirmed"/>
+                        <apex:column value="{!inc.BMCRF_Sent_On__c}" styleClass="space"  headerValue="Sent On"/>
+                        <apex:column value="{!inc.BMCRF_Total__c}" styleClass="space" headerValue="Total"/>                        
+                    </apex:dataTable>
+                </apex:tab>
+                
+                
+                <apex:tab label="Everbridge Delivery Details" style="min-height: 25px;" name="ev"><br/>
+                    <apex:dataTable value="{!EBDetails}" var="ev" width="100%" headerClass="header">
+                        <apex:column value="{!ev.BMCRF_ATTEMPT_NUMBER__c}" styleClass="space" headerValue="Attempt Number"/> 
+                        <apex:column value="{!ev.BMCRF_ATTEMPT_TIME__c}"  styleClass="space" headerValue="Attempt Time"/>
+                        <apex:column value="{!ev.BMCRF_CALL_RESULT__c}" styleClass="space" headerValue="Call Result"/>
+                        <apex:column value="{!ev.BMCRF_CONFIRMED_AT__c}"  styleClass="space" headerValue="Confirmed At" />
+                        <apex:column value="{!ev.BMCRF_CONFIRMED_DELIVERY__c}" styleClass="space" headerValue="Confirmed Delivery"/>
+                        <apex:column value="{!ev.BMCRF_CONTACT__c}" styleClass="space" headerValue="Contact"/> 
+                        <apex:column value="{!ev.BMCRF_CREATED__c}"  styleClass="space" headerValue="Created" />  
+                        <apex:column value="{!ev.BMCRF_DELIVER_METHOD__c}" styleClass="space" headerValue="Deliver Method"/> 
+                        <apex:column value="{!ev.BMCRF_NOTIFICATIONS__c}" styleClass="space" headerValue="Notifications" />                         
+                   </apex:dataTable>
+                </apex:tab>
+                <apex:tab label="Everbridge Response" style="min-height: 25px;" name="er"><br/>
+                        <apex:dataTable value="{!EBRes}" var="ER" width="100%" headerClass="header">
+                        <apex:column value="{!ER.BMCRF_Attempt_Number__c}" styleClass="space" headerValue="Attempt Number"/> 
+                        <apex:column value="{!ER.BMCRF_Confirmed__c}" styleClass="space" headerValue="Confirmed"/>
+                        <apex:column value="{!ER.BMCRF_Contact__c}" styleClass="space" headerValue="Contact"/>
+                        <apex:column value="{!ER.BMCRF_Delivery_Method__c}" styleClass="space" headerValue="Delivery Method" />
+                        <apex:column value="{!ER.BMCRF_EVERBRIDGE_ID__c}" styleClass="space" headerValue="Incident ID"/>
+                        <apex:column value="{!ER.BMCRF_Phase__c}" styleClass="space" headerValue="Phase"/>                                       
+                   </apex:dataTable>
+                </apex:tab>
+            </apex:tabPanel>
+            
+        </div>
+         
+    </body>
+</html> 
+</apex:page>

@@ -1,0 +1,63 @@
+<apex:component controller="ProjectedServiceOutage" access="global">
+    <style type="text/css">
+        .table{border-collapse: collapse; empty-cells: show;}
+        .th{margin:5px; border-style: solid; border-width: 1px; border-color: #000000; background-color:#C5D9F1; color: #000000; font-size: 11pt; font-weight:bold; text-align: center; font-family: Calibri;}
+        .td{margin:5px; border-style: solid; border-width: 1px; border-color: #000000; color:#000000; font-size: 9pt; text-align: center; font-family: Calibri;}
+        .pre{font-family: Calibri;font-size: 9pt;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;margin:1px;}
+    </style>
+    <style type="text/css">
+        .section{background-color:#B8CCE4;}
+        .blank{border-color: #FFFFFF; background-color: #FFFFFF;}
+        .p{font-family: Calibri; font-size: 11pt;}
+        .p2{font-family: Calibri; font-size: 9pt;}
+    </style>
+    <style type="text/css">
+        .caption{caption-side: bottom; font-family: Calibri; font-size: 8pt; font-style: italic; background-color: #FFFFFF;}
+        .available{font-size: 9pt; text-align: center; font-family: Calibri; color:green; font-weight:bold;}
+        .notavailable{font-size: 9pt; text-align: center; font-family: Calibri; color:red; font-weight:bold;}
+    </style>
+    <div id="data">
+        <p class="p">Release Planning -> <a href="http://confluence.dexknows.com/display/dmt/Release+Management">Here</a><br />
+        System Activity Schedule -> <a href="http://dexmedia.force.com/SystemDowntime">Here</a></p> 
+        <p class="p">Listed below is the System Activity Schedule for the next 30 days:</p>
+        <p class="p2"><b>Note:</b> Highlighted rows are recently added or modified.</p>
+        
+        <table class="table">
+            <caption class="caption">All times listed are in Central Standard Time (Dallas)</caption>
+            <thead>
+                <tr>
+                    <th class="th">System Activity</th>
+                    <th class="th">Activity Reason</th>
+                    <th class="th">Begin Date</th>
+                    <th class="th">Begin Time</th>
+                    <th class="th">End Date</th>
+                    <th class="th">End Time</th>
+                </tr>
+            </thead>
+            <tbody>
+        <apex:repeat value="{!outages}" var="c">
+                <apex:outputText escape="false" rendered="{!DATEVALUE(c.LastModifiedDate)+7 >= TODAY() || DATEVALUE(c.CreatedDate)+7 >= TODAY()}">
+                <tr style="background-color:#FBFF8C;">
+                    <td class="td"><b><apex:outputText value="{!c.Name}" /></b></td>
+                    <td class="td"><pre class="pre">{!c.Activity_Reason__c}</pre></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText value="{0,date,EEEEE', 'MMMMM d', 'yyyy}"><apex:param value="{!c.BMCServiceDesk__Start_Date__c}" /></apex:outputText></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText styleClass="notavailable" rendered="{!c.Available__c = false}" value="{0,date,h:mm a}"><apex:param value="{!c.BMCServiceDesk__Start_Date__c}" /></apex:outputText><apex:outputText rendered="{!c.Available__c = true}" styleClass="available" style="white-space: nowrap;" value="AVAILABLE" /></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText value="{0,date,EEEEE', 'MMMMM d', 'yyyy}"><apex:param value="{!c.BMCServiceDesk__End_Date__c}" /></apex:outputText></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText styleClass="notavailable" rendered="{!c.Available__c = false}" value="{0,date,h:mm a}"><apex:param value="{!c.BMCServiceDesk__End_Date__c}" /></apex:outputText><apex:outputText rendered="{!c.Available__c = true}" styleClass="available" style="white-space: nowrap;" value="AVAILABLE" /></td>
+                </tr>
+                </apex:outputText>
+                <apex:outputText escape="false" rendered="{!DATEVALUE(c.LastModifiedDate)+7 < TODAY() && DATEVALUE(c.CreatedDate)+7 < TODAY()}">
+                <tr style="background-color:#FFFFFF;">
+                    <td class="td"><b><apex:outputText value="{!c.Name}" /></b></td>
+                    <td class="td"><pre class="pre">{!c.Activity_Reason__c}</pre></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText value="{0,date,EEEEE', 'MMMMM d', 'yyyy}"><apex:param value="{!c.BMCServiceDesk__Start_Date__c}" /></apex:outputText></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText styleClass="notavailable" rendered="{!c.Available__c = false}" value="{0,date,h:mm a}"><apex:param value="{!c.BMCServiceDesk__Start_Date__c}" /></apex:outputText><apex:outputText rendered="{!c.Available__c = true}" styleClass="available" style="white-space: nowrap;" value="AVAILABLE" /></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText value="{0,date,EEEEE', 'MMMMM d', 'yyyy}"><apex:param value="{!c.BMCServiceDesk__End_Date__c}" /></apex:outputText></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText styleClass="notavailable" rendered="{!c.Available__c = false}" value="{0,date,h:mm a}"><apex:param value="{!c.BMCServiceDesk__End_Date__c}" /></apex:outputText><apex:outputText rendered="{!c.Available__c = true}" styleClass="available" style="white-space: nowrap;" value="AVAILABLE" /></td>
+                </tr>
+                </apex:outputText>
+        </apex:repeat>
+            </tbody>
+        </table>    
+    </div>
+</apex:component>

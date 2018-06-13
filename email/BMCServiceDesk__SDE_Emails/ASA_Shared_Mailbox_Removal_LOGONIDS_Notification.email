@@ -1,0 +1,9 @@
+The below mailbox is flagged for removal and an IR has been opened to Server Engineering - Microsoft to have it shutdown and removed. Please see the details below:
+
+Shared Mailbox Address: {!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Address__c}
+
+Shared Mailbox Owner 1: {!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Owner_1__c}
+
+Shared Mailbox Owner 2: {!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Owner_2__c}
+
+Last Review Comments: {!BMCServiceDesk__BMC_BaseElement__c.Shared_Mailbox_Last_Review_Comments__c}

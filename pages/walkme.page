@@ -1,0 +1,6 @@
+<apex:page showHeader="false" sidebar="false" applyBodyTag="false" standardStylesheets="false" cache="false">
+    <head>
+        <script type='text/javascript'>window.walkme_load_in_iframe = true;</script>
+        <script type="text/javascript">(function() {var walkme = document.createElement('script'); walkme.type = 'text/javascript'; walkme.async = true; walkme.src = 'https://cdn.walkme.com/users/334e822d5e554849b219b9604c0fcdca/test/walkme_334e822d5e554849b219b9604c0fcdca_https.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(walkme, s); window._walkmeConfig = {smartLoad:true}; })();</script>
+    </head>
+</apex:page>

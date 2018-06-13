@@ -1,0 +1,70 @@
+<apex:page controller="ProjectedServiceOutage" showHeader="false" sidebar="false" title="Future System Downtime">
+    <head>
+        <style>
+            .table{border-collapse: collapse; empty-cells: show;}
+            .th{margin:5px; border-style: solid; border-width: 1px; border-color: #000000; background-color:#C5D9F1; color: #000000; font-size: 11pt; font-weight:bold; text-align: center; font-family: Calibri;}
+            .td{margin:5px; border-style: solid; border-width: 1px; border-color: #000000; color:#000000; font-size: 9pt; text-align: center; font-family: Calibri;}
+            .pre{font-family: Calibri;font-size: 9pt;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;margin:1px;}
+            .section{background-color:#B8CCE4;}
+            .blank{border-color: #FFFFFF; background-color: #FFFFFF;}
+            .p{font-family: Calibri; font-size: 11pt;}
+            .p2{font-family: Calibri; font-size: 9pt;}
+            .caption{caption-side: bottom; font-family: Calibri; font-size: 8pt; font-style: italic; background-color: #FFFFFF;}
+            .available{font-size: 9pt; text-align: center; font-family: Calibri; color:green; font-weight:bold;}
+            .notavailable{font-size: 9pt; text-align: center; font-family: Calibri; color:red; font-weight:bold;}
+        </style>
+    </head>
+    <body>
+        <script type="text/javascript">
+            window.print();
+            setTimeout('window.close()', 500);
+        </script>
+        <div id="data">
+            <p class="p">Release Planning -> <a href="http://confluence.dexknows.com/display/dmt/Release+Management">http://confluence.dexknows.com/display/dmt/Release+Management</a><br />
+            System Activity Schedule -> <a href="http://dexmedia.force.com/SystemDowntime/">http://dexmedia.force.com/SystemDowntime/</a></p> 
+            <p class="p">Listed below is the System Activity Schedule for the above selected range:</p>
+            <p class="p2"><b>Note:</b> Highlighted rows are recently added or modified.</p>
+            
+            <table class="table">
+                <caption class="caption">All times listed are in Central Standard Time (Dallas)</caption>
+                <thead>
+                    <tr>
+                        <th class="th">System Activity</th>
+                        <th class="th">Activity Reason</th>
+                        <th class="th">Begin Date</th>
+                        <th class="th">Begin Time</th>
+                        <th class="th">End Date</th>
+                        <th class="th">End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <apex:repeat value="{!outages}" var="c">
+                <apex:outputText escape="false" rendered="{!DATEVALUE(c.LastModifiedDate)+7 >= TODAY() || DATEVALUE(c.CreatedDate)+7 >= TODAY()}">
+                <tr style="background-color:#FBFF8C;">
+                    <td class="td"><b><apex:outputText value="{!c.Name}" /></b></td>
+                    <td class="td"><pre class="pre">{!c.Activity_Reason__c}</pre></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText value="{0,date,EEEEE', 'MMMMM d', 'yyyy}"><apex:param value="{!c.BMCServiceDesk__Start_Date__c - IF((( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2013,3,10)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2013,11,3))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2014,3,9)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2014,11,2))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2015,3,8)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2015,11,1))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2016,3,13)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2016,11,6))),(5/24),(6/24))}" /></apex:outputText></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText styleClass="notavailable" rendered="{!c.Available__c = false}" value="{0,date,h:mm a}"><apex:param value="{!c.BMCServiceDesk__Start_Date__c - IF((( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2013,3,10)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2013,11,3))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2014,3,9)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2014,11,2))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2015,3,8)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2015,11,1))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2016,3,13)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2016,11,6))),(5/24),(6/24))}" /></apex:outputText><apex:outputText rendered="{!c.Available__c = true}" styleClass="available" style="white-space: nowrap;" value="AVAILABLE" /></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText value="{0,date,EEEEE', 'MMMMM d', 'yyyy}"><apex:param value="{!c.BMCServiceDesk__End_Date__c - IF((( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2013,3,10)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2013,11,3))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2014,3,9)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2014,11,2))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2015,3,8)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2015,11,1))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2016,3,13)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2016,11,6))),(5/24),(6/24))}" /></apex:outputText></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText styleClass="notavailable" rendered="{!c.Available__c = false}" value="{0,date,h:mm a}"><apex:param value="{!c.BMCServiceDesk__End_Date__c - IF((( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2013,3,10)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2013,11,3))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2014,3,9)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2014,11,2))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2015,3,8)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2015,11,1))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2016,3,13)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2016,11,6))),(5/24),(6/24))}" /></apex:outputText><apex:outputText rendered="{!c.Available__c = true}" styleClass="available" style="white-space: nowrap;" value="AVAILABLE" /></td>
+                </tr>
+                </apex:outputText>
+                <apex:outputText escape="false" rendered="{!DATEVALUE(c.LastModifiedDate)+7 < TODAY() && DATEVALUE(c.CreatedDate)+7 < TODAY()}">
+                <tr style="background-color:#FFFFFF;">
+                    <td class="td"><b><apex:outputText value="{!c.Name}" /></b></td>
+                    <td class="td"><pre class="pre">{!c.Activity_Reason__c}</pre></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText value="{0,date,EEEEE', 'MMMMM d', 'yyyy}"><apex:param value="{!c.BMCServiceDesk__Start_Date__c - IF((( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2013,3,10)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2013,11,3))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2014,3,9)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2014,11,2))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2015,3,8)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2015,11,1))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2016,3,13)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2016,11,6))),(5/24),(6/24))}" /></apex:outputText></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText styleClass="notavailable" rendered="{!c.Available__c = false}" value="{0,date,h:mm a}"><apex:param value="{!c.BMCServiceDesk__Start_Date__c - IF((( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2013,3,10)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2013,11,3))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2014,3,9)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2014,11,2))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2015,3,8)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2015,11,1))) || (( DATEVALUE(c.BMCServiceDesk__Start_Date__c) >= DATE(2016,3,13)) && (DATEVALUE(c.BMCServiceDesk__Start_Date__c) <= DATE(2016,11,6))),(5/24),(6/24))}" /></apex:outputText><apex:outputText rendered="{!c.Available__c = true}" styleClass="available" style="white-space: nowrap;" value="AVAILABLE" /></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText value="{0,date,EEEEE', 'MMMMM d', 'yyyy}"><apex:param value="{!c.BMCServiceDesk__End_Date__c - IF((( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2013,3,10)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2013,11,3))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2014,3,9)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2014,11,2))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2015,3,8)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2015,11,1))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2016,3,13)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2016,11,6))),(5/24),(6/24))}" /></apex:outputText></td>
+                    <td class="td" nowrap="nowrap"><apex:outputText styleClass="notavailable" rendered="{!c.Available__c = false}" value="{0,date,h:mm a}"><apex:param value="{!c.BMCServiceDesk__End_Date__c - IF((( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2013,3,10)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2013,11,3))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2014,3,9)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2014,11,2))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2015,3,8)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2015,11,1))) || (( DATEVALUE(c.BMCServiceDesk__End_Date__c) >= DATE(2016,3,13)) && (DATEVALUE(c.BMCServiceDesk__End_Date__c) <= DATE(2016,11,6))),(5/24),(6/24))}" /></apex:outputText><apex:outputText rendered="{!c.Available__c = true}" styleClass="available" style="white-space: nowrap;" value="AVAILABLE" /></td>
+                </tr>
+                </apex:outputText>
+            </apex:repeat>
+                </tbody>
+            </table>    
+        </div>
+        <div>
+            <p>Please note, <B>Firewall/Load-Balencer Changes</B> occur Monday, Tuesday, and Wednesday every week from 9:00pm CT to 10:00pm CT.</p>
+        </div>
+    </body>
+</apex:page>

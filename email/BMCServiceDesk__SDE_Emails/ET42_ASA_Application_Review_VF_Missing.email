@@ -1,0 +1,106 @@
+<messaging:emailTemplate subject="Additional System Access: Application Review for {!relatedTo.FirstName} {!relatedTo.LastName}" recipientType="User" relatedToType="User">
+    <messaging:htmlEmailBody > 
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>ET40</title>
+            <style type="text/css">
+                #emaillogo tr td {
+                border-bottom-style: solid;
+                border-bottom-color: #004990;
+                }
+                #emailheader tr td {
+                border-top-style: none; 
+                }
+                #emailcontainer {
+                border-top-style: none;
+                }
+                #sectiontitle tr td {
+                font-family: Verdana, Geneva, sans-serif;
+                font-size: 12px;
+                font-style: italic;
+                }
+                #sectionbody tr td {
+                font-family: Verdana, Geneva, sans-serif;
+                font-size: 12px;
+                font-style:  normal;
+                }
+                pre {
+                font-family: Verdana, Geneva, sans-serif;
+                font-size: 12px;
+                font-style:  normal;
+                }
+                #emailfooter tr td {
+                border-bottom-style: solid;
+                border-bottom-color: #666;  
+                }
+                .mainsectiontitle {
+                border-bottom-style: solid;
+                border-bottom-color: #58a618;
+                color: #58a618;
+                font-weight: bold;
+                }
+                .mainsectionspace {
+                border-bottom-style: solid;
+                border-bottom-color: #004990;
+                }
+                .sectiontitle {
+                font-weight: bold;
+                }
+                .important {
+                color: #F00;    
+                }
+                .highlighttext {
+                font-weight: bold;  
+                }
+                .ETname {
+                color: #FFF;
+                }
+            </style></head>
+        <body>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="bodytable">
+                <tr>
+                    <td valign="top" align="left">
+                        <table id="emailcontainer" width="750" border="0" cellspacing="0" cellpadding="10">
+                            <tr>
+                                <td valign="top" align="left">
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="emaillogo">
+                                        <tr>
+                                            <td width="11%" height="40" align="left" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005PvQK&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="48%" align="left" valign="bottom"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005PvPg&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="41%" height="40" align="right" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&oid=00DE0000000caBt"  alt="DM Logo" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="emailheader" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr>
+                                            <td width="23%" align="left" class="mainsectiontitle" valign="top">Review Information</td>
+                                            <td width="77%" align="left" class="mainsectionspace" valign="top">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr>
+                                            <td align="left" valign="top" class="mainsectionspace">Please review the information for <b>{!relatedTo.FirstName} {!relatedTo.LastName}</b> at <a style="color: Blue;font-weight: bold;" href="https://remedy.my.salesforce.com/apex/ASAApplicationReview?id={!relatedTo.Id}">this URL</a>. This user has access to a Profile/Role that there is no approval for. <span style="color: Red;font-weight: bold;">Please submit an ASA request for the related applicaiton/profile/role access.</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left" valign="top" class="mainsectionspace">This reminder is sent 30, 15, and 1 day before action is taken to remove the access.</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <span class="ETname">ET42</span>
+        </body>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

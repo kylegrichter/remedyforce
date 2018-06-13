@@ -1,0 +1,24 @@
+<apex:component controller="ApprovalItemController" access="global">
+    <apex:attribute assignTo="{!relatedRecordId}" name="recordId" description="The record Id for which the template is being generated" type="String" />
+    <apex:dataTable value="{!AllApprovalStep}" var="step">
+        <apex:column colspan="2" headerValue="Step" breakbefore="true">
+            <apex:outputField value="{!step.nodeStep.Name}" />
+            <apex:outputText value="Submitted for Approval" rendered="{!ISNULL(step.nodeStep)}" />
+        </apex:column>
+        <apex:column headerValue="Status">
+            <apex:outputField value="{!step.instanceStep.StepStatus}" />
+        </apex:column>
+        <apex:column headerValue="Date">
+            <apex:outputField value="{!step.instanceStep.CreatedDate}" />
+        </apex:column>
+        <apex:column headerValue="Step Assigned To">
+            <apex:outputField value="{!step.instanceStep.OriginalActor.Name}" />
+        </apex:column>
+        <apex:column headerValue="Action Taken By">
+            <apex:outputField value="{!step.instanceStep.ActorId}" />
+        </apex:column>
+        <apex:column headerValue="Comments">
+            <apex:outputField value="{!step.instanceStep.Comments}" />
+        </apex:column>
+    </apex:dataTable>
+</apex:component>

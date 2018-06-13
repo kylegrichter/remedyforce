@@ -1,0 +1,18 @@
+<apex:component controller="ApprovalRequestCommentsController" access="global">
+    <apex:attribute name="relatedToId" assignTo="{!targetObjectId}" type="String" description="ID of the record whose last approval stepstatus to retrieve"/>
+    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+        <apex:outputText escape="false" rendered="{!stepstatus!='Rejected'}">
+        <tr>
+            <td align="left" valign="top" class="mainsectionspace">Now that your request has been <strong>APPROVED</strong> by your manager, requests will be sent to the trustees of the applications you have selected requesting their approval and then to the team creating your access upon their approval. Applications that do not require trustee approval will be approved automatically and sent to the team responsible to create your access. They will reach out to you once the access has been completed.</td>
+        </tr>
+        </apex:outputText>
+        <apex:outputText escape="false" rendered="{!stepstatus=='Rejected'}">
+        <tr>
+            <td align="left" valign="top" class="mainsectionspace">Now that your access has been <strong>REJECTED</strong>, please review the Approver's comments and re-submit your request if needed. Otherwise please consider this request Closed.</td>
+        </tr>
+        </apex:outputText>
+        <tr>
+            <td align="left" valign="top" class="sectiontitle">&nbsp;</td>
+        </tr>
+    </table>
+</apex:component>

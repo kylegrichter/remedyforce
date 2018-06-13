@@ -1,0 +1,146 @@
+<apex:page controller="IncidentManagement" renderAs="PDF" applyBodyTag="false" applyHtmlTag="false" showHeader="false">
+    <html>
+        <head>
+            <style>
+                @page {
+                    size: legal landscape;
+                    margin: 7mm 1mm;
+                    @top-center {
+                        content: "Operations Incident Report";
+                    }
+                    @bottom-center {
+                        content: "Page " counter(page) " of " counter(pages);
+                    }
+                }
+                tr {
+                    page-break-inside: avoid !important;
+                }
+                body {
+                    font-family: Calibri;
+                    font-size: 9pt;
+                }
+                .table{
+                    border-collapse: collapse;
+                    empty-cells: show;
+                }
+                .th{
+                    margin:5px;
+                    border-style: solid;
+                    border-width: 1px;
+                    border-color: #00305E;
+                    background-color:#1797C0;
+                    color: #FFFFFF;
+                    font-size: 9pt;
+                    font-weight:bold;
+                    text-align: left;
+                    font-family: Calibri;
+                }
+                .td{
+                    margin:5px;
+                    border-style: solid;
+                    border-width: 1px;
+                    border-color: #00305E;
+                    background-color:#FFFFFF;
+                    color:#000000;
+                    font-size: 9pt;
+                    text-align: left;
+                    font-family: Calibri;
+                }
+                .pre{
+                    font-family: Calibri;
+                    font-size: 9pt;
+                    white-space: pre-wrap;
+                    white-space: -moz-pre-wrap;
+                    white-space: -pre-wrap;
+                    white-space: -o-pre-wrap;
+                    word-wrap: break-word;
+                    margin:1px;
+                }
+                .section{
+                    margin:5px;
+                    border-style: solid;
+                    border-width: 1px;
+                    border-color: #00305E;
+                    background-color:#CFEEF8;
+                    color:#000000;
+                    font-size: 9pt;
+                    text-align: left;
+                    font-family: Calibri;
+                }
+                .blank{
+                    background-color: #FFFFFF;
+                    border: none;
+                }
+                .noteHeader{
+                    background-color:#DCFBDC;
+                    color: #336F67;
+                }
+                .activeTab {background-color: #236FBD; color:white;background-image:none}
+                .inactiveTab { background-color: lightgrey; color:black;background-image:none}
+            </style>
+        </head>
+        <body>
+            <p>There are&nbsp;<apex:repeat value="{!countsMonitored}" var="a"><b>{!a['MyCount']}</b></apex:repeat> records that are OpsMonitored out of a total&nbsp;<apex:repeat value="{!countsTotal}" var="a"><b>{!a['MyCount']}</b></apex:repeat> records in this report.</p>
+            <div>
+                <table class="table" border="0" cellpadding="4px" cellspacing="0">
+                    <thead>
+                        <tr class="th">
+                            <th class="th">Inident #</th>
+                            <th class="th">Opened Date</th>
+                            <th class="th">Status</th>
+                            <th class="th">Ops Monitor</th>
+                            <th class="th">Category</th>
+                            <th class="th">Queue</th>
+                            <th class="th">Ops Monitor Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!opsIncidents}" var="i">
+                        <tr>
+                            <td class="section td" style="white-space: nowrap;"><apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Incident__c&record_id={!i.ID}" id="crLink">{!i.Name}</apex:outputLink></td>
+                            <td class="section td" style="white-space: nowrap;"><apex:outputField style="white-space: nowrap;" value="{!i.BMCServiceDesk__openDateTime__c}" /></td>
+                            <td class="section td" style="white-space: nowrap;"><apex:outputText value="{!i.BMCServiceDesk__Status_ID__c}" /></td>
+                            <td class="section td" style="white-space: nowrap;"><apex:outputText rendered="{!i.Ops_Monitor__c = true}">True</apex:outputText><apex:outputText rendered="{!i.Ops_Monitor__c = false || i.Ops_Monitor__c = null}">False</apex:outputText></td>
+                            <td class="section td" style="white-space: nowrap;"><apex:outputText value="{!i.BMCServiceDesk__Category_ID__c}" /></td>
+                            <td class="section td" style="white-space: nowrap;"><apex:outputText value="{!i.BMCServiceDesk__queueName__c}" /></td>
+                            <td class="section td" style="white-space: nowrap;"><apex:outputField style="white-space: nowrap;" value="{!i.Ops_Monitor_Time__c}" /></td>
+                        </tr>
+                        <tr>
+                            <th class="blank"></th>
+                            <th class="th">Title</th>
+                            <td class="td" colspan="5">
+                                <pre class="pre">{!i.Incident_Title__c}</pre>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="blank"></th>
+                            <th class="th">Description</th>
+                            <td class="td" colspan="5">
+                                <pre class="pre">{!i.BMCServiceDesk__incidentDescription__c}</pre>
+                            </td>
+                        </tr>
+                        <apex:outputText escape="false" rendered="{!i.BMCServiceDesk__incidentResolution__c != ''}">
+                        <tr>
+                            <th class="blank"></th>
+                            <th class="th">Resolution</th>
+                            <td class="td" colspan="5">
+                                <pre class="pre">{!i.BMCServiceDesk__incidentResolution__c}</pre>
+                            </td>
+                        </tr>
+                        </apex:outputText>
+                        <apex:repeat var="n" value="{!i.BMCServiceDesk__Incident_Histories__r }">
+                        <apex:outputText escape="false" rendered="{!n.BMCServiceDesk__note__c != '' && NOT(CONTAINS(n.BMCServiceDesk__note__c,'Sent TicketID'))}">
+                        <tr>
+                            <th class="blank"></th>
+                            <th class="th noteHeader">{!n.BMCServiceDesk__FKUser__r.Name}<br /><apex:outputField style="white-space: nowrap;" value="{!n.BMCServiceDesk__date__c}" /></th>
+                            <td class="td" colspan="5"><pre class="pre">{!n.BMCServiceDesk__note__c}</pre></td>
+                        </tr>
+                        </apex:outputText>
+                        </apex:repeat>
+                        </apex:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </body>
+    </html>
+</apex:page>

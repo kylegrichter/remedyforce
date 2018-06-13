@@ -1,0 +1,43 @@
+<apex:page controller="ProfileFetch">
+  <!-- Begin Default Content REMOVE THIS -->
+    <h1>Welcome:</h1>
+     
+  
+  <!-- End Default Content REMOVE THIS -->
+   <apex:form ><!--a0GE0000003TjgzMAC-->
+      <apex:pageBlock >
+         <h1>User Details:</h1>
+        <apex:pageblockTable value="{!use}" var="b">
+                     <apex:column value="{!b.Name}"/>
+                     <apex:column value="{!b.Email}"/>
+                     <apex:column value="{!b.Phone}"/>                
+        </apex:pageblockTable>      
+      
+      <h1>User Profile is:</h1> 
+      <apex:pageblockTable value="{!BE}" var="a">
+          
+         <apex:column value="{!a.ASA_Application__c}"/>
+         
+         <apex:column >
+             <apex:facet name="header"><apex:commandButton action="{!ApproveAllRecord}" id="ApproveAllRecord" value="Approve All"/></apex:facet>
+             <apex:commandLink value="Approve" action="{!ApproveRecord}" styleclass="btn"  style="text-decoration:none;padding:4px;"> 
+                <apex:param name="approveBE" value="{!a.Id}" assignTo="{!aBEId}"/>
+              </apex:commandLink>
+         </apex:column>
+         
+          <apex:column >
+             <apex:facet name="header">
+                <apex:commandButton action="{!RejectAllRecord}" id="RejectAllRecord" value="Reject All"/>
+             </apex:facet>             
+              <apex:commandLink value="Reject" action="{!RejectRecord}" styleclass="btn"  style="text-decoration:none;padding:4px;"> 
+                <apex:param name="rejectBE" value="{!a.Id}" assignTo="{!sBEId}"/>
+              </apex:commandLink>
+         </apex:column>
+      </apex:pageblockTable>
+          
+  <!-- </apex:pageBlock> -->
+      </apex:pageBlock>  
+    </apex:form>
+
+
+</apex:page>

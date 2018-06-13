@@ -1,0 +1,100 @@
+<apex:page controller="ChangeManagement" showHeader="false" sidebar="false">
+    <script>
+        var setobj="";
+        var setstyletype="";
+        var settag="";
+        function HideShow(obj) { 
+            var theobj=document.getElementById(obj);
+            //alert(theobj.style.display);
+            if(theobj.style.display=="none"){ 
+                theobj.style.display="" 
+            } else{
+                theobj.style.display="none"
+            }    
+        } 
+        function Hide(obj) { 
+            var theobj=document.getElementById(obj);
+            //alert(theobj.style.display);
+            theobj.style.display="none"
+        } 
+        function Show(obj) { 
+            var theobj=document.getElementById(obj);
+            //alert(theobj.style.display);
+            theobj.style.display="" 
+        } 
+    </script>
+    <div style="padding: 15px;">
+        <style>
+            .table{
+                border-collapse: collapse;
+                empty-cells: show;
+            }
+            .th{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#1797C0; <!--#4F81BD; -->
+                color: #FFFFFF;
+                font-size: 9pt;
+                font-weight:bold;
+                text-align: left;
+                font-family: Calibri;
+            }
+            .td{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#FFFFFF;
+                color:#000000;
+                font-size: 9pt;
+                text-align: left;
+                font-family: Calibri;
+            }
+            .pre{
+                font-family: Calibri;
+                font-size: 9pt;
+                white-space: pre-wrap;
+                white-space: -moz-pre-wrap;
+                white-space: -pre-wrap;
+                white-space: -o-pre-wrap;
+                word-wrap: break-word;
+                margin:1px;
+            }
+            .section{
+                margin:5px;
+                border-style: solid;
+                border-width: 1px;
+                border-color: #00305E; <!--#4F81BD; -->
+                background-color:#CFEEF8; <!--#B8CCE4; -->
+                color:#000000;
+                font-size: 9pt;
+                text-align: left;
+                font-family: Calibri;
+            }
+            .blank{
+                background-color: #FFFFFF;
+                border: none;
+            }    
+        </style>
+        <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" value="{!problemsbycr}" var="c" id="Problems" >
+            <apex:column styleClass="td" style="white-space: nowrap;">
+                <apex:facet name="header">PR #</apex:facet>
+                <apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Problem__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink>
+            </apex:column>
+            <apex:column styleClass="td" style="white-space: nowrap;">
+                <apex:facet name="header">Owner</apex:facet>
+                <apex:outputText value="{!c.Owner.Name}" />
+            </apex:column>
+            <apex:column styleClass="td" style="white-space: nowrap;">
+                <apex:facet name="header">Configuration Item</apex:facet>
+                <apex:outputText value="{!c.FKBMC_BaseElement__r.Name}" />
+            </apex:column>
+            <apex:column styleClass="td" style="white-space: nowrap;">
+                <apex:facet name="header">Description</apex:facet>
+                <pre class="pre">{!c.BMCServiceDesk__Problem_Description__c}</pre>
+            </apex:column>
+        </apex:dataTable>
+    </div>
+</apex:page>

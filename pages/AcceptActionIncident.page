@@ -1,0 +1,7 @@
+<apex:page standardController="BMCServiceDesk__Incident__c" extensions="AcceptIncident" action="{!AssigntoMe}" showHeader="false" sidebar="false" >
+    <body>
+        <div style="height:50px; border: 1px solid #aaa;" id='divstyle'>
+            <apex:pagemessages escape="false" id="msgs"/>
+        </div>
+    </body>
+</apex:page>

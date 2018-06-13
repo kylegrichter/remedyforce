@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Send Status of approval to SR approvers.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>SR Approval Complete</name>
+    <style>none</style>
+    <subject>Approval for Service Request #{!BMCServiceDesk__Incident__c.Name} has been {!BMCServiceDesk__Incident__c.BMCServiceDesk__Status_ID__c}.</subject>
+    <textOnly>You were defined as an approver of this request, the approval process has been completed by you or another approver.
+
+SR# {!BMCServiceDesk__Incident__c.Name}
+Requestor Name  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}
+Requestor Email:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}
+Due Date:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c}
+Requested Due by Date:  {!BMCServiceDesk__Incident__c.Requested_Due_By_Date__c}
+Service Title:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKRequestDefinition__c}
+Description:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}
+Impacted CI:  {!BMCServiceDesk__Incident__c.CI_Name__c}
+
+
+If you would like to discuss this request with the Service Provider contact {!BMCServiceDesk__Incident__c.OwnerEmail}</textOnly>
+    <type>custom</type>
+</EmailTemplate>

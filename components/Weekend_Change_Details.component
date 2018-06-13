@@ -1,0 +1,64 @@
+<apex:component controller="ChangeManagement" access="global">
+    <style type="text/css">
+        table{border-collapse: collapse;empty-cells: show;}
+        th{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#1797C0;color: #FFFFFF;font-size: 9pt;font-weight:bold;text-align: left;font-family: Calibri;}
+        td{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#FFFFFF;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;}
+        pre{font-family: Calibri;font-size: 9pt;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;margin:1px;}
+        .section{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;}
+        .blank{background-color: #FFFFFF;border: none;}
+    </style>
+    <apex:dataTable cellpadding="4px" styleClass="table" headerClass="th" columnClasses="section" value="{!changes}" var="c" id="changes" >
+        <apex:column style="margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Change #</apex:facet>
+            <apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Status</apex:facet>
+            <apex:outputText value="{!c.BMCServiceDesk__Status__c}" />
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Pri.</apex:facet>
+            <apex:outputText value="{!c.BMCServiceDesk__Priority__c}" />
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Owner</apex:facet>
+            <apex:outputText value="{!c.Owner.Name}" />
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Scheduled Start</apex:facet>
+            <apex:outputText style="white-space: nowrap;" value="{0,date,M/d/yyyy h:mm a' ('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c) >= DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c) < DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_Start_Date__c)),11,1) - DATE(1900,1,7),7))),c.BMCServiceDesk__Scheduled_Start_Date__c - (5/24),c.BMCServiceDesk__Scheduled_Start_Date__c - (6/24))}" /></apex:outputText>
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Scheduled End</apex:facet>
+            <apex:outputText style="white-space: nowrap;" value="{0,date,M/d/yyyy h:mm a' ('EEEEE')'}"><apex:param value="{!IF(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c) >= DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),3,1) + (14 - CASE(MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),3,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),3,1) - DATE(1900,1,7),7))) && DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c) < DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),11,1) + (7 - CASE(MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),11,1) - DATE(1900,1,7),7),0,7,MOD(DATE(YEAR(DATEVALUE(c.BMCServiceDesk__Scheduled_End_Date__c)),11,1) - DATE(1900,1,7),7))),c.BMCServiceDesk__Scheduled_End_Date__c - (5/24),c.BMCServiceDesk__Scheduled_End_Date__c - (6/24))}" /></apex:outputText>
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Cat.</apex:facet>
+            <apex:outputText value="{!c.BMCServiceDesk__Category__c}" />
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Chg. Cat.</apex:facet>
+            <apex:outputText value="{!c.BMCServiceDesk__Change_Category__c}" />
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Env.</apex:facet>
+            <apex:outputText value="{!c.Environment__c}" />
+        </apex:column>
+        <apex:column style="white-space: nowrap;margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;">
+            <apex:facet name="header">Type</apex:facet>
+            <apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" />
+            <apex:outputText escape="false" rendered="{!c.Title__c != ''}" value="<tr><th class=blank></th><th class=th>Title</th><td class=td colspan=8>{!c.Title__c}<br /></td></tr>" />
+            <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Change_Description__c != ''}" value="<tr><th class=blank></th><th class=th>Description</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td></tr>" />
+            <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Reason_for_Change_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Reason</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Reason_for_Change_Details__c}</pre></td></tr>" />            
+            <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Roll_Out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Roll Out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Roll_Out_Plan_Details__c}</pre></td></tr>" />
+            <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Back_out_Plan_Details__c != ''}" value="<tr><th class=blank></th><th class=th>Back-out Plan</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Back_out_Plan_Details__c}</pre></td></tr>" />
+            <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__ClosureCategory__c != ''}" value="<tr><th class=blank></th><th class=th>Closure Category</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__ClosureCategory__c}</pre></td></tr>" />
+            <apex:outputText escape="false" rendered="{!c.BMCServiceDesk__Close_Comments__c != ''}" value="<tr><th class=blank></th><th class=th>Close Comments</th><td class=td colspan=8><pre class=pre>{!c.BMCServiceDesk__Close_Comments__c}</pre></td></tr>" />
+            <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="<tr><th class=blank></th><th class=th>Additional Data</th><td class=td colspan=8>" />
+                <apex:outputLink rendered="{!AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null)}" value="http://remedy.my.salesforce.com/apex/TasksByChange?crid={!c.Id}" id="showTasks">Show Tasks ({!c.Number_of_Linked_Tasks__c})</apex:outputLink> &nbsp;
+                <apex:outputLink rendered="{!AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null)}" value="http://remedy.my.salesforce.com/apex/IncidentsByChange?crid={!c.Id}" id="showIncidents">Show Incidents ({!c.Linked_IRs__c})</apex:outputLink> &nbsp;
+                <apex:outputLink rendered="{!AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null)}" value="http://remedy.my.salesforce.com/apex/ProblemsByChange?crid={!c.Id}" id="showProblems">Show Problems ({!c.Linked_PRs__c})</apex:outputLink> &nbsp;
+            <apex:outputText escape="false" rendered="{!OR(AND(c.Number_of_Linked_Tasks__c != 0,c.Number_of_Linked_Tasks__c != null),AND(c.Linked_IRs__c != 0,c.Linked_IRs__c != null),AND(c.Linked_PRs__c != 0,c.Linked_PRs__c != null))}" value="</td></tr>" />
+        </apex:column>
+    </apex:dataTable>
+</apex:component>

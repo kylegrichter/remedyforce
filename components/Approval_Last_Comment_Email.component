@@ -1,0 +1,10 @@
+<apex:component controller="ApprovalRequestCommentsController" access="global">
+    <apex:attribute name="relatedToId" assignTo="{!targetObjectId}" type="String" description="ID of the record whose last approval comments to retrieve"/>
+    <apex:outputText escape="false" rendered="{!comments != ''}">
+    <tr>
+        <td width="22%" height="29" align="left" valign="top" class="sectiontitle">Approver's Comments:</td>
+        <td width="49%" align="left" valign="top"><span class="important">{!comments}</span></td>
+        <td width="29%" align="center" valign="bottom">&nbsp;</td>
+    </tr>
+    </apex:outputText>
+</apex:component>

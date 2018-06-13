@@ -1,0 +1,202 @@
+<messaging:emailTemplate subject="ASA - Trustee Approval Required for {!relatedTo.Configuration_Item__r.Name} access for {!relatedTo.BMCServiceDesk__Client_Name__c} - Conf# {!relatedTo.BMCServiceDesk__FKIncident__r.Name} - {!relatedTo.Name}" recipientType="User" relatedToType="BMCServiceDesk__Task__c">
+    <messaging:htmlEmailBody >
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>ET20</title>
+        </head>
+        <body>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="bodytable">
+                <tr>
+                    <td valign="top" align="left">
+                        <table id="emailcontainer" width="750" border="0" cellspacing="0" cellpadding="10" style="border-top-style: none;">
+                            <tr>
+                                <td valign="top" align="left">
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="emaillogo">
+                                        <tr style="border-bottom-style: solid;border-bottom-color: #004990;">
+                                            <td width="11%" height="40" align="left" valign="top" style="border-bottom-style: solid;border-bottom-color: #004990;"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005PvQK&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="48%" align="left" valign="bottom" style="border-bottom-style: solid;border-bottom-color: #004990;"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005PvPg&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="41%" height="40" align="right" valign="top" style="border-bottom-style: solid;border-bottom-color: #004990;"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&oid=00DE0000000caBt"  alt="DM Logo" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="emailheader" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="border-top-style: none;">
+                                            <td width="11%" height="40" align="left" valign="top"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005sujC&oid=00DE0000000caBt&lastMod=1437659928000" alt="Process Stage" /></td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td height="14" colspan="2" align="left" valign="bottom" style="border-top-style: none;color: #F00;">As a Trustee of this application, your APPROVAL is needed for the following.</td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td height="14" colspan="2" align="left" valign="bottom" style="border-top-style: none;">To approve or reject the activities of this request, reply to this email with the <span style="font-weight: bold;">APPROVE, APPROVED, YES, REJECT, REJECTED</span>, or <span style="font-weight: bold;">NO</span> in the first line of the email message. The first line should only contain the reply without any other peiods or text. Any comments may be added to the second line of the email reply. After approval notification will be sent to the product administrators to create the access that is being requested.</td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td height="15" colspan="2" align="left" valign="bottom" style="border-top-style: none;border-bottom-style: solid;border-bottom-color: #004990;">&nbsp;</td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td width="35%" height="29" align="left" valign="bottom" style="border-top-style: none;font-weight: bold;">The Request has been submitted by:</td>
+                                            <td width="65%" align="left" valign="bottom" style="border-top-style: none;">
+                                                <span style="color: #F00;">{!relatedTo.BMCServiceDesk__Client_Name__c}</span><br />                        
+                                                <apex:repeat var="cx" value="{!relatedTo.ProcessSteps}">
+                                                    <apex:outputPanel rendered="{!cx.StepStatus=='Approved'}">
+                                                    </apex:outputPanel>
+                                                </apex:repeat>
+                                            </td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td width="35%" height="29" align="left" valign="bottom" style="border-top-style: none;font-weight: bold;">Requester Contact Information:</td>
+                                            <td align="left" valign="bottom" style="border-top-style: none;">
+                                                <span style="color: #F00;"></span>
+                                                <apex:repeat var="cx" value="{!relatedTo.ProcessSteps}">
+                                                    <apex:outputPanel rendered="{!cx.StepStatus=='Approved'}"><br />
+                                                    </apex:outputPanel>
+                                                </apex:repeat>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">
+                                            <td width="23%"  align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #58a618;color: #58a618;font-weight: bold;">Request Information</td>
+                                            <td width="77%"  align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #004990;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Submitted on:</td>
+                                            <td width="25%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.BMCServiceDesk__createdOn__c}</td>
+                                            <td width="" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">&nbsp;</td>
+                                            <td width="16%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">&nbsp;</td>
+                                            <td width="32%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">&nbsp;</td>
+                                        </tr>
+                                        <c:AttachmentList recordID="{!relatedTo.Id}"/>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Description:</td>
+                                            <td colspan="4" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                                <pre style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.BMCServiceDesk__taskDescription__c}</pre>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">
+                                            <td align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL'}">
+                                    <p style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">Below is the standard approval limits based on the Clients HR Job Level.</p>
+                                    <table id="sectionbody" width="400px" border="1" cellspacing="0" cellpadding="1">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top"><b>HR Job Level</b></td>
+                                            <td align="center" valign="top"><b>PeopleSoft ePro Work Flow Role</b></td>
+                                            <td align="center" valign="top"><b>Comments</b></td>
+                                        </tr>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'IC'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IC</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF2</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$5,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'SUPV'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">SUPV</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF2</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$5,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'MGR'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">MGR</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF3</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$10,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'SRIC'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">SRIC</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF3</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$10,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'SRMGR'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">SRMGR</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF3A</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$25,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'DIR'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">DIR</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF4</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$100,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'AVP'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">AVP</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF4B</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$250,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'VP'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">VP</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF5</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$500,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'CEO'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">CEO</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF60</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$200,000,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'EVP'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">EVP</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF7</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$3,000,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'CFO'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">CFO</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF8A</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$10,000,000</td>
+                                        </tr>
+                                        </apex:outputText>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.Configuration_Item__r.Name == 'ASA-Trustee-Peoplesoft-IAR_eP_APPROVAL' && relatedTo.Client_Job_Level__c = 'NEIC'}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;">
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">NEIC</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">IAR_eP_WF1</td>
+                                            <td align="center" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">$0</td>
+                                        </tr>
+                                        </apex:outputText>
+                                    </table>
+                                    </apex:outputText>
+                                    
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <span style="color: #FFF;">ET20</span>
+        </body>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

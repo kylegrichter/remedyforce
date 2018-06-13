@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>34.0</apiVersion>
+    <available>true</available>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET20-ASA-Notify Trustee Approver-Task</name>
+    <packageVersions>
+        <majorNumber>201501</majorNumber>
+        <minorNumber>14</minorNumber>
+        <namespace>BMCServiceDesk</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>2</minorNumber>
+        <namespace>Field_Trip</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>2</minorNumber>
+        <namespace>SFGA</namespace>
+    </packageVersions>
+    <style>none</style>
+    <subject>Additional System Access - Trustee Approval Required</subject>
+    <type>visualforce</type>
+</EmailTemplate>

@@ -1,0 +1,123 @@
+<apex:page controller="ThryvStatus" showChat="false" showHeader="false" sidebar="false" standardStylesheets="true">
+    <style>
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .dateTime {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .owner {
+            font-size: 12px;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .title{
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+    function refreshpage(interval, countdownel, totalel){
+        var countdownel = document.getElementById(countdownel)
+        var totalel = document.getElementById(totalel)
+        var timeleft = interval+1
+        var countdowntimer
+        function countdown(){
+            timeleft--
+            countdownel.innerHTML = timeleft
+            if (timeleft == 0){
+                clearTimeout(countdowntimer)
+                window.location.reload()
+            }
+            countdowntimer = setTimeout(function(){
+                countdown()
+            }, 1000)
+        }
+        countdown()
+    }
+    window.onload = function(){
+        refreshpage(300, "countdown")
+    }
+    </script>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 901px; left: 1502px; width: 350px; height: 20px; overflow: hidden;" id="rightpanelfooterPanel" layout="block">
+        <center>Next refresh in <b id="countdown"></b> seconds</center>
+    </apex:outputPanel>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 0px; left: 1450px; width: 275px; height: 900px; overflow: hidden;" id="rightpanelstepsPanel" layout="block">
+        <p style="font-family: Open Sans, Arial; font-size: 18px;">
+            <b>Admin View Transaction Steps </b><br />
+            <br />
+            Step 1 - Navigate to Login Page <br />
+            Step 2 - Login Click <br />
+            Step 3 - Impersonate <br />
+            Step 4 - Customer Dashboard <br />
+            Step 5 - Contacts Manager <br />
+            Step 6 - Social <br />
+            Step 7 - Campaigns 1 <br />
+            Step 8 - Email Campaigns <br />
+            Step 9 - Campaigns 2 <br />
+            Step 10 - SMS Campaign <br />
+            Step 11 - Campaigns 3 <br />
+            Step 12 - Coupons <br />
+            Step 13 - Sites <br />
+            Step 14 - Open Site Editor <br />
+        </p>
+        <br />
+        <p style="font-family: Open Sans, Arial; font-size: 18px;">
+            <b>Client View Transaction Steps </b><br />
+            <br />
+            Step 1 - Navigate to Login Page <br />
+            Step 2 - Login Click <br />
+            Step 3 - Booking &amp; Services <br />
+            Step 4 - Contacts Manager <br />
+            Step 5 - Campaigns 1 <br />
+            Step 6 - Email Campaigns <br />
+            Step 7 - Campaigns 2 <br />
+            Step 8 - SMS Campaign <br />
+            Step 9 - Campaigns 3 <br />
+            Step 10 - Coupons <br />
+        </p>
+    </apex:outputPanel>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 0px; left: 1700px; width: 350px; height: 900px; overflow: hidden;" id="rightpanelPanel" layout="block">
+        <center><img src="https://remedy--c.na38.visual.force.com/resource/1504030494000/ThryvLogo" alt="Thryv" height="150"/></center>
+        <apex:outputText rendered="{!currentCount == true}" escape="false"><h1>Current</h1><br /></apex:outputText>
+        <apex:repeat rendered="{!currentCount == true}" value="{!current}" var="c">
+            <span class="dateTime"><apex:outputField value="{!c.Date_Time__c}" /></span> <br /> <span class="owner">By {!c.Owner.Name}</span><br />
+            <span class="title">{!c.Title__c}</span><br />
+            <span>{!c.Description__c}</span><br /><br />
+        </apex:repeat>
+        <br /><br />
+        <apex:outputText rendered="{!upcomingCount == true}" escape="false"><h1>Upcoming</h1><br /></apex:outputText>
+        <apex:repeat rendered="{!upcomingCount == true}" value="{!upcoming}" var="u">
+            <span class="dateTime"><apex:outputField value="{!u.Date_Time__c}" /></span> <br /> <span class="owner">By {!u.Owner.Name}</span><br />
+            <span class="title">{!u.Title__c}</span><br />
+            <span>{!u.Description__c}</span><br /><br />
+        </apex:repeat>
+        <br /><br />
+        <apex:outputText rendered="{!pastCount == true}" escape="false"><h1>Past</h1><br /></apex:outputText>
+        <apex:repeat rendered="{!pastCount = true}" value="{!past}" var="p">
+            <span class="dateTime"><apex:outputField value="{!p.Date_Time__c}" /></span> <br /> <span class="owner">By {!p.Owner.Name}</span><br />
+            <span class="title">{!p.Title__c}</span><br />
+            <span>{!p.Description__c}</span><br /><br />
+        </apex:repeat>
+    </apex:outputPanel>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 0px; left: 0px; width: 725px; height: 375px; overflow: hidden;" id="adminuptimePanel" layout="block">
+        <apex:iframe height="100%" width="100%" src="https://p.catchpoint.com/ui/Entry/PG/V/ARErAz3A-B5R-Bi-jU7uLQwNMA" scrolling="false" id="adminuptime"/>
+    </apex:outputPanel>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 0px; left: 725px; width: 725px; height: 375px; overflow: hidden;" id="adminperformancePanel" layout="block">
+        <apex:iframe height="100%" width="100%" src="https://p.catchpoint.com/ui/Entry/PG/V/ARHwj3Ig-B5P-Bi-jU7uLyWjQg" scrolling="false" id="adminperformance"/>
+    </apex:outputPanel>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 396px; left: 0px; width: 725px; height: 300px; overflow: hidden;" id="clientuptimePanel" layout="block">
+        <apex:iframe height="100%" width="100%" src="https://p.catchpoint.com/ui/Entry/PG/V/AREDCaEQ-B5S-Bi-jU7uMCeztg" scrolling="false" id="clientuptime"/>
+    </apex:outputPanel>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 396px; left: 725px; width: 725px; height: 300px; overflow: hidden;" id="clientperformancePanel" layout="block">
+        <apex:iframe height="100%" width="100%" src="https://p.catchpoint.com/ui/Entry/PG/V/ARGi7GpQ-B5Q-Bi-jU7uMQyt4A" scrolling="false" id="clientperformance"/>
+    </apex:outputPanel>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 717px; left: 0px; width: 725px; height: 200px; overflow: hidden;" id="consumeruptimePanel" layout="block">
+        <apex:iframe height="100%" width="100%" src="https://p.catchpoint.com/ui/Entry/PG/V/ARVd8IQ-B5U-Bi-jU7ucTsOog" scrolling="false" id="consumeruptime"/>
+    </apex:outputPanel>
+    <apex:outputPanel style="position: absolute; padding-bottom: 20px; top: 717px; left: 725px; width: 725px; height: 200px; overflow: hidden;" id="consumerperformancePanel" layout="block">
+        <apex:iframe height="100%" width="100%" src="https://p.catchpoint.com/ui/Entry/PG/V/ARBaovjw-B5T-Bi-jU7uc1maPA" scrolling="false" id="consumerperformance"/>
+    </apex:outputPanel>
+</apex:page>

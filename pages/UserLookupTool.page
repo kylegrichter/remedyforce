@@ -1,0 +1,256 @@
+<apex:page controller="UserLookup" title="User Lookup Tool" sidebar="true" showHeader="true">
+    <c:LoadingBox />
+    <style type="text/css">
+        .italicText { font-style: italic; color:blue; font-weight:bold; }
+        .textheading { font-style: italic; font-weight:bold; font-size:150%;text-decoration: underline; }
+        <!-- .h2 { font-style: italic; color:blue; font-weight:bold; font-size:120%; } -->
+        .label { white-space: nowrap; width:400px;}
+    </style>
+    <br/><br/>
+    <center>
+        <apex:outputText styleclass="textheading" value="User Lookup Tool"/>
+    </center>
+    <br/>
+    <apex:form >
+        <apex:pageBlock tabStyle="BMCServiceDesk__Incident__c">
+            <apex:pageBlockSection title="User Lookup">
+                <apex:pageBlockSectionItem >
+                    <apex:inputText styleclass="italicText" value="{!UserLookupId}" id="NewUserID">Lookup LanID&nbsp;</apex:inputText><apex:commandButton status="loadStatus" rerender="outputComparision" value="Lookup"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="User Name Search">
+                <apex:pageBlockSectionItem >
+                    <apex:inputText styleclass="italicText" value="{!UserSearchName}" id="SearchUserName">Search By Name&nbsp;</apex:inputText><apex:commandButton status="loadStatus" rerender="usersearchResults" value="Search"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Lan ID Search">
+                <apex:pageBlockSectionItem >
+                    <apex:inputText styleclass="italicText" value="{!UserSearchLan}" id="SearchUserLan">Search By Lan ID&nbsp;</apex:inputText><apex:commandButton status="loadStatus" rerender="usersearchResultsLan" value="Search"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:outputPanel >
+            <apex:outputPanel id="usersearchResults">
+                <apex:pageBlock tabStyle="BMCServiceDesk__Projected_Service_Outage__c" rendered="{!UserSearchName!=null && UserSearchName != 'null'&& UserSearchName != ''}">
+                    <apex:pageblockButtons location="bottom">
+                        <apex:commandButton status="loadStatus" value="<<" rerender="usersearchResults" action="{!beginning}" disabled="{!prev}"/>
+                        <apex:commandButton status="loadStatus" value="<" rerender="usersearchResults" action="{!previous}" disabled="{!prev}"/>
+                        <apex:outputText value="Page {!CEILING(pageNumber/PageSize)} of {!CEILING(ResultSize/PageSize)}" />
+                        <apex:commandButton status="loadStatus" value=">" rerender="usersearchResults" action="{!next}" disabled="{!nxt}"/>
+                        <apex:commandButton status="loadStatus" value=">>" rerender="usersearchResults" action="{!end}" disabled="{!nxt}"/>                                    
+                    </apex:pageblockButtons>
+                    <apex:pageBlockSection columns="1" title="User Name Search Results">
+                        <apex:pageBlockTable value="{!UserSearchList}" var="u" onRowClick="">
+                            <apex:column value="{!u.Name}"/>
+                            <apex:column value="{!u.Lan_ID__c}"/>
+                            <apex:column value="{!u.V_Z_ID_del__c}"/>
+                            <apex:column value="{!u.title}"/>
+                            <apex:column value="{!u.department}"/>
+                            <apex:column value="{!u.city}"/>
+                            <apex:column value="{!u.state}"/>
+                            <apex:column value="{!u.ManagerId}"/>
+                            <apex:column value="{!u.FederationIdentifier}"/>
+                            <apex:column >
+                                <apex:commandButton rerender="outputComparision" value="Lookup">
+                                    <apex:param name="UserLookupId" assignTo="{!UserLookupId}" value="{!u.FederationIdentifier}" />
+                                </apex:commandButton>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </apex:outputPanel>
+            <apex:outputPanel id="usersearchResultsLan">
+                <apex:pageBlock tabStyle="BMCServiceDesk__Change_Request__c" rendered="{!UserSearchLan!=null && UserSearchLan != 'null'&& UserSearchLan != ''}">
+                    <apex:pageblockButtons location="bottom">
+                        <apex:commandButton value="<<" rerender="usersearchResultsLan" action="{!beginningLan}" disabled="{!prevLan}"/>
+                        <apex:commandButton value="<" rerender="usersearchResultsLan" action="{!previousLan}" disabled="{!prevLan}"/>
+                        <apex:outputText value="Page {!CEILING(pageNumberLan/PageSizeLan)} of {!CEILING(ResultSizeLan/PageSizeLan)}" />
+                        <apex:commandButton value=">" rerender="usersearchResultsLan" action="{!nextLan}" disabled="{!nxtLan}"/>
+                        <apex:commandButton value=">>" rerender="usersearchResultsLan" action="{!endLan}" disabled="{!nxtLan}"/>                                    
+                    </apex:pageblockButtons>
+                    <apex:pageBlockSection columns="1" title="User Lan ID Search Results">
+                        <apex:pageBlockTable value="{!LanSearchList}" var="u" onRowClick="">
+                            <apex:column value="{!u.Name}"/>
+                            <apex:column value="{!u.Lan_ID__c}"/>
+                            <apex:column value="{!u.V_Z_ID_del__c}"/>
+                            <apex:column value="{!u.title}"/>
+                            <apex:column value="{!u.department}"/>
+                            <apex:column value="{!u.city}"/>
+                            <apex:column value="{!u.state}"/>
+                            <apex:column value="{!u.ManagerId}"/>
+                            <apex:column value="{!u.FederationIdentifier}"/>
+                            <apex:column >
+                                <apex:commandButton rerender="outputComparision" value="Lookup">
+                                    <apex:param name="UserLookupId" assignTo="{!UserLookupId}" value="{!u.FederationIdentifier}" />
+                                </apex:commandButton>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </apex:outputPanel>
+            <apex:outputPanel id="outputComparision">
+                <apex:pageBlock tabStyle="BMCServiceDesk__Incident__c" rendered="{!UserLookupId!=null && UserLookupId != 'null'&& UserLookupId != ''}">
+                    <apex:pageBlockSection columns="2" title="User Information">
+                        <apex:repeat value="{!UserInfoRecord}" var="userinfo">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.Lan_ID__c.label}"/>
+                                <apex:outputField value="{!userinfo.Lan_ID__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.V_Z_ID_del__c.label}"/>
+                                <apex:outputField value="{!userinfo.V_Z_ID_del__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.Name.label}"/>
+                                <apex:outputField value="{!userinfo.Name}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.title.label}"/>
+                                <apex:outputField value="{!userinfo.title}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.department.label}"/>
+                                <apex:outputField value="{!userinfo.department}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.Job_Code__c.label}"/>
+                                <apex:outputField value="{!userinfo.Job_Code__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputText value=""/>
+                                <apex:outputText value=""/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.city.label}"/>
+                                <apex:outputField value="{!userinfo.city}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.state.label}"/>
+                                <apex:outputField value="{!userinfo.state}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.CompanyName.label}"/>
+                                <apex:outputField value="{!userinfo.CompanyName}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.Phone.label}"/>
+                                <apex:outputField value="{!userinfo.Phone}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.MobilePhone.label}"/>
+                                <apex:outputField value="{!userinfo.MobilePhone}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.Hire_Date__c.label}"/>
+                                <apex:outputField value="{!userinfo.Hire_Date__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.ManagerId.label}"/>
+                                <apex:outputField value="{!userinfo.ManagerId}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.Cost_Center__c.label}"/>
+                                <apex:outputField value="{!userinfo.Cost_Center__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.SIP_Address__c.label}"/>
+                                <apex:outputField value="{!userinfo.SIP_Address__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.LAN_Password_Last_Set__c.label}"/>
+                                <apex:outputField value="{!userinfo.LAN_Password_Last_Set__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.LAN_Password_Expiration__c.label}"/>
+                                <apex:outputField value="{!userinfo.LAN_Password_Expiration__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.LAN_Account_Status__c.label}"/>
+                                <apex:outputField value="{!userinfo.LAN_Account_Status__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.Employee_ID__c.label}"/>
+                                <apex:outputField value="{!userinfo.Employee_ID__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.LastModifiedById.label}"/>
+                                <apex:outputField value="{!userinfo.LastModifiedById}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!$ObjectType.User.fields.LastModifiedDate.label}"/>
+                                <apex:outputField value="{!userinfo.LastModifiedDate}"/>
+                            </apex:pageBlockSectionItem>
+                        </apex:repeat>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection columns="1" title="Web Tools">
+                        <apex:repeat value="{!UserInfoRecord}" var="userinfo">
+                            <apex:panelGrid columns="8" id="theGrid">
+                            
+                                <apex:outputText value="ARS" id="ARS"/>
+                                <apex:outputLink target="_blank" value="http://arsweb.dexmedia.com/Help_Desk/SearchResult.aspx?TaskId=QuickSearch&SearchID=19&TM=0.906807636798736&Anr={!userinfo.Lan_ID__c}" id="ARS_URL">http://arsweb.dexmedia.com</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="PeopleSoft" id="PeopleSoft"/>
+                                <apex:outputLink target="_blank" value="https://psfin.supermedia.com/psp/prd/EMPLOYEE/ERP/c/MAINTAIN_SECURITY.USERMAINT.GBL?PORTALPARAM_PTCNAV=PT_USERMAINT_GBL&EOPP.SCNode=ERP&EOPP.SCPortal=EMPLOYEE&EOPP.SCName=PT_PEOPLETOOLS&EOPP.SCLabel=User%20Profiles&EOPP.SCFName=PT_USER_PROFILES&EOPP.SCSecondary=true&EOPP.SCPTfname=PT_USER_PROFILES&FolderPath=PORTAL_ROOT_OBJECT.PT_PEOPLETOOLS.PT_SECURITY.PT_USER_PROFILES.PT_USERMAINT_GBL&IsFolder=false" id="PeopleSoft_URL">https://psfin.supermedia.com/</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="UltiPro" id="UltiPro"/>
+                                <apex:outputLink target="_blank" value="https://dexmedia.okta.com/home/ultipro/0oaeg63vsqABNNKQVCJY/593" id="UltiPro_URL">https://dexmedia.okta.com</apex:outputLink>
+                                
+                                <apex:outputText value="Salesforce" id="Salesforce"/>
+                                <apex:outputLink target="_blank" value="https://dexmedia.my.salesforce.com/_ui/search/ui/UnifiedSearchResults?searchType=2&sen=005&sen=500&str={!userinfo.Lan_ID__c}" id="Salesforce_URL">https://dexmedia.my.salesforce.com</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="Vision" id="Vision"/>
+                                <apex:outputLink target="_blank" value="http://vision.superpages.com:8080/psp/ps/EMPLOYEE/CRM/c/MAINTAIN_SECURITY.USERMAINT.GBL?PORTALPARAM_PTCNAV=PT_USERMAINT_GBL&EOPP.SCNode=CRM&EOPP.SCPortal=EMPLOYEE&EOPP.SCName=PT_PEOPLETOOLS&EOPP.SCLabel=User%20Profiles&EOPP.SCFName=PT_USER_PROFILES&EOPP.SCSecondary=true&EOPP.SCPTfname=PT_USER_PROFILES&FolderPath=PORTAL_ROOT_OBJECT.PT_PEOPLETOOLS.PT_SECURITY.PT_USER_PROFILES.PT_USERMAINT_GBL&IsFolder=false" id="Vision_URL">http://vision.superpages.com:8080</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="Smallworld" id="Smallworld"/>
+                                <apex:outputLink target="_blank" value="http://smallworld/html/search.shtml" id="Smallworld_URL">http://smallworld</apex:outputLink>
+                                
+                                <apex:outputText value="McAfee" id="McAfee"/>
+                                <apex:outputLink target="_blank" value="https://dfw2pepo03:20205/console/query/displayQueryGroup.do" id="McAfee_URL">https://dfw2pepo03:20205</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="ProxyProWeb" id="ProxyProWeb"/>
+                                <apex:outputLink target="_blank" value="https://dfw2premote03.corp.pvt/wc/Hosts/Hosts?groupId=601d0f9c-9df0-42ec-bab6-fac3acaf1f5f&stationName={!userinfo.Lan_ID__c}" id="ProxyProWeb_URL">https://dfw2premote03.corp.pvt</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="WebEx" id="WebEx"/>
+                                <apex:outputLink target="_blank" value="https://dexonecorp.webex.com/adm0401lsp13/default.do?&needFilter=false&siteurl=dexonecorp&afterLoginPage=0&rnd=0.3142425983614381" id="WebEx_URL">https://dexonecorp.webex.com</apex:outputLink>
+                                
+                                <apex:outputText value="VAST" id="VAST"/>
+                                <apex:outputLink target="_blank" value="http://vast/" id="VAST_URL">http://vast/</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="Open New IR" id="Incident"/>
+                                <apex:outputLink target="_blank" value="https://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?record_id=&objectName=Incident__c" id="Incident_URL">https://remedy.my.salesforce.com</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="SCCM – Computer Lookup" id="SCCM"/>
+                                <apex:outputLink target="_blank" value="https://dfw2psccmcn01.corp.pvt/Reports/Pages/Report.aspx?ItemPath=%2fConfigMgr_DFW%2fAsset+Intelligence%2fHardware+03B+-+Computers+for+a+specific+primary+console+user" id="SCCM_URL">https://dfw2psccmcn01.corp.pvt/</apex:outputLink>
+                                
+                                <apex:outputText value="People Search" id="peoplesearch"/>
+                                <apex:outputLink target="_blank" value="http://thebuzz/Interact/Pages/Content/Search/Search.aspx?q={!userinfo.Name}" id="peoplesearch_URL">http://thebuzz/</apex:outputLink>
+                                <apex:outputText escape="false" value="&nbsp;"/>
+                                <apex:outputText value="Citrix Monitor" id="citrixmonitor"/>
+                                <apex:outputLink target="_blank" value="http://citrixmonitor/" id="citrixmonitor_URL">http://citrixmonitor/</apex:outputLink>
+
+                            </apex:panelGrid>
+                        </apex:repeat>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection columns="1" title="Last 20 Incidents/Service Requests">
+                        <apex:pageBlockTable value="{!UserIncidents}" var="userIR">
+                            <apex:column style="white-space: nowrap;" value="{!userIR.BMCServiceDesk__Launch_console__c}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.BMCServiceDesk__Type__c}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.BMCServiceDesk__FKPriority__c}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.BMCServiceDesk__FKStatus__c}"/>
+                            <!--<apex:column style="white-space: nowrap;" value="{!userIR.Incident_Title__c}"/>-->
+                            <apex:column value="{!userIR.BMCServiceDesk__incidentDescription__c}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.BMCServiceDesk__FKBMC_BaseElement__c}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.BMCServiceDesk__queueName__c}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.BMCServiceDesk__FKOpenBy__c}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.BMCServiceDesk__dueDateTime__c }"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.CreatedDate}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.CreatedById}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.LastModifiedDate}"/>
+                            <apex:column style="white-space: nowrap;" value="{!userIR.LastModifiedById}"/>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

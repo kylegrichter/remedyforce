@@ -1,0 +1,20 @@
+<apex:page showChat="false" showHeader="false" sidebar="false" standardStylesheets="true" title="Infrastructure Dashboard - Table of Contents">
+    <h1>Main Dashboards for Service Management</h1>
+    <ul>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000RIw1" target="_blank">Infra - Service Management (Weekly)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000RJ16" target="_blank">Infra - Service Management (Rolling 12 Months)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000RJ1B" target="_blank">Infra - Service Management - Olechna (HD/FS)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000aDcw" target="_blank">Infra - Service Management - Mustafa (DBA)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000aDcr" target="_blank">Infra - Service Management - Muller (USS)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000aDcm" target="_blank">Infra - Service Management - Vu (Network/Telecom)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000aDSh" target="_blank">Infra - Service Management - Page (Security)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000aDSr" target="_blank">Infra - Service Management - Taranto (Server MS/Desktop)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000aDd1" target="_blank">Infra - Service Management - Rahman(Environment,Ops,BS)</a></li>
+    </ul>
+    <h1>Additional Information</h1>
+    <ul>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000RIvN" target="_blank">Infrastructure - Closed IR/SR Dashboard (Rolling 12 Months)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000RIvS" target="_blank">Infrastructure - Opened IR/SR Dashboard (Rolling 12 Months)</a></li>
+        <li><a href="https://remedy.my.salesforce.com/01Z44000000RIw6" target="_blank">Infrastructure - Help Desk and Field Support</a></li>
+    </ul>
+</apex:page>

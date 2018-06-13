@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>38.0</apiVersion>
+    <available>true</available>
+    <description>Thirty Day Left For Approval</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ThirtyDayLeftApproval</name>
+    <style>none</style>
+    <subject>1 Day Left</subject>
+    <type>visualforce</type>
+</EmailTemplate>

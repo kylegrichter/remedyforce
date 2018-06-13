@@ -1,0 +1,41 @@
+<messaging:emailTemplate subject="New RemedyForce Access" recipientType="User" relatedToType="user">
+    <messaging:htmlEmailBody >
+        <html>
+            <head>
+                <style>
+                    body{font-family:Calibri;color:#084B8A;font-size:12pt;font-weight:bold;}
+                </style>
+            </head>
+            <body>
+                <p>Your Remedyforce access has been created.</p>
+                <p>You will be able to access RemedyForce via <a href="https://remedy.my.salesforce.com">https://remedy.my.salesforce.com</a>. This Single-Sign-On link will not require a username or password as long as you are logged into a machine on the company network</p>         
+                <p>You have the ability to add yourself to the queues that you will support by doing the following:
+                    <ol>
+                        <li>Log in and click on the Self Service Tab</li>
+                        <li>Select the ‘Common Service Requests’</li>
+                        <li>Click on the <a href="https://remedy.my.salesforce.com/apex/bmcservicedesk__ssredirect?type=sr&id=a3YE00000008SJEMA2">‘Queue Management-Add yourself to a Queue’</a></li>
+                    </ol>
+                </p>
+                <img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005Ob21&oid=00DE0000000caBt" alt="Queue" />
+                <p>When the form opens, simply select the queue that you need to be a member of, and an approval email will go out to the owner for approval. Once approved, you will be added to that queue.</p>
+                <p>IMPORTANT: Once you have been added to a Queue, it is very important that you set up your default queue in RemedyForce. Please go to this link and follow the instructions on how to do that. <a href="https://remedy.my.salesforce.com/apex/BMCServiceDesk__KM_ArticleView?name=KBA129">https://remedy.my.salesforce.com/apex/BMCServiceDesk__KM_ArticleView?name=KBA129</a></p>
+                <p>Additionally, if you are not sure on how to work tickets in RemedyForce, we have several Knowledge Articles that can assist you.
+                    <ul>
+                        <li>RemedyForce - How to create an Incident Record via the Incident Tab</li>
+                        <li style="list-style-type:none"><a href="https://remedy.my.salesforce.com/apex/BMCServiceDesk__KM_ArticleView?name=KBA135">https://remedy.my.salesforce.com/apex/BMCServiceDesk__KM_ArticleView?name=KBA135</a></li>
+                        <li>RemedyForce - How to Work and Close Incident Records</li>
+                        <li style="list-style-type:none"><a href="https://remedy.my.salesforce.com/apex/BMCServiceDesk__KM_ArticleView?name=KBA156">https://remedy.my.salesforce.com/apex/BMCServiceDesk__KM_ArticleView?name=KBA156</a></li>
+                        <li>RemedyForce - How to Create a List View</li>
+                        <li style="list-style-type:none"><a href="https://remedy.my.salesforce.com/apex/BMCServiceDesk__KM_ArticleView?name=KBA131">https://remedy.my.salesforce.com/apex/BMCServiceDesk__KM_ArticleView?name=KBA131</a></li>
+                    </ul>
+                </p>
+                <p>
+                    Thank you,<br />
+                    RemedyForce Team<br/>
+                    <a href="mailto:DL-ITRemedyForce@dexmedia.com">DL-ITRemedyForce@dexmedia.com</a><br/>
+                    Dex Media<br/>
+                </p>
+            </body>
+        </html>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

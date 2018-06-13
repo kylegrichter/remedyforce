@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notify Queue of Incident Reassigned to Queue</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET3-Notify Queue-IR Reassigned to Queue</name>
+    <style>none</style>
+    <subject>Incident # {!BMCServiceDesk__Incident__c.Name} with Priority of {!BMCServiceDesk__Incident__c.BMCServiceDesk__Priority_ID__c} has been reassigned to the {!BMCServiceDesk__Incident__c.OwnerFullName} Queue</subject>
+    <textOnly>ET3
+
+Incident #  {!BMCServiceDesk__Incident__c.Name}      Priority:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Priority_ID__c}
+Queue Assignment:  {!BMCServiceDesk__Incident__c.OwnerFullName}     Re-Assigned by:  {!BMCServiceDesk__Incident__c.LastModifiedBy}
+
+Requester Information
+
+Client Name:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}     Email:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}
+Client Address:  {!BMCServiceDesk__Incident__c.Location_Code__c}     Phone:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Phone__c}
+Location:  {!BMCServiceDesk__Incident__c.Real_Location__c}
+
+Incident Information
+
+Status:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Status_ID__c}     SLA Due Date:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c}
+Created Date:  {!BMCServiceDesk__Incident__c.CreatedDate}     Urgency:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Urgency_ID__c}
+Category:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Category_ID__c}     Impact:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Impact_Id__c}
+Escalated:   {! IF(BMCServiceDesk__Incident__c.Escalated__c=TRUE, &quot;Yes&quot;, &quot;No&quot;)}      Config item:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKBMC_BaseElement__c}
+Reason for Escalation:  {!BMCServiceDesk__Incident__c.Reason_For_Escalation__c}
+Short Description:  {!BMCServiceDesk__Incident__c.Incident_Title__c}
+Description:
+
+{!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}
+
+ET3</textOnly>
+    <type>custom</type>
+</EmailTemplate>

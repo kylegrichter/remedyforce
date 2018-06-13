@@ -1,0 +1,20 @@
+<apex:page sidebar="false" showHeader="true" standardStylesheets="true">
+<link rel="stylesheet" type="text/css" href="{$Resource.BMCServiceDesk__SDEFStyles}/GettingStarted.css" />
+
+<apex:pageBlock title="BMC Remedyforce Report: Queue Members" />
+<br />
+Welcome to Remedyforce Report: Queue Members!  
+<br />
+<br />
+This unmanaged package provides a Visualforce Report that allows you to select a Queue and see the members of that Queue along with information such as their username, email, profile, etc.  
+<br />
+The link below will provide you a PDF with more details around the Report you've installed.  
+<br />
+<br />
+<b>  
+Please be aware that this Report is delivered as-is with no implied warranty.
+</b>
+<br />
+<br />
+      <a href="{!$Resource.RFReport_QueueMembersReport}/BMCRF_QueueMemberReport.pdf" target="_blank" class = "clsAnchor">Remedyforce Report: Queue Members</a>
+</apex:page>

@@ -1,0 +1,168 @@
+<messaging:emailTemplate subject="Service Request # {!relatedTo.Name} has been created and assigned to the {!relatedTo.Owner.Name} Queue" recipientType="User" relatedToType="BMCServiceDesk__Incident__c">
+    <messaging:htmlEmailBody >
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>ET7</title>
+        </head>
+        <body>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="bodytable">
+                <tr>
+                    <td valign="top" align="left">
+                        <table id="emailcontainer" width="750" border="0" cellspacing="0" cellpadding="10" style="border-top-style: none;">
+                            <tr>
+                                <td valign="top" align="left">
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="emaillogo">
+                                        <tr style="border-bottom-style: solid; border-bottom-color: #004990;">
+                                            <td width="25%" height="29" align="left" valign="top" style="border-bottom-style: solid; border-bottom-color: #004990;"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEG&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="25%" height="29" align="right" valign="top" style="border-bottom-style: solid; border-bottom-color: #004990;"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="emailheader" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="border-top-style: none;">
+                                            <td width="22%" height="29" align="left" valign="bottom" style="border-top-style: none;font-weight: bold;" class="sectiontitle">Service Request #</td>
+                                            <td width="25%" align="left" valign="bottom" style="border-top-style: none;"><a href="https://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?record_id={!relatedTo.Id}&objectName=Incident__c">{!relatedTo.Name}</a></td>
+                                            <td width="" align="center" valign="bottom" style="border-top-style: none;">&nbsp;</td>
+                                            <td width="21%" align="left" valign="bottom" style="border-top-style: none;font-weight: bold;">Priority:</td>
+                                            <td width="32%" align="left" valign="bottom" style="border-top-style: none;color: #F00;">{!relatedTo.BMCServiceDesk__Priority_ID__c}</td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td width="22%" height="29" align="left" valign="top" style="border-top-style: none;font-weight: bold;">Queue Assignment:</td>
+                                            <td width="25%" align="left" valign="top" style="border-top-style: none;"><span style="color: #F00;">{!relatedTo.Owner.Name}</span></td>
+                                            <td width="" align="center" valign="top" style="border-top-style: none;">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="border-top-style: none;font-weight: bold;">Sent from:</td>
+                                            <td width="32%" align="left" valign="top" style="border-top-style: none;">{!relatedTo.LastModifiedBy.Name}</td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td width="22%" height="29" align="left" valign="top" style="border-top-style: none;font-weight: bold;">&nbsp;</td>
+                                            <td width="25%" align="left" valign="top" style="border-top-style: none;">&nbsp;</td>
+                                            <td width="" align="center" valign="top" style="border-top-style: none;">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="border-top-style: none;font-weight: bold;">&nbsp;</td>
+                                            <td width="32%" align="left" valign="top" style="border-top-style: none;"><a href="https://remedy.my.salesforce.com/apex/AcceptActionIncident?incidentid={!relatedTo.Name}">Accept and Assign to Me</a></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">
+                                            <td width="23%" align="left" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #58a618;color: #58a618;font-weight: bold;" valign="top">Requester Information</td>
+                                            <td width="77%" align="left" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #004990;" valign="top">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;font-weight: bold;">Client Name:</td>
+                                            <td width="25%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedto.BMCServiceDesk__Client_Name__c}</td>
+                                            <td width="" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;font-weight: bold;">Email:</td>
+                                            <td width="32%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.BMCServiceDesk__clientEmail__c}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;font-weight: bold;">Location:</td>
+                                            <td width="25%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Real_Location__c}</td>
+                                            <td width="" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;font-weight: bold;">Phone:</td>
+                                            <td width="32%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.BMCServiceDesk__Client_Phone__c}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">
+                                            <td width="23%"  align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #58a618;color: #58a618;font-weight: bold;">Service Request Information</td>
+                                            <td width="77%"  align="left" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #004990;" valign="top" >&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-weight: bold;" >Status:</td>
+                                            <td width="25%" align="left" valign="top" style="font-weight: bold;">{!relatedTo.BMCServiceDesk__Status_ID__c}</td>
+                                            <td width="" align="left" valign="top">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top">&nbsp;</td>
+                                            <td width="32%" align="left" valign="top">&nbsp;</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-weight: bold;">Created Date:</td>
+                                            <td width="25%" align="left" valign="top">{!relatedTo.CreatedDate}</td>
+                                            <td width="" align="left" valign="top">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="font-weight: bold;">SLA Due Date:</td>
+                                            <td width="32%" align="left" valign="top"><span class="important">{!relatedTo.BMCServiceDesk__dueDateTime__c}</span></td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-weight: bold;">Urgency:</td>
+                                            <td width="25%" align="left" valign="top">{!relatedTo.BMCServiceDesk__Urgency_ID__c}</td>
+                                            <td width="" align="left" valign="top">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="font-weight: bold;">Impact:</td>
+                                            <td width="32%" align="left" valign="top">{!relatedTo.BMCServiceDesk__Impact_Id__c}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-weight: bold;">Category:</td>
+                                            <td width="25%" align="left" valign="top">{!relatedTo.BMCServiceDesk__Category_ID__c}</td>
+                                            <td width="" align="left" valign="top">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="font-weight: bold;">Config item:</td>
+                                            <td width="32%" align="left" valign="top">{!relatedTo.BMCServiceDesk__FKBMC_BaseElement__r.Name}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-weight: bold;">Short Description:</td>
+                                            <td colspan="4" align="left" valign="top">{!relatedTo.Incident_Title__c}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-weight: bold;">Long Description:</td>
+                                            <td colspan="4" align="left" valign="top"><p><pre style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.BMCServiceDesk__incidentDescription__c}</pre></p></td>
+                                        </tr>
+                                        <apex:outputText escape="false" rendered="{!relatedTo.SetupLikeLanID__c != null}">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-weight: bold;">SetupLike LanID:</td>
+                                            <td colspan="4" align="left" valign="top">{!relatedTo.SetupLikeLanID__r.Lan_ID__c}</td>
+                                        </tr>
+                                        </apex:outputText>
+                                    </table>
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">
+                                            <td width="23%" align="left" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #58a618;color: #58a618;font-weight: bold;" valign="top">Additional Information</td>
+                                            <td width="77%" align="left" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #004990;" valign="top">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;font-weight: bold;">Service Request Title:</td>
+                                            <td width="25%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.BMCServiceDesk__Service_Request_Title__c}</td>
+                                            <td width="" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;font-weight: bold;">Service:</td>
+                                            <td width="32%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.BMCServiceDesk__FKBusinessService__r.Name}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="22%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;font-weight: bold;">Requested Due Date:</td>
+                                            <td width="25%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Requested_Due_By_Date__c}</td>
+                                            <td width="" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">&nbsp;</td>
+                                            <td width="21%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;font-weight: bold;">Expected Due Date:</td>
+                                            <td width="32%" align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;color: #F00;">{!relatedTo.Expected_Due_By_Date__c}</td>
+                                        </tr>
+                                        <c:AttachmentList recordID="{!relatedTo.Id}"/>
+                                    </table>
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">
+                                            <td width="23%" align="left" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #58a618;color: #58a618;font-weight: bold;" valign="top">Request Details</td>
+                                            <td width="77%" align="left" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #004990;" valign="top">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <c:SRDDetailsList2 recordID="{!relatedTo.Id}"/>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <span class="ETname">ET5</span>
+        </body>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

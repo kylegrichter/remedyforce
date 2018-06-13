@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <decisions>
+        <name>Is_Service_Changed</name>
+        <label>Is Service Changed?</label>
+        <locationX>181</locationX>
+        <locationY>171</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Service_Unchanged</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>OriginalServiceID</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ServiceID</elementReference>
+                </rightValue>
+            </conditions>
+            <label>Service Unchanged</label>
+        </rules>
+        <rules>
+            <name>Service_Changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>OriginalServiceID</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>ServiceID</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Service_on_Record</targetReference>
+            </connector>
+            <label>Service Changed</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Update {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update IR Service On Queue Change</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Lookup_Queue_Details</name>
+        <label>Lookup Queue Details</label>
+        <locationX>182</locationX>
+        <locationY>49</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Service_Changed</targetReference>
+        </connector>
+        <filters>
+            <field>Queue_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>QueueDevName</elementReference>
+            </value>
+        </filters>
+        <object>Queue_Extended_Attributes__c</object>
+        <outputAssignments>
+            <assignToReference>ServiceID</assignToReference>
+            <field>SLA_Service_Name__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Service_on_Record</name>
+        <label>Update Service on Record</label>
+        <locationX>181</locationX>
+        <locationY>332</locationY>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>IncidentID</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>BMCServiceDesk__FKBusinessService__c</field>
+            <value>
+                <elementReference>ServiceID</elementReference>
+            </value>
+        </inputAssignments>
+        <object>BMCServiceDesk__Incident__c</object>
+    </recordUpdates>
+    <startElementReference>Lookup_Queue_Details</startElementReference>
+    <variables>
+        <name>IncidentID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>OriginalServiceID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>QueueDevName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>ServiceID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

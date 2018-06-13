@@ -1,0 +1,46 @@
+<apex:component controller="ChangeManagement" access="global">
+    <apex:attribute name="range" type="Integer" description="Range for SOQL" assignTo="{!rangeNum}"/>
+    <style type="text/css">
+        table{border-collapse: collapse;empty-cells: show;}
+        th{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#1797C0;color: #FFFFFF;font-size: 9pt;font-weight:bold;text-align: left;font-family: Calibri;}
+        td{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#FFFFFF;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;}
+        pre{font-family: Calibri;font-size: 9pt;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;margin:1px;}
+    </style>
+    <style type="text/css">
+        .section{margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#CFEEF8;color:#000000;font-size: 9pt;text-align: left;font-family: Calibri;}
+        .blank{background-color: #FFFFFF;border: none;}
+        .tdBlue{margin:5px; border-style: solid; border-width: 1px; border-color: #00305E; background-color:#C5D9F1; color:#000000; font-size: 9pt; text-align: left; vertical-align: top; font-family: Calibri;}
+        .tdGreen{margin:5px; border-style: solid; border-width: 1px; border-color: #00305E; background-color:#EBF1DE; color:#000000; font-size: 9pt; text-align: left; vertical-align: top; font-family: Calibri;}
+        .tdRed{margin:5px; border-style: solid; border-width: 1px; border-color: #00305E; background-color:#F2DCDB; color:#000000; font-size: 9pt; text-align: left; vertical-align: top; font-family: Calibri;}
+        .OPENED{background-color:#C0504D; color:#F2DCDB;}
+        .PENDING.APPROVAL{background-color:#C0504D; color:#F2DCDB;}
+    </style>
+    <table>
+        <thead>
+            <tr>
+                <th>Change #</th>
+                <th>Status</th>
+                <th>Cat.</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Owner</th>
+                <th>Scheduled Start</th>
+                <th>Scheduled End</th>
+            </tr>
+        </thead>
+        <tbody>
+    <apex:repeat value="{!changesDaily}" var="c">
+            <tr>
+                <td><apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Change_Request__c&record_id={!c.Id}" id="crLink">{!c.Name}</apex:outputLink></td>
+                <td nowrap="nowrap"><apex:outputText value="{!c.BMCServiceDesk__Status__c}" /></td>
+                <td><apex:outputText value="{!c.BMCServiceDesk__Category__c}" /></td>
+                <td><apex:outputText value="{!c.BMCServiceDesk__Change_Type__c}" /></td>
+                <td><pre>{!c.BMCServiceDesk__Change_Description__c}</pre></td>
+                <td nowrap="nowrap"><apex:outputText value="{!c.Owner.Name}" /></td>
+                <td nowrap="nowrap"><apex:outputField value="{!c.BMCServiceDesk__Scheduled_Start_Date__c}" /></td>
+                <td nowrap="nowrap"><apex:outputField value="{!c.BMCServiceDesk__Scheduled_End_Date__c}" /></td>
+            </tr>
+    </apex:repeat>
+        </tbody>
+    </table>    
+</apex:component>

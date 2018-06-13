@@ -1,0 +1,328 @@
+<apex:page standardStylesheets="false" sidebar="false" showHeader="false" controller="BMCRF_CNTRL_EBConditionList">
+    <html xmlns:ng="http://angularjs.org" ng-app="hello" lang="en">
+        <head>
+            <meta charset="utf-8"/>
+            <apex:stylesheet value="{!$Resource.font}"/>
+            <apex:stylesheet value="{!$Resource.AssetBootstrapNoIcon}"/>
+            <apex:stylesheet value="{!$Resource.AssetFontAwesome}"/>
+            <apex:includeScript value="{!$Resource.AssetAngularJS}"/>
+            <apex:stylesheet value="{!$Resource.allButton}"/>
+            <style>
+                .pointer {  cursor:pointer; }
+         .search-query {
+         width: 550px;
+         float:right;
+         background-repeat: no-repeat;
+         background-position: 562px 8px;
+         }
+         a:hover{
+         cursor:pointer;
+         text-decoration:none;
+         }
+         .refresh:after{
+         content:  "\0000a0";
+         display: inline-block;
+         height: 23px;
+         width: 23px;
+         position: relative;
+         top: 0px;
+         float:right;
+         background:url("{!$Resource.refresh}") no-repeat left center transparent;
+         background-size: 80% 80%;
+         }
+         .refresh:hover{
+         cursor:pointer;
+         }
+         #myTable th {
+         background: -webkit-linear-gradient(#FFFFFF , #E8E8E8);
+         background: -o-linear-gradient(#FFFFFF , #E8E8E8);
+         background: -moz-linear-gradient(#FFFFFF , #E8E8E8);
+         background: linear-gradient(#FFFFFF , #E8E8E8);
+         border-right: 1px solid #0099FF;
+         border-color: 1px #0099FF;
+         border-bottom: 1px solid  #DDDDDD;
+         border-top: 1px solid  #DDDDDD;
+         border-left: 1px solid #DDDDDD;
+         border-right: 1px solid #DDDDDD;
+         line-height:10px !important; 
+         text-align:left;
+         }
+         .pagination2{height:30px;margin:20px 0;}
+         .pagination2 ul{display:inline-block;*display:inline;*zoom:1;margin-left:0;margin-bottom:0;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);-moz-box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);box-shadow:0 1px 2px rgba(0, 0, 0, 0.05);}
+         .pagination2 ul>li{display:inline;}
+         .pagination2 ul>li>a,.pagination2 ul>li>span{float:left;padding:0 5px;line-height:18px;text-decoration:none;background-color:#ffffff;border:1px solid #dddddd;border-left-width:0;} <!--Modify this line to resize Pagination CSS-->
+         .pagination2 ul>li>a:hover,.pagination2 ul>.active>a,.pagination2 ul>.active>span{background-color:#f5f5f5;}
+         .pagination2 ul>.active>a,.pagination2 ul>.active>span{color:#999999;cursor:default;}
+         .pagination2 ul>.disabled>span,.pagination2 ul>.disabled>a,.pagination2 ul>.disabled>a:hover{color:#999999;background-color:transparent;cursor:default;}
+         .pagination2 ul>li:first-child>a,.pagination2 ul>li:first-child>span{border-left-width:1px;-webkit-border-radius:3px 0 0 3px;-moz-border-radius:3px 0 0 3px;border-radius:3px 0 0 3px;}
+         .pagination2 ul>li:last-child>a,.pagination2 ul>li:last-child>span{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0;}
+         .pagination2-centered{text-align:center;}
+         .pagination2-right{text-align:right;}    
+         td{
+         font-weight : normal !important;
+         }
+             
+         .popupBackground {
+            /* Background color */
+            background-color:black;
+            opacity: 0.30;
+            filter: alpha(opacity = 20);
+        
+            /* Dimensions */
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 998;
+            position: absolute;
+            
+            /* Mouse */
+            cursor:wait;
+        }
+    
+        /* This is for the message DIV */
+        .PopupPanel {
+            /* Background color */
+            border: solid 1px #000000;
+            background-color: #737373;
+    
+            /* Dimensions */
+            width: 300px;
+            margin-left: -100px;
+            left: 45%;
+            top: 30%;
+            height: 50px;
+            margin-top: -25px;
+            z-index: 999;
+            position: fixed;
+            
+            /* Mouse */
+            cursor:pointer;
+        }
+            </style>
+        </head>
+
+
+        <script type="text/javascript">
+
+            var myapp = angular.module('hello', []);
+            var sortingOrder = 'name';
+            function refreshPage()
+            {
+                document.getElementById('myTable').setAttribute("reRender", "myTable");
+                //location.reload();
+            }
+            var contrl=myapp.controller('ctrlRead', function ($scope, $filter) {
+
+           // $scope.sortingOrder = sortingOrder;
+            //$scope.reverse = true;
+            $scope.filteredItems = [];
+            $scope.groupedItems = [];
+            $scope.itemsPerPage = 10;
+            $scope.pagedItems = [];
+            $scope.currentPage = 0;
+            $scope.items ={!conditionList};
+
+            var searchMatch = function (haystack, needle) {
+                if (!needle) {
+                    return true;
+                }
+                return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+            };
+
+            //Initialize the Search Filters 
+            $scope.search = function () {
+                $scope.filteredItems = $filter('filter')($scope.items, function (item) {
+                    for (var attr in item) {
+                    if (searchMatch(item[attr], $scope.query))
+                        return true;
+                    }
+                    return false;
+                });
+                // Define Sorting Order
+                if ($scope.sortingOrder !== '') {
+                    $scope.filteredItems = $filter('orderBy')($scope.filteredItems, $scope.sortingOrder, $scope.reverse);
+                }
+                $scope.currentPage = 0;
+
+                // Group by pages
+                $scope.groupToPages();
+            };
+
+            // Calculate Total Number of Pages based on Records Queried
+            $scope.groupToPages = function () {
+                $scope.pagedItems = [];
+                for (var i = 0; i < $scope.filteredItems.length; i++) {
+                    if (i % $scope.itemsPerPage === 0) {
+                        $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
+                    } 
+                    else {
+                        $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+                    }
+                }
+            };
+
+            $scope.range = function (start, end) {
+                var ret = [];
+                if (!end) {
+                    end = start;
+                    start = 0;
+                }
+                for (var i = start; i < end; i++) {
+                    ret.push(i);
+                }
+                return ret;
+            };
+
+            $scope.prevPage = function () {
+                if ($scope.currentPage > 0) {
+                    $scope.currentPage--;
+                }
+            };
+
+            $scope.nextPage = function () {
+                if ($scope.currentPage < $scope.pagedItems.length - 1) {
+                    $scope.currentPage++;
+                }
+            };
+            $scope.setPage = function () {
+                $scope.currentPage = this.n;
+            };
+            // functions have been describe process the data for display
+            $scope.search();
+
+            // change sorting order
+            $scope.sort_by = function (newSortingOrder) {
+                if ($scope.sortingOrder == newSortingOrder)
+                    $scope.reverse = !$scope.reverse;
+                $scope.sortingOrder = newSortingOrder;
+
+                // icon setup
+                $('th i').each(function () {
+                // icon reset
+                $(this).removeClass().addClass('icon-sort');
+                });
+                if ($scope.reverse)
+                    $('th.' + new_sorting_order + ' i').removeClass().addClass('icon-chevron-up');
+                else
+                    $('th.' + new_sorting_order + ' i').removeClass().addClass('icon-chevron-down');
+            };
+
+            });
+            contrl.$inject = ['$scope', '$filter'];
+            
+            var selectedConditions=[];
+            function getRadioValue(x,sts)
+            {
+                //alert(sts);
+                if(x.checked)
+                {
+                    sts=sts.trim();
+                    selectedConditions.push(sts);
+                    //alert(selectedConditions);
+                }
+                else
+                {
+                    sts=sts.trim();
+                    var index = selectedConditions.indexOf(sts);
+                    if (index > -1) 
+                    {
+                        selectedConditions.splice(index, 1);
+                    }
+                    //alert(selectedConditions);
+                }
+                
+            }
+
+            function deleteConditions()
+           {
+               //alert(selectedConditions);
+               paraFunction(JSON.stringify(selectedConditions));
+           }
+        </script>
+
+        <body >
+        <apex:form >
+        
+        <div ng-controller="ctrlRead">
+        
+            <div style="background:#DEECFD;width:100%;height:40px;position:relative;float:left;margin:0;">
+                  <b><apex:commandButton onclick="parent.addTab('New Condition','BMCRF_VF_ConditionsPage');" style="border-radius: 5px;float:left;margin-top:7px;margin-left:7px;" styleClass="allButton" value="New"/></b>
+                  <b><apex:commandButton onClick="deleteConditions();" style="border-radius: 5px;float:left;margin-top:7px;margin-left:3px;" styleClass="allButton deleteButton" value="Delete"/></b>
+                  <apex:commandLink id="tabcol" style="border-radius: 5px;height:12px;float:right;margin-right:10px;margin-left:10px;margin-top:7px;" title="Refresh"  styleClass="refresh"/>
+                  <input type="text" style="border-radius: 5px;height:12px;width:30%;float:right;margin-top:7px;" ng-model="query" ng-change="search()" placeholder="Search"/>
+            </div>
+           
+            
+            <table class="table  table-hover" id="myTable">
+                <thead>
+                     <tr>
+                         <th style="border-right:none;margin:3px;" valign="middle" width="2px" align="left"></th>
+                        <apex:repeat rows="10" value="{!columnHeaders}" var="fs1">
+                           <th style="border-left:none;">
+                              {!fs1}&nbsp;
+                              <a ng-click="sort_by({!fs1})">
+                                 <!--i class="icon-sort"></i -->
+                              </a>
+                           </th>
+                        </apex:repeat>
+                     </tr>
+                  </thead>
+                <tfoot>
+                    <td colspan="10" >
+                        <div class="pagination2 pagination-sm  pull-right">
+                            <ul>
+                                <li ng-class="{disabled: currentPage == 0}">
+                                    <a ng-click="prevPage()" class="pointer">&#60; Prev</a>
+                                </li>
+                                <li ng-repeat="n in range(pagedItems.length)"
+                                    ng-class="{active: n == currentPage}"
+                                    ng-click="setPage()" class="pointer">
+                                    <a ng-bind="n + 1">1</a>
+                                </li>
+                                <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                                    <a ng-click="nextPage()" class="pointer">Next &#62;</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tfoot>
+                <tbody>
+                
+                <tr ng-repeat="item in pagedItems[currentPage] | orderBy:sortingOrder:reverse" style="">
+                        <!-- td style="padding:3px;display:{!disProp1};"><input style="float:right;" type="checkbox" name="rd" onclick="getRadioValue(this,'{{item.attr2}}')" Value="{{item.id1}}"/></td>
+                        <td style="padding:3px;display:{!disProp1};" onclick="parent.addTab('{{item.name1}}','BMCRF_VF_ConditionsPage?id={{item.id1}}')"><a>{{item.attr1}}</a></td>
+                        <td style="padding:3px;display:{!disProp2};">{{item.attr2}}</td>
+                        <td style="padding:3px;display:{!disProp3};">{{item.attr3}}</td>
+                        <td style="padding:3px;display:{!disProp4};">{{item.attr4}}</td>
+                        <td style="padding:3px;display:{!disProp5};">{{item.attr5}}</td>
+                        <td style="padding:3px;display:{!disProp6};">{{item.attr6}}</td>
+                        <td style="padding:3px;display:{!disProp7};">{{item.attr7}}</td>
+                        <td style="padding:3px;display:{!disProp8};">{{item.attr8}}</td>
+                        <td style="padding:3px;display:{!disProp8};">{{item.attr9}}</td>
+                        <td style="padding:3px;display:{!disProp10};">{{item.attr10}}</td -->
+                        
+                        <td style="padding:3px;display:{!disProp1};"><input style="float:right;" type="checkbox" name="rd" onclick="getRadioValue(this,'{{item.id1}}')" Value="{{item.id1}}"/></td>
+                        <td style="padding:3px;display:{!disProp1};" onclick='parent.addTab("{{item.name1}}","BMCRF_VF_ConditionsPage?id={{item.id1}}")'><a>{{item.attr1}}</a></td> 
+                        <td style="padding:3px;display:{!disProp2};">{{item.attr2}}</td>
+                        <td style="padding:3px;display:{!disProp3};">{{item.attr3}}</td>
+                        <td style="padding:3px;display:{!disProp4};">{{item.attr4}}</td>
+                        <td style="padding:3px;display:{!disProp5};">{{item.attr5}}</td>
+                        <td style="padding:3px;display:{!disProp6};">{{item.attr6}}</td>
+                        <td style="padding:3px;display:{!disProp7};">{{item.attr7}}</td>
+                        <td style="padding:3px;display:{!disProp8};">{{item.attr8}}</td>
+                        <td style="padding:3px;display:{!disProp9};">{{item.attr9}}</td>
+                        
+                     </tr>
+                
+                </tbody>
+            </table>
+         </div>
+         <apex:actionFunction name="paraFunction" action="{!deleteConditions}" reRender="all">      
+             <apex:param id="anode" name="node" value="" />
+         </apex:actionFunction> 
+        </apex:form>
+        
+        </body>
+    </html> 
+</apex:page>

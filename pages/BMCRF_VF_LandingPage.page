@@ -1,0 +1,107 @@
+<apex:page showHeader="false" controller="BMCRF_CNTRL_EBLandingPage">
+<apex:form >
+<apex:outputText value="{!ebID}" style="display:none;"> </apex:outputText>
+<html>
+<head>
+<title>Everbridge Administration</title>
+<style>
+.AppList {
+    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    background-color:transparent;
+    border:1px solid #dcdcdc;
+    display:inline-block;
+    cursor:pointer;
+    color:#666666;
+    font-family:Tahoma;
+    font-size:11px;
+    font-weight:bold;
+    padding-top:10px;
+    padding-right:1px;
+    padding-bottom:1px;  
+    padding-left:3px;  
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
+    height:30px;
+    width:98%;
+    margin-bottom:1px;
+    margin-right:1px;
+}
+.AppList:hover {
+    background-color:transparent;
+}
+.AppList:active {
+    position:relative;
+    top:1px;
+}
+.leftside-div{
+    -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    border: 1px solid #2188C9;
+    box-shadow: 0px 0px 5px #99BCC8;
+    background-color:transparent;
+    display:inline-block;
+    cursor:pointer;
+    color:#666666;
+}
+.titlebar-div {
+    min-height: 30px;
+    padding-right: 15px;
+    padding-top: 2px;
+    border: 1px solid #2188C9;
+    box-shadow: 0px 0px 5px #99BCC8;
+    background-color:transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#C1E1F5', endColorstr='#268BCD',GradientType=0 );
+    height: 50px;
+}
+.outer-main-div {
+    border: 1px solid #2188C9;
+    box-shadow: 0px 0px 5px #99BCC8;
+    background-color:transparent;
+    position: relative;
+    float:Left;
+    height:100%;
+    width:100%;
+    
+}
+</style>
+<script>
+function go(urlToGo) {
+    document.getElementById('theIframe').src = urlToGo;
+}
+
+window.onload = function() {
+var hght = window.innerHeight-100;
+hght = hght + 'px';
+document.getElementById('leftside-div').style.height = hght;
+
+var iFrame_url = '/apex/BMCRF_VF_IncidentConfguration?id=';
+iFrame_url = iFrame_url + {!ebID};
+document.getElementById('theIframe').src = iFrame_url;
+}
+</script>
+</head>
+        
+    <body>
+        <div class="outer-main-div" id="outer-main-div">    
+            <div class="titlebar-div" id="titlebar-div"><apex:image url="{!$Resource.Everbridgelogo}" /></div>
+            <div class="inner-body-div" id="inner-body-div" style="width:100%; height:100%;margin-top:4px;padding:1px;" >
+                <div class="leftside-div" id="leftside-div" style="position: relative; float:left; width:15%;margin-right:3px;">
+                    <div class="AppListHeader" id="AppList1" style="position: relative;width:100%;height:3px;margin-right:1px;background-color:#066E91"></div>
+                    <div class="AppList" id="AppList1" onClick="go('BMCRF_VF_EBConfguration?id={!recordID}');">Everbridge Configuration</div>
+                    <div class="AppList" id="AppList2" onClick="go('BMCRF_VF_EBConditionList')"> Everbridge Condition</div>
+                    <div class="AppList" id="AppList3" onClick="">Everbridge Sync Individual Contact</div>
+                    <div class="AppList" id="AppList4" onClick="">Everbridge Sync All Contacts</div>
+                </div>
+                <div class="rightside-div" id="rightside-div" style="position: relative; float:left;width:84%;">
+                    <div class="AppListHeader" id="AppList1" style="position: relative;width:100%;height:3px;margin-right:1px;background-color:#066E91"></div>
+                    <iframe frameborder="0" id="theIframe" name="theIframe" src="apex/BMCRF_VF_EBConfguration?id={!recordID}" width="100%" height="560px"></iframe>
+                </div>          
+            </div>
+        </div>
+    </body>
+</html>
+</apex:form>
+</apex:page>

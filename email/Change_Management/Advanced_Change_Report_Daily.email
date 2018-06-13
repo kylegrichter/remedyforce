@@ -1,0 +1,5 @@
+<messaging:emailTemplate subject="Advanced Change Report : {!TODAY()} to {!TODAY() + 2}" relatedToType="Change_Weekend__c">
+<messaging:htmlEmailBody >
+<c:Advanced_Change_Daily range="1"/>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

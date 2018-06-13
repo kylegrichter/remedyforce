@@ -1,0 +1,12 @@
+<apex:page standardController="BMCServiceDesk__Task__c" showHeader="false" standardStylesheets="false" showChat="false" sidebar="false">
+    <apex:outputText escape="false" rendered="{!CONTAINS($Profile.Name,'ServiceDesk Client')}">
+        <script type="text/javascript">  
+            location.href = '{!$Page.BMCServiceDesk__StdSelfServiceHome}';  
+        </script> 
+    </apex:outputText>
+    <apex:outputText escape="false" rendered="{!NOT(CONTAINS($Profile.Name,'ServiceDesk Client'))}">
+        <script type="text/javascript">  
+            location.href = '{!$Page.BMCServiceDesk__RemedyforceConsole}?record_id={!$CurrentPage.parameters.id}&objectName=Task__c';  
+        </script> 
+    </apex:outputText>
+</apex:page>

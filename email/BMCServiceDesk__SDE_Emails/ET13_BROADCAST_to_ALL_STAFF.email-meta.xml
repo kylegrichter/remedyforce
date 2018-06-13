@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Broadcast to all staff</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET13-BROADCAST to ALL STAFF</name>
+    <style>none</style>
+    <subject>Message from your RemedyForce Team</subject>
+    <textOnly>ET1
+
+Message from your RemedyForce Team
+
+Highlight  {!BMCServiceDesk__Broadcasts__c.BMCServiceDesk__broadcastMessage__c}
+Additional Information  {!BMCServiceDesk__Broadcasts__c.BMCServiceDesk__broadcastDescription__c}
+KB Article  {!BMCServiceDesk__Broadcasts__c.Knowledge_Article_Number__c}
+
+ET13</textOnly>
+    <type>custom</type>
+</EmailTemplate>

@@ -1,0 +1,105 @@
+<messaging:emailTemplate subject="Your Task has been set to {!relatedTo.BMCServiceDesk__Status_ID__c}: {!relatedTo.Name}" recipientType="User" relatedToType="BMCServiceDesk__Task__c">
+<messaging:htmlEmailBody >
+<head>
+    <style>
+        body{
+            font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;
+            font-size:14px;
+        }
+        table{
+            border-collapse:collapse;
+        }
+        th{
+            border:1px solid #000000;
+            background-color:#666699;
+            color:white;
+            font-size:12px;
+        }
+        td{
+            border:1px solid #000000;
+            font-size:12px;
+        }
+        .blank{
+            border:0px solid #000000;
+            height:10px;
+        }
+        .blank2{
+            border:1px solid #000000;
+            background-color:#A4A4A4;
+            height:5px;
+        }       
+        .section{
+            background-color:#DF7401;
+            color:white;
+        }
+        pre{
+            font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            white-space:pre-wrap;
+            word-wrap:break-word;
+        }
+    </style>
+</head>
+<body>
+    <p>{!relatedTo.LastModifiedBy.Name} has updated your Task to <b>{!relatedTo.BMCServiceDesk__Status_ID__c}</b>.</p>
+    <table>
+        <tr>
+            <th nowrap="nowrap">Task #</th>
+            <td><a href="https://remedy.my.salesforce.com/{!relatedTo.Id}">{!relatedTo.Name}</a></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Task Client</th>
+            <td>{!relatedTo.BMCServiceDesk__Client_Name__c}</td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Task Owner</th>
+            <td>{!relatedTo.Owner.Name}</td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Opened Date</th>
+            <td><apex:outputField value="{!relatedTo.BMCServiceDesk__Opened_DateTime__c}" /></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Scheduled Start</th>
+            <td><apex:outputField value="{!relatedto.BMCServiceDesk__Scheduled_Start_Date__c}" /></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Scheduled End</th>
+            <td><apex:outputField value="{!relatedto.BMCServiceDesk__Scheduled_End_Date__c}" /></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Scheduled End</th>
+            <td><apex:outputField value="{!relatedto.BMCServiceDesk__dueDateTime__c}" /></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Priority</th>
+            <td>{!relatedTo.BMCServiceDesk__Priority_ID__c}</td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Category</th>
+            <td>{!relatedTo.BMCServiceDesk__Category_ID__c}</td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Description</th>
+            <td><pre>{!relatedTo.BMCServiceDesk__taskDescription__c}</pre></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Configuration Item</th>
+            <td><pre>{!relatedTo.Configuration_Item__r.Name}</pre></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Incident</th>
+            <td><pre>{!relatedTo.BMCServiceDesk__FKIncident__r.Name}</pre></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Problem</th>
+            <td><pre>{!relatedTo.BMCServiceDesk__FKProblem__r.Name}</pre></td>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">Change</th>
+            <td><pre>{!relatedTo.BMCServiceDesk__FKChange__r.Name}</pre></td>
+        </tr>
+    </table>
+</body>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

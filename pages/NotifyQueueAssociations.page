@@ -1,0 +1,169 @@
+<apex:page controller="NotifyQueueAssociations" tabstyle="case" id="page">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <apex:outputText escape="false" rendered="{!pattern1!=null}">
+    <script>function setFocusOnLoad() {}</script>
+    <script>
+    function chekvalue(inputtextvalu){
+        if(document.getElementById(inputtextvalu).value=='Spectrum'){
+            document.getElementById(inputtextvalu).value=null;
+        }
+    }
+    function chkaftercahge(inputtextvalu){
+        if(document.getElementById(inputtextvalu).value.length<=0){
+            document.getElementById(inputtextvalu).value='Spectrum';
+        }
+    }
+    $(document).ready(function(){
+        $("[id$=titleinput]").focus();
+        $("[id$=inputtextpattern1]").prop('disabled', true);
+        $("[id$=inputtextpattern2]").prop('disabled', true);
+        $("[id$=inputtextpattern3]").prop('disabled', true);
+        $("[id$=cmdbtnlookup]").prop('disabled', true);
+        $("[id$=iputtextsource]").val("Spectrum");
+        $("[id$=iputtextcategory]").val("{!CIAssociationRecord.IR_Category__r.Name}");
+        $("[id$=iputtextimpact]").val("{!CIAssociationRecord.Impact__r.Name}");
+        $("[id$=iputtexturgency]").val("{!CIAssociationRecord.Urgency__r.Name}");
+        $("[id$=iputtextqueue]").val("{!CIAssociationRecord.Queue__c}");
+        $("[id$=iputtextconfigitem]").val("{!CIAssociationRecord.Configuration_Item__r.Name}");
+        $("[id$=iputtextopsmonitor]").val("TRUE");
+        $("[id$=iputtextclient]").val("RemForce API");
+    });
+    </script>
+    </apex:outputText>
+    <apex:pageBlock title="Notification Association Check" mode="edit">
+        <apex:form >
+            <apex:pageBlockSection title="Pattern Check - Lookup" columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Pattern 1</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText value="{!pattern1}" id="inputtextpattern1" required="true"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputText label="Pattern 2" value="{!pattern2}" id="inputtextpattern2" />
+                <apex:inputText label="Pattern 3" value="{!pattern3}" id="inputtextpattern3" />
+                <apex:pageBlockSectionItem >
+                    <apex:commandButton value="Lookup" id="cmdbtnlookup">
+                        <apex:param name="pattern1" value="{!pattern1}"/>
+                        <apex:param name="pattern2" value="{!pattern2}"/>
+                        <apex:param name="pattern3" value="{!pattern3}"/>
+                        <apex:param name="lookupOnly" value="TRUE"/>
+                    </apex:commandButton>
+                    <a href="/apex/NotifyQueueAssociations" style="text-decoration: none"><input class="btn" type="button" value="Reset" /></a>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:form>
+        <apex:form >
+            <apex:inputHidden value="{!opsMonitor}" id="iputtextopsmonitor" />
+            <apex:inputHidden value="{!ClientId}" id="iputtextclient" />
+            <apex:pageBlockSection rendered="{!pattern1!=null}" title="Incident Details - Create IR" columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Source</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText id="iputtextsource" value="{!source}" onfocus="chekvalue(this.id)" onblur="chkaftercahge(this.id)" required="true"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Title</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText maxlength="128" value="{!title}" required="true" id="titleinput"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Description</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputTextarea cols="25" value="{!description}" required="true"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Queue</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText maxlength="128" value="{!queue}" required="true" id="iputtextqueue" />
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Impact</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText maxlength="128" value="{!impact}" required="true" id="iputtextimpact" />
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Urgency</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText maxlength="128" value="{!urgency}" required="true" id="iputtexturgency" />
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Config Item</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText maxlength="128" value="{!configitem}" required="true" id="iputtextconfigitem" />
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >IR Category</apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText maxlength="128" value="{!category}" required="true" id="iputtextcategory" />
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:commandButton action="{!createIR}" value="Create IR" >
+                        <apex:param name="lookupOnly" value="FALSE"/>
+                        <apex:param name="pattern1" value="{!pattern1}"/>
+                        <apex:param name="pattern2" value="{!pattern2}"/>
+                        <apex:param name="pattern3" value="{!pattern3}"/>
+                        <apex:param name="source" value="{!source}"/>
+                        <apex:param name="title" value="{!title}"/>
+                        <apex:param name="description" value="{!description}"/>
+                        <apex:param name="queue" value="{!CIAssociationRecord.Queue__c}"/>
+                        <apex:param name="impact" value="{!CIAssociationRecord.Impact__r.Name}"/>
+                        <apex:param name="urgency" value="{!CIAssociationRecord.Urgency__r.Name}"/>
+                        <apex:param name="configitem" value="{!CIAssociationRecord.Configuration_Item__r.Name}"/>
+                        <apex:param name="category" value="{!CIAssociationRecord.IR_Category__c}"/>
+                    </apex:commandButton>
+                    <apex:outputText rendered="{!resultId!=null}" escape="false">IR# <a href="/{!resultId}">{!resultName}</a> Created!</apex:outputText>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:form>
+    </apex:pageBlock>
+    <apex:pageBlock rendered="{!pattern1!=null}" id="output" mode="maindetail">
+        <apex:pageBlockSection title="Association Record Info Found" columns="1">
+            <apex:outputText style="visibility:hidden;" value="{!CIAssociationRecord.Name}"><apex:outputLink id="output_name" value="/{!CIAssociationRecord.Id}" >{!CIAssociationRecord.Name}</apex:outputLink></apex:outputText>
+            <apex:outputField value="{!CIAssociationRecord.Association_Pattern_1__c}" />
+            <apex:outputField value="{!CIAssociationRecord.Association_Pattern_2__c}" />
+            <apex:outputField value="{!CIAssociationRecord.Association_Pattern_3__c}" />
+            <apex:outputField value="{!CIAssociationRecord.Queue__c}" />
+            <apex:outputField value="{!CIAssociationRecord.X_Matters_Notification_Group__c}" />
+            <apex:outputText style="visibility:hidden;" value="{!CIAssociationRecord.IR_Category__c}"><apex:outputLink id="output_category" value="/{!CIAssociationRecord.IR_Category__c}" >{!CIAssociationRecord.IR_Category__r.Name}</apex:outputLink></apex:outputText>
+            <apex:outputText style="visibility:hidden;" value="{!CIAssociationRecord.Impact__c}"><apex:outputLink id="output_impact" value="/{!CIAssociationRecord.Impact__c}" >{!CIAssociationRecord.Impact__r.Name}</apex:outputLink></apex:outputText>
+            <apex:outputText style="visibility:hidden;" value="{!CIAssociationRecord.Urgency__c}"><apex:outputLink id="output_urgency" value="/{!CIAssociationRecord.Urgency__c}" >{!CIAssociationRecord.Urgency__r.Name}</apex:outputLink></apex:outputText>
+            <apex:outputField value="{!CIAssociationRecord.No_IR_Notification__c}" />
+            <apex:outputText style="visibility:hidden;" value="{!CIAssociationRecord.Configuration_Item__c}"><apex:outputLink id="output_configitem" value="/{!CIAssociationRecord.Configuration_Item__c}" >{!CIAssociationRecord.Configuration_Item__r.Name}</apex:outputLink></apex:outputText>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

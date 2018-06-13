@@ -1,0 +1,851 @@
+<apex:page controller="BMCRF_CNTRL_EBLandingPage" showHeader="true" title="Everbridge Administration">
+    <html>
+    <head>
+        <apex:includeScript value="{!$Resource.jQuery}"/>
+        <title>Everbridge Administration</title>
+           
+            <style>
+           // body{ margin:20px; }
+            .viewBar{
+                position:relative;
+                min-height:30px;
+                //padding-right:1%;
+                margin-top:5px;
+                border:1px solid #2188C9;
+                //box-shadow: 0px 0px 5px #99BCC8;
+                background-image: -ms-linear-gradient(top, #C1E1F5 0%, #268BCD 100%);
+                background-image: -moz-linear-gradient(top, #C1E1F5 0%, #268BCD 100%);
+                background-image: -o-linear-gradient(top, #C1E1F5 0%, #268BCD5 100%);
+                background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #C1E1F5), color-stop(1, #268BCD));
+                background-image: -webkit-linear-gradient(top, #C1E1F5 0%, #268BCD 100%);
+                background-image: linear-gradient(to bottom, #C1E1F5 0%, #268BCD 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#C1E1F5', endColorstr='#268BCD',GradientType=0 );
+                height:30px;
+                width:100%;
+            }
+            .viewDiv{
+                width:5%;
+                    color: #fff;
+                    padding: 5px 10px 5px 10px;
+                
+                font:bold 11px Arial,Helvetica,sans-serif;
+                background-color: #2d8fcf;
+                /* Safari 4-5, Chrome 1-9 */
+                background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#2a8dcd), to(#0769a8));
+                /* Safari 5.1, Chrome 10+ */
+                background: -webkit-linear-gradient(top, #2a8dcd, #0769a8);
+                  /* Firefox 3.6+ */
+                background: -moz-linear-gradient(top, #2a8dcd, #0769a8);
+                  /* IE 10 */
+                background: -ms-linear-gradient(top, #2a8dcd, #0769a8);
+                /* Opera 11.10+ */
+                background: -o-linear-gradient(top, #2a8dcd, #0769a8);
+                /*For IE7-8-9*/
+                filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#2a8dcd', endColorstr='#0769a8'); 
+                cursor:pointer;
+                border-bottom-right-radius: 5px;
+                min-width:5%;
+                white-space :nowrap ;
+                
+               //-webkit-box-shadow: 0px 0px 12px #666666;
+               //-moz-box-shadow: 0px 0px 12px #666666;
+            }
+            .viewArrow
+            {
+                background: url({!$Resource.downViewArrow}) no-repeat scroll right 5px transparent !important;
+                padding-right: 12px;
+                padding-left: 2px;
+            }
+            .popupPanel{
+                position:absolute;
+                //border:1px solid #2188C9;
+                
+                height: auto;
+                //left: 1px; 
+                //top: 1px; 
+                z-index: 19001; 
+                width: 150px; 
+                visibility: hidden;
+                background:#FFFFFF;//DFDEDA;
+                border-left:1px solid;
+                -webkit-box-shadow: 5px 5px 12px #666666;
+                -moz-box-shadow: 5px 5px 12px #666666;
+            }
+            .listInPopup{
+                //font-size: 13px;
+                    color: #222;
+            }
+            .listInPopup:hover
+            {
+                background:#DEECFD;//#D4D0C8;
+                cursor:pointer;                
+                border:1px solid grey;//#D4D0C8;
+                
+            }
+            .abc
+            {
+                position:relative;
+                //top:2px;
+                margin-left:0px;
+                //padding-right:1%;
+                border:1px solid #2188C9;
+                width:100%;                 
+                height:650px;
+                //-webkit-box-shadow: 0px 0px 12px #666666;
+              // -moz-box-shadow: 0px 0px 12px #666666;
+            }
+            
+            .btnAddedPR1{
+                   position:relative;
+                   left:5px; 
+                   
+                   border-top: 1px solid #2188C9;
+                   border-left: 1px solid #2188C9;
+                   border-right: 1px solid #2188C9;
+                   border-bottom: none;
+                 // -webkit-box-shadow: 0px 0px 8px #666666;
+                 // -moz-box-shadow: 0px 0px 8px #666666;
+           }
+           .spanInsideBtn:after{
+                content:  "\0000a0";
+                display: inline-block;
+                height: 22px;
+                width: 22px;
+                line-height: 20px;
+                margin: 0 -2px -6px 4px;
+                //margin: 0px 0px -2px 0px;
+                position: relative;
+                top: -3px;
+               
+                left: 2px;
+               
+                background:url("{!$Resource.closetabicon}") no-repeat left center transparent;
+                 background-size: 50% 50%;       
+            }
+            .spanInsideBtn:hover:after{
+                
+                background:url("{!$Resource.closetabicon}") no-repeat left center transparent;
+                background-size: 50% 50%;
+            }
+            
+           .btnAddedPR{
+                   position:relative;
+                   left:1px; 
+                   
+                   //-webkit-box-shadow: 0px 0px 8px #666666;
+                   //moz-box-shadow: 0px 0px 8px #666666;
+           }
+           
+       .srcFramePR{
+           
+           border:none; <!--none;-->
+           width:100%;
+           height:100%; <!--600px;-->
+       }
+       .srcFramePO{
+           display:none;
+           border:none;
+           width:100%;
+           height:600px;
+       }
+       #divFrame{
+           //-webkit-box-shadow: 0px 0px 12px #666666;
+          // -moz-box-shadow: 0px 0px 12px #666666;
+           //position:relative;
+          // margin:5px;
+           //margin-top:0px;
+           //width:100%;
+           
+           //border: 1px #a1a1a1;
+           
+           
+                
+                border:1px solid #8DB3E3;
+                border-right:none;   
+                border-left:none; 
+                border-bottom:none;
+                width:100%;
+                height:600px;    
+                background:#DEECFD;
+            
+           
+       }
+       #mainContainer{
+           //border:1px solid grey;
+           //margin-right:0px;
+       }
+       //#div1{
+          // margin-top:2px;
+           
+      // }
+      // #broadcastDiv{
+        //   height:35px;
+        //   width:100%;
+       //    background:#69B0DE;
+      // }
+       
+        .tabBtnDiv
+            {
+                position:relative;
+                //top:-3px;
+                margin-left:5px;
+                border: 1px solid #8DB3E3;
+                border-bottom:none;
+                height:18px;//min-height;
+                //width:7%;
+                display: inline-block;
+                    border-top-right-radius: 5px;   
+                border-top-left-radius: 5px;;
+                text-align:center;
+                padding-right:5px;
+                padding-left:5px;
+                padding-top:5px;
+                background:#DEECFD;
+               
+                //float:left;
+                cursor:pointer;
+                
+                    
+            }
+            .tabBtnDiv1
+            {
+                position:relative;
+                top:3px;
+                margin-left:2px;
+                border: 1px solid #8DB3E3;
+                border-bottom:none;
+                height:18px;//min-height;
+                //width:7%;
+                display: inline-block;
+                    border-top-right-radius: 5px;   
+                border-top-left-radius: 5px;;
+                text-align:center;
+                padding-right:5px;
+                padding-left:5px;
+                padding-top:5px;
+                background:#DEECFD;
+                //float:left;
+                cursor:pointer;
+                
+                    
+            }
+            
+            
+            .selectedTabBtnDiv
+            {
+                position:relative;
+                top:1px;
+                margin-left:5px;
+                border: 1px solid #8DB3E3;
+                border-bottom:none;
+                height:18px;//min-height;
+                //width:7%;
+                display: inline-block;
+                border-top-right-radius: 5px;   
+                border-top-left-radius: 5px;;
+                text-align:center;
+                padding-right:5px;
+                padding-left:5px;
+                padding-top:6px;
+                //background:#DEECFD;
+                 background: -webkit-linear-gradient(#FFFFFF, #DEECFD);
+                background: -o-linear-gradient(#FFFFFF, #DEECFD);
+                background: -moz-linear-gradient(#FFFFFF, #DEECFD);
+                background: linear-gradient(#FFFFFF, #DEECFD);
+                //float:left;
+                cursor:pointer;
+
+            }
+            .selectedTabBtnDiv1
+            {
+                position:relative;
+                top:3px;
+                margin-left:2px;
+                
+                border: 1px solid #8DB3E3;
+                border-bottom:none;
+                height:19px;//min-height;
+                //width:7%;
+                display: inline-block;
+                border-top-right-radius: 5px;   
+                border-top-left-radius: 5px;;
+                text-align:center;
+                padding-right:5px;
+                padding-left:5px;
+                padding-top:5px;
+                //background:#DEECFD;
+                 background: -webkit-linear-gradient(#FFFFFF, #DEECFD);
+                background: -o-linear-gradient(#FFFFFF, #DEECFD);
+                background: -moz-linear-gradient(#FFFFFF, #DEECFD);
+                background: linear-gradient(#FFFFFF, #DEECFD);
+                //float:top;
+                cursor:pointer;
+
+            }
+            
+            
+            .btnDiv
+            {
+                height:min-height;
+                margin-top:2px;
+                
+            }
+           /*for loading*/
+            #loading {
+                background-color:black;
+                opacity: 0.20;
+                filter: alpha(opacity = 20);
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                z-index: 9998;
+            }
+
+            #loading-image {
+                background-color:#2d8fcf;
+                border-width: 0px;
+                border-style: solid;
+                border-radius: 5px;
+                border-color:white;
+                z-index: 9999;
+                text-align:center;
+                color: black; 
+                cursor:wait;   
+                margin-left:45%;
+                margin-top:23%;
+                padding:10px;
+                height:18px;
+                width: 130px; 
+                position: absolute;
+                box-shadow: 2px 2px 1px #888888;
+                
+            }
+            .loadingtext{
+                color: white !Important;
+                font-size: 15px;
+                float:right;
+                margin-top:-3px;
+                margin-right:20px;
+                font-family: 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
+                font-weight: 500;
+            }
+            .imagecss{
+                float:left;
+                top:5px !Important;
+            
+            }
+            
+        </style>
+        <script>
+            
+                $(window).load(function() {
+                 $('#loading').hide();
+              });
+              $(window).load(function() {
+                 $('#loading-image').hide();
+              });
+              
+            
+            var flagConfirm=0;
+            var btnPO=0;    var frmPO=0;
+            var i=0;    var URL;
+            var frmCount=0;
+            var totalFrmCount=0;
+            var buttons;
+            var btnExistFlag=0;
+            var btnAddtabID='';
+            var btnName1='';
+            var btnClickFlag=0;
+            
+            function addTab(btnName,src)        //button name to display as btnName***Source to redirect as src
+            {
+                    
+                    btnExistFlag=0;
+                    var btnID;
+                    for(var a=0;a<=i;a++)
+                    {
+                        btnID='btn_'+a;
+                        if(document.getElementById(btnID))
+                        {
+                            var div1=document.getElementById(btnID);
+                            btnName1=div1.textContent;//innerText;
+                            btnName1=btnName1.toString().trim();
+                            if(btnName1==btnName)
+                            {
+                               // alert(btnName1);alert(btnID);
+                                btnExistFlag=1;
+                                break;
+                            }
+                        }
+                    }
+
+                        
+                if(btnExistFlag==0)
+                {
+                    if(totalFrmCount<=10)
+                    {
+                       btnPO=1;
+                       frmPO=1;
+                       totalFrmCount++;
+                       frmCount++;
+                       var frmID='frame_'+frmCount;
+                       var btnID='btn_'+frmCount;
+                       var aTag='aTagA'+frmCount;
+                       
+                       //addButton(btnName,btnID,frmID);    //Button name,Button ID, Frame Id
+                       addDiv(btnName,btnID);
+                       addFrame(src,frmID);            //Page name to redirect, Frame ID
+                       
+                       
+                       
+                       var x=document.getElementById(btnID);
+                       showTabOnButtonClick(x);
+                                              
+                       var dv=document.getElementById("btnDiv").children;
+                       dv[1].style.marginLeft ="0px";
+                       
+                       
+                       
+                    }
+                    else
+                    {
+                        alert('Tag limit exceeded');
+                    } 
+                 }
+                 else
+                 {
+                     var div1=document.getElementById(btnID);
+                     div1.click();
+                 }
+                 
+            }
+            function removeTab(btnID)
+            {
+               
+                
+                var str=btnID;
+                
+                var value1=str.split("A");
+                
+                var x = parseInt(value1[1], 10);
+                
+                var frmID='frame_'+x;
+                totalFrmCount--;
+               
+                removeFrame(frmID);
+               
+            }
+            function showTabOnButtonClick(btnID)
+            {
+               
+               if(btnClickFlag==0)
+               {
+                var a=frmCount;
+                var str=btnID.id;
+                
+                var value1=str.split("_");
+                var x = parseInt(value1[1], 10);
+                var j;
+                var btnID='btn_'+x;
+                var frmID='frame_'+x;
+                document.getElementById('PRFrame').style.display="none";
+                document.getElementById('POFrame').style.display="none";
+                document.getElementById('UserSyncFrame').style.display="none";
+                document.getElementById('GroupSyncFrame').style.display="none";
+                
+                document.getElementById(frmID).style.display="block";
+                for(j=a;j>0;j--)
+                {
+                    
+                    var frmID1='frame_'+j;
+                    if(document.getElementById(frmID1) && frmID!=frmID1)
+                    {
+                        var frm=document.getElementById(frmID1);
+                        frm.style.display="none";
+                        
+                    }
+                    
+                }
+               }
+               else
+               {
+                   btnClickFlag=0;
+                   var x=document.getElementById("PRBtn");
+                   x.click();
+               } 
+                
+            }
+            
+            
+            function addButton(btnName,btnId,frmId)
+            {
+                        i++;
+                       var btn=document.createElement("BUTTON");
+                       var cls='btnClass'+i; 
+                       btn.id=btnId;
+                       btn.setAttribute('class','btnAddedPR');
+
+                       //var funName="showFrame('"+frmId+"')";
+                       //btn.setAttribute("onclick",funName);
+                       var aTag=document.createElement("A");
+                       aTag.id="TagA"+i;
+                       btn.setAttribute("onclick","showTabOnButtonClick("+aTag.id+")");
+                       aTag.setAttribute("href","#");
+                       aTag.setAttribute("onclick","removeTab(this.id)");
+                       
+                       var t = document.createTextNode(btnName);  
+                       btn.appendChild(t); 
+                       btn.appendChild(aTag);
+                       document.getElementById("div1").appendChild(btn);  
+                       
+                       //var img1=document.createElement("IMG");
+                           var span1=document.createElement("SPAN");
+                       //img1.setAttribute("src","{!$Resource.cross}");
+                           span1.setAttribute("class","spanInsideBtn");
+                       document.getElementById("TagA"+i).appendChild(span1);
+                       //showTabOnButtonClick(aTag.id);
+                       
+                       
+            }
+            function removeButton(btnId)
+            {
+                        
+                        var child= document.getElementById(btnId);
+              
+                       var parent=document.getElementById('div1');
+                          parent.removeChild(child);
+            }
+            
+            function addFrame(source,id1)
+            {
+                  
+                  document.getElementById('POFrame').style.display="none";
+                  document.getElementById('UserSyncFrame').style.display="none";
+                  document.getElementById('GroupSyncFrame').style.display="none";
+                  //document.getElementById('SLFrame').style.display="none";
+                  document.getElementById('PRFrame').style.display="block";
+                  
+                  var frm=document.getElementById('PRFrame'); 
+                  frm.style.display='none';
+                  var createFrame=document.createElement("IFRAME");
+                  createFrame.id=id1;
+                  createFrame.setAttribute('class','srcFramePR');
+                  createFrame.setAttribute('src',source);
+                  document.getElementById("divFrame").appendChild(createFrame);
+                  
+                  //alert('add frame');
+                 // var n=frmCount;
+                 // var x='tagA'+n;
+                 // showTabOnButtonClick(x+'');
+                  
+                  
+            }
+            function removeFrame(frmId)
+            {
+                  
+                  var remFrame=document.getElementById('divFrame');
+                  var frm=document.getElementById(frmId);
+                  remFrame.removeChild(frm);
+                  var x=document.getElementById("PRBtn");
+                  //selectTab(x);
+                  x.className="selectedTabBtnDiv";
+                  //showBtnFrame(x);
+                  showBtnFrame("PRBtn");
+                  
+                  
+            }
+            
+            function toggleSrcFrame(id1)
+            {
+                var a=frmCount;
+                var src1;
+                var j;
+                var btnName;
+                if(id1=='POFrame'){btnName='Everbridge Conditions';src1="BMCRF_VF_EBConditionList";}
+                if(id1=='PRFrame'){btnName='Everbridge Configuration';src1="apex/BMCRF_VF_EBConfguration?id={!recordID}";}
+                if(id1=='UserSyncFrame'){btnName='Everbridge Contact Sync';src1="BMCRF_VF_UserSync";}
+                if(id1=='GroupSyncFrame'){btnName='Everbridge Group Sync';src1="BMCRF_VF_GroupSync";}
+                
+                document.getElementById('PRFrame').style.display="none";
+                document.getElementById('POFrame').style.display="none";
+                document.getElementById('UserSyncFrame').style.display="none";
+                document.getElementById('GroupSyncFrame').style.display="none";
+                
+                document.getElementById(id1).style.display="block";
+                document.getElementById(id1).src=src1;
+                document.getElementById("PRBtn").textContent = btnName;
+                for(j=a;j>0;j--)
+                {
+                    
+                    var frmID1='frame_'+j;
+                    if(document.getElementById(frmID1))
+                    {
+                        var frm=document.getElementById(frmID1);
+                        frm.style.display="none";
+                    }
+                    
+                }
+                
+                
+            }
+            function changeBtnName()
+            {
+                document.getElementById("PRBtn").firstChild.data= "Hide Filter";    
+            }
+            function showBtnFrame(x)
+            {   
+                   
+                   var btnName=document.getElementById(x);
+                   
+                   
+                   if(btnName.textContent.toString().trim()=='Everbridge Configuration')
+                       {toggleSrcFrame('PRFrame');}
+                       
+                   if(btnName.textContent.toString().trim()=='Everbridge Conditions')
+                       {toggleSrcFrame('POFrame');}
+                       
+                   if(btnName.textContent.toString().trim()=='Everbridge Contact Sync')
+                       {toggleSrcFrame('UserSyncFrame');}
+                       
+                   if(btnName.textContent.toString().trim()=='Everbridge Group Sync')
+                       {toggleSrcFrame('GroupSyncFrame');}
+                       
+                       
+            }
+            
+            function showView1()
+            {  
+                if(document.getElementById("otheroptionsMenu").style.visibility == 'visible')
+                {
+                    document.getElementById("otheroptionsMenu").style.visibility="hidden";
+                }
+                else      
+                    document.getElementById("otheroptionsMenu").style.visibility="visible";
+             
+            }
+            function showView()
+            {  
+               document.getElementById("otheroptionsMenu").style.visibility="visible";
+            }
+            function closeView()
+            {
+                document.getElementById("otheroptionsMenu").style.visibility="hidden";
+            }
+            
+            function waitFunction(){
+            
+            }
+            
+            function selectTab(divID)
+            {
+                
+                //var waitVar = setTimeout(waitFunction, 3000);
+                var x1=document.getElementsByClassName("selectedTabBtnDiv");
+                for(var i=0;i<x1.length;i++)
+                {
+                    x1[i].className="tabBtnDiv";
+                }
+
+                x1=document.getElementsByClassName("selectedTabBtnDiv1");
+                for(var i=0;i<x1.length;i++)
+                {
+                    x1[i].className="tabBtnDiv1";
+                }
+                
+                var x=document.getElementById(divID);
+                if(x.textContent.toString().trim()=="Everbridge Configuration" || x.textContent.toString().trim()=="Everbridge Conditions" || x.textContent.toString().trim()=='Everbridge Contact Sync' || x.textContent.toString().trim()=='Everbridge Group Sync')
+                    x.className="selectedTabBtnDiv";
+                else
+                    x.className="selectedTabBtnDiv1";
+
+                
+                
+            }
+            function addDiv(divName,btnID)
+            {
+                i++;
+                var dv=document.getElementById("btnDiv");
+                var newDiv=document.createElement("DIV");   
+                newDiv.textContent=divName;
+                newDiv.id=btnID;
+                newDiv.setAttribute('class','tabBtnDiv1');
+                newDiv.setAttribute('onclick','selectTab(this.id);showTabOnButtonClick(this)');
+                
+                var aTag=document.createElement("A");
+                aTag.id="TagA"+i;
+                aTag.setAttribute("href","#");
+                aTag.id="TagA"+i;
+                aTag.setAttribute("onclick","removeDiv(this)");
+                
+                var span1=document.createElement("SPAN");
+                //var t = document.createTextNode('Close');
+                //span1.appendChild(t);
+                span1.setAttribute("class","spanInsideBtn");
+                aTag.appendChild(span1);
+                newDiv.appendChild(aTag);
+
+
+                dv.appendChild(newDiv);
+                var aa=document.getElementById(btnID);
+                selectTab(aa.id);
+                
+
+                //document.getElementById("TagA").appendChild(span1);alert('u');
+                
+            }
+            function removeDiv(x)
+            {
+                if(flagConfirm==0)
+                {
+                btnClickFlag=1; 
+                showTabOnButtonClick("PRBtn");
+                var id1=x.id;
+                
+                removeTab(id1);
+                
+                var parent=document.getElementById("btnDiv");
+                var child=document.getElementById(x.id);
+                var child1=document.getElementById(child.parentNode.id);
+                child1.parentNode.removeChild(child1);
+                
+                var dv=document.getElementById("btnDiv").children;
+                dv[1].style.marginLeft ="0px";
+                }
+                else
+                {
+                    var y=confirm("Are you sure to close without saving?");
+                    if(y)
+                    {
+                        flagConfirm=0;
+                        removeDiv(x);
+                    }
+                    else
+                        flagConfirm=0;
+                    
+                }
+                
+                 
+            }
+            function changeTabName(tabName)
+            {
+                //alert('In change tab name');
+                var flag=0;
+                i++;
+                frmCount++;
+                x1=document.getElementsByClassName("selectedTabBtnDiv1");
+                for(var j=0;j<x1.length;j++)
+                {
+                    if(x1[j].textContent=='New Condition' || x1[j].textContent=='New LI' || x1[j].textContent=='SC:New')
+                    {
+                        
+                        x1[j].textContent=tabName;
+                        
+                        var str=x1[j].id;
+                        var value1=str.split("_");
+                        var x = parseInt(value1[1], 10);
+                        var frmID="frame_"+x;
+                        var frame1=document.getElementById(frmID);
+                        frame1.id="frame_"+frmCount;
+                        x1[j].id="btn_"+frmCount;
+                        x1[j].setAttribute('class','selectedTabBtnDiv1');
+                        x1[j].setAttribute('onclick','selectTab(this.id);showTabOnButtonClick(this)');
+                
+                        var aTag=document.createElement("A");
+                        aTag.id="TagA"+i;
+                        aTag.setAttribute("href","#");
+                        aTag.id="TagA"+i;
+                        aTag.setAttribute("onclick","removeDiv(this)");
+                
+                        var span1=document.createElement("SPAN");
+                        span1.setAttribute("class","spanInsideBtn");
+                        aTag.appendChild(span1);
+                        x1[j].appendChild(aTag);
+                        flag=1;
+                        break; 
+                        
+                    }
+                }
+                if(flag==1)
+                {
+                   alert("Record saved successfully.");
+                    flag=0;
+                }
+                
+            }
+            function recordSaveAlert()
+            {
+                alert("Record saved successfully.");
+            }
+            
+            function testConfirm()
+            {
+                alert(flagConfirm);
+            }
+        </script> 
+    </head>
+          
+        <body>
+         <!-- for loading -->
+            <div id="loading"> 
+            </div>
+            <div id="loading-image" >
+                <img src="{!$Resource.loadingicon}" align="middle"/> 
+                <div  class="loadingtext">Loading....</div>
+            </div>
+            
+            <!-- /////////// -->
+            <div class="viewBar" id="rf-ticker"  >
+                <div class="viewDiv" id="viewOptions" title="Switch View" onclick="showView1()" >
+                    View
+                    <span class="viewArrow"></span>
+                </div> 
+            </div>
+            
+            <div onMouseOut="closeView()" class="popupPanel" id="otheroptionsMenu" >
+                <div onMouseOver="showView()" style="position:relative;height:100%;width:100%;">
+                    <table onMouseOver="showView()" style="position:relative;height:100%;width:100%;">
+                        <tr><td>
+                            <span class="listInPopup" onclick="toggleSrcFrame('PRFrame');closeView();">Everbridge Configuration</span>
+                        </td></tr>
+                        <tr><td>
+                            <span class="listInPopup" onclick="toggleSrcFrame('POFrame');closeView();">Everbridge Condition</span>
+                        </td></tr>
+                        <tr><td>
+                            <span class="listInPopup" onclick="toggleSrcFrame('UserSyncFrame');closeView();">Everbridge Contact Sync</span>
+                        </td></tr>
+                        
+                        <tr><td>
+                            <span class="listInPopup" onclick="toggleSrcFrame('GroupSyncFrame');closeView();">Everbridge Group Sync</span>
+                        </td></tr>
+                
+                    </table>
+                </div>
+            </div>
+            <div class="abc">
+             
+            <div id="mainContainer">
+          
+               <div class="btnDiv" id="btnDiv">
+                   
+                    <div class="selectedTabBtnDiv" id="PRBtn" onclick="selectTab(this.id);showBtnFrame(this.id);">
+                        Everbridge Configuration
+                    </div>
+               </div>
+               <div id="divFrame">
+                  <iframe class="srcFramePR" id="PRFrame" name="sourceframe1" src="apex/BMCRF_VF_EBConfguration?id={!recordID}"></iframe> 
+                  <iframe class="srcFramePO" id="POFrame" name="sourceframe2" src=""></iframe> 
+                  <iframe class="srcFramePO" id="UserSyncFrame" name="sourceframe3" src=""></iframe> 
+                  <iframe class="srcFramePO" id="GroupSyncFrame" name="sourceframe4" src=""></iframe>
+               </div>
+   
+           </div>
+            
+        </div>
+                    
+        </body>
+    
+        
+    </html>
+</apex:page>

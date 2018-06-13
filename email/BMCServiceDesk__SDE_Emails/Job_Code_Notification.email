@@ -1,0 +1,97 @@
+<messaging:emailTemplate subject="Additional System Access - Job Code Changed - {!relatedTo.Name}" relatedToType="User">
+    <messaging:htmlEmailBody >
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>ET17</title>
+        </head>
+        <body>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="bodytable">
+                <tr>
+                    <td valign="top" align="left">
+                        <table id="emailcontainer" width="750" border="0" cellspacing="0" cellpadding="10" style="border-top-style: none;">
+                            <tr>
+                                <td valign="top" align="left">
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" id="emaillogo">
+                                        <tr style="border-bottom-style: solid;border-bottom-color: #004990;">
+                                            <td width="11%" height="40" align="left" valign="top" style="border-bottom-style: solid;border-bottom-color: #004990;"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005PvQK&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="48%" height="40" align="left" valign="bottom" style="border-bottom-style: solid;border-bottom-color: #004990;"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000005PvPg&oid=00DE0000000caBt" alt="RF Logo" /></td>
+                                            <td width="41%" height="40" align="right" valign="top" style="border-bottom-style: solid;border-bottom-color: #004990;"><img src="https://remedy.my.salesforce.com/servlet/servlet.ImageServer?id=015E0000002JhEQ&oid=00DE0000000caBt"  alt="DM Logo" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="emailheader" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="border-top-style: none;">
+                                            <td height="14" colspan="2" align="left" valign="bottom" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;border-top-style: none;color: #F00;">The below User's Job Code has been changed.</td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td height="14" colspan="2" align="left" valign="bottom" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;border-top-style: none;">The user will need to submit an ASA Request to request that they retain their current application access, otherwise the access will be removed.</td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td height="14" colspan="2" align="left" valign="bottom" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;border-top-style: none;">
+                                                Please go to the <a href="https://remedy.my.salesforce.com/apex/bmcservicedesk__ssredirect?type=sr&id=a3YE00000008TAuMAM">ASA Form</a> and choose 'Job Code Change' for the reason for this request and follow the prompts. Please submit this request within <span style="color: red;"><b>5 business days</b></span> of this notification.
+                                            </td>
+                                        </tr>
+                                        <tr style="border-top-style: none;">
+                                            <td height="14" colspan="2" align="left" valign="bottom" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;border-top-style: none;">
+                                                If you have already submitted as ASA request for a Job Code Change, please let us know that request number. You also need to submit a request for Peoplesoft Access (link found on The Buzz) to keep or change your current access from anything other than IAR_Self_Service.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" align="center">
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">
+                                            <td width="23%"  align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #58a618;color: #58a618;font-weight: bold;">Details</td>
+                                            <td width="77%"  align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;border-bottom-style: solid;border-bottom-color: #004990;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectionbody" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="23%" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">User:</td>
+                                            <td style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Name}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="23%" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Phone #:</td>
+                                            <td style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Phone}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="23%" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Title:</td>
+                                            <td style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Title}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="23%" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Lan ID:</td>
+                                            <td style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Lan_ID__c}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="23%" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Employee ID:</td>
+                                            <td style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Employee_ID__c}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="23%" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Job Code:</td>
+                                            <td style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Job_Code__c}</td>
+                                        </tr>
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">
+                                            <td width="23%" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:normal;font-weight: bold;">Manager:</td>
+                                            <td style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style:  normal;">{!relatedTo.Manager.Name}</td>
+                                        </tr>
+                                    </table>
+                                    <table id="sectiontitle" width="100%" border="0" cellspacing="0" cellpadding="5">
+                                        <tr style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">
+                                            <td align="left" valign="top" style="font-family: Verdana, Geneva, sans-serif;font-size: 12px;font-style: italic;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <span style="color: #FFF;">ET17</span>
+        </body>
+    </messaging:htmlEmailBody>
+</messaging:emailTemplate>

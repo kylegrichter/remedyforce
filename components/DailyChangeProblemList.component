@@ -1,0 +1,12 @@
+<apex:component controller="ChangeManagement" access="global">
+    <apex:attribute name="ChgId" type="Id" description="Id of the change" assignTo="{!changeId}"/>
+    <apex:repeat value="{!problemsbycr}" var="p">
+            <tr>
+                <th style="margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#FFFFFF;color: #FFFFFF;font-size: 9pt;font-weight:bold;text-align: left;font-family: Calibri;border: none;" colspan="3"></th>
+                <td style="margin:5px; border-style: solid; border-width: 1px; border-color: #00305E; background-color:#F2DCDB; color:#000000; font-size: 9pt; text-align: left; vertical-align: top; font-family: Calibri;"><apex:outputLink value="http://remedy.my.salesforce.com/apex/BMCServiceDesk__RemedyforceConsole?objectName=Problem__c&record_id={!p.Id}" id="prLink">{!p.Name}</apex:outputLink></td>
+                <td style="margin:5px; border-style: solid; border-width: 1px; border-color: #00305E; background-color:#F2DCDB; color:#000000; font-size: 9pt; text-align: left; vertical-align: top; font-family: Calibri;"><pre style="font-family: Calibri;font-size: 9pt;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;margin:1px;">{!p.BMCServiceDesk__Problem_Description__c}</pre></td>
+                <td style="margin:5px; border-style: solid; border-width: 1px; border-color: #00305E; background-color:#F2DCDB; color:#000000; font-size: 9pt; text-align: left; vertical-align: top; font-family: Calibri;"><apex:outputText value="{!p.Owner.Name}" /><br /><apex:outputText value="{!p.FKBMC_BaseElement__r.name}" /></td>
+                <th style="margin:5px;border-style: solid;border-width: 1px;border-color: #00305E;background-color:#FFFFFF;color: #FFFFFF;font-size: 9pt;font-weight:bold;text-align: left;font-family: Calibri;border: none;" colspan="2"></th>
+            </tr>
+    </apex:repeat>
+</apex:component>

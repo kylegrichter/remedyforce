@@ -1,0 +1,13 @@
+<messaging:emailTemplate subject="System Bulletin: Future System Activity Schedule - {!CASE(MONTH( TODAY() ),1, 'January',2, 'February',3, 'March',4, 'April',5, 'May',6, 'June',7, 'July',8, 'August',9, 'September',10, 'October',11, 'November','December')}{!IF(MONTH(TODAY())!=MONTH(TODAY()+30),CASE(MONTH( TODAY()+30 ),1, '/January',2, '/February',3, '/March',4, '/April',5, '/May',6, '/June',7, '/July',8, '/August',9, '/September',10, '/October',11, '/November','/December'),'')}" >
+<messaging:htmlEmailBody >
+    <head>
+        <style type="text/css">
+            body{font-family:Calibri,"Trebuchet MS", Arial, Helvetica, sans-serif;font-size:14px;}
+        </style>
+    </head>
+    <body>
+        <c:Downtime_Report />
+        <c:Email_Signature />
+    </body>
+</messaging:htmlEmailBody>
+</messaging:emailTemplate>

@@ -1,0 +1,56 @@
+<apex:page >
+    <style>
+        .list tr.dataRow:hover {
+          background-color: #fbff99;
+          }
+    </style>
+    <apex:form >
+    <apex:outputText >
+        <h1>Welcome: {!$User.FirstName} {!$User.LastName}</h1><br />
+        Change Request#: <apex:inputText label="Change Request #"/>   
+        <apex:commandButton value="Search" />
+        <table class="list" border="0" cellspacing="0" cellpadding="0">
+            <tr class="headerRow">
+                <th>Application</th>
+                <th>Task#</th>
+                <th>User Story/Defect</th>
+                <th>Status</th>
+                <th>Comments</th>
+                <th>Action</th>
+            </tr>
+            <tr class="dataRow">
+                <td>kGen</td>
+                <td>123456</td>
+                <td>US1234</td>
+                <td>APPROVED</td>
+                <td><apex:inputTextarea /></td>
+                <td><apex:commandButton value="Update" /></td>
+            </tr>
+            <tr class="dataRow">
+                <td>kGen</td>
+                <td>123456</td>
+                <td>US1234</td>
+                <td>APPROVED</td>
+                <td><apex:inputTextarea /></td>
+                <td><apex:commandButton value="Update" /></td>
+            </tr>
+            <tr class="dataRow">
+                <td>kGen</td>
+                <td>123456</td>
+                <td>US1234</td>
+                <td>APPROVED</td>
+                <td><apex:inputTextarea /></td>
+                <td><apex:commandButton value="Update" /></td>
+            </tr>
+            <tr class="dataRow">
+                <td>kGen</td>
+                <td>123456</td>
+                <td>US1234</td>
+                <td>APPROVED</td>
+                <td><apex:inputTextarea /></td>
+                <td><apex:commandButton value="Update" /></td>
+            </tr>
+        </table>
+    </apex:outputText>
+    </apex:form>
+</apex:page>

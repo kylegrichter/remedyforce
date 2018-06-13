@@ -1,0 +1,4 @@
+<apex:component controller="ChangeManagement" access="global">
+    <p>Below is the approved changes for this weekend,&nbsp;<b><apex:outputField value="{!weekend.Start_Date_Time__c}" /></b>&nbsp;to&nbsp;<b><apex:outputField value="{!weekend.End_Date_Time__c}" /></b>. Have a great weekend!</p>
+    <apex:outputText escape="false" rendered="{!NOT(ISNULL(weekend.Additional_Message_for_Email__c))}" value="{!weekend.Additional_Message_for_Email__c} <br />" />
+</apex:component>

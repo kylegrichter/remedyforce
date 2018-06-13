@@ -1,0 +1,18 @@
+<apex:page showHeader="false">
+<p align="center"><apex:image url="{!$Resource.DexYP70x440px}" /></p>
+
+<center><strong><h1 style="color:#004990;font-size: 48px;">DexYP Ultipro Help Page</h1></strong></center>
+<br></br>
+<center><strong><h2 style="color:#58A618;font-size: 32px;">How to log into Ultipro for the 1st time</h2></strong></center> 
+
+<ol>
+    <li>
+    <p><strong><font size="4">Your account activation is almost complete. Look for the email with subject of "Finish activating your account (Do not reply)". Open email and click on the link to complete your activation. See the below screenshot of email</font></strong></p>
+    </li>
+    <p align="center"><apex:image url="{!$Resource.Ultiproemail}" /></p>
+    <li>
+    <p><strong><font size="4">After clicking on link in email, you will be directed to UltiPro. If its your 1st time logging into Ultipro you will see the below screenshot come up in browser.  You have to set a password for direct sign in to Ultipro.  This will not change your SSO password. The direct sign on would be used if you left company and needed access to your paycheck information. You will be signed into Ultipro after completing this step. Please go to HR section of the Buzz to find the default (current) password.</font></strong></p>
+    </li>
+    <p align="center"><apex:image url="{!$Resource.Ultiprologin}" /></p>
+</ol>
+</apex:page>

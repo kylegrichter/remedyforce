@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>Notify Queue (and Client) of a Service Request Assigned to Queue</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <name>ET5-Notify Queue_Client-SR Assigned to Queue</name>
+    <style>none</style>
+    <subject>Service Request # {!BMCServiceDesk__Incident__c.Name} has been created and assigned to the {!BMCServiceDesk__Incident__c.OwnerFullName} Queue</subject>
+    <textOnly>ET5
+
+Service Request #  {!BMCServiceDesk__Incident__c.Name}      Priority:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Priority_ID__c}
+Queue Assignment:  {!BMCServiceDesk__Incident__c.OwnerFullName}
+
+Requester Information
+
+Client Name:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Name__c}     Email:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__clientEmail__c}
+Location:  {!BMCServiceDesk__Incident__c.Real_Location__c}     Phone:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Client_Phone__c}
+
+Service Request Information
+
+Status:  Open
+Created Date:  {!BMCServiceDesk__Incident__c.CreatedDate}     SLA Due Date:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__dueDateTime__c}
+Urgency:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Urgency_ID__c}     Impact:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Impact_Id__c}
+Category:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Category_ID__c}     Config item:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKBMC_BaseElement__c}
+Short Description:  {!BMCServiceDesk__Incident__c.Incident_Title__c}
+Long Description:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__incidentDescription__c}
+
+Additional Information
+
+Service Request Title:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__Service_Request_Title__c}     Service:  {!BMCServiceDesk__Incident__c.BMCServiceDesk__FKBusinessService__c}
+Requested Due  Date:  {!BMCServiceDesk__Incident__c.Requested_Due_By_Date__c}     Expected Due Date:  {!BMCServiceDesk__Incident__c.Expected_Due_By_Date__c}
+Request Details  {!BMCServiceDesk__Incident__c.Request_Detail_Inputs__c}
+
+ET5</textOnly>
+    <type>custom</type>
+</EmailTemplate>
